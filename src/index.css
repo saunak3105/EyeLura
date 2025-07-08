@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@keyframes highlighter {
+          0% {
+            transform: scaleX(0);
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            transform: scaleX(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes pen {
+          0% {
+            transform: translateX(-10px) translateY(5px) rotate(-15deg);
+            opacity: 0;
+          }
+          5% {
+            opacity: 1;
+          }
+          15% {
+            transform: translateX(20px) translateY(0px) rotate(-15deg);
+          }
+          25% {
+            transform: translateX(40px) translateY(5px) rotate(-15deg);
+          }
+          35% {
+            transform: translateX(60px) translateY(0px) rotate(-15deg);
+          }
+          45% {
+            transform: translateX(80px) translateY(8px) rotate(-15deg);
+          }
+          55% {
+            transform: translateX(100px) translateY(0px) rotate(-15deg);
+          }
+          65% {
+            transform: translateX(120px) translateY(5px) rotate(-15deg);
+          }
+          75% {
+            transform: translateX(140px) translateY(0px) rotate(-15deg);
+          }
+          85% {
+            transform: translateX(160px) translateY(3px) rotate(-15deg);
+          }
+          95% {
+            transform: translateX(180px) translateY(0px) rotate(-15deg);
+          }
+          100% {
+            transform: translateX(200px) translateY(0px) rotate(-15deg);
+            opacity: 0;
+          }
+        }
+
+        @keyframes typewriter {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
+          }
+        }
