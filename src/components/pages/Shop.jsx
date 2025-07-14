@@ -56,19 +56,31 @@ export default function Shop() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pt-20">
-      {/* Header */}
+      {/* Header with Logo */}
       <div className={`py-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full text-sm text-[#d4af37] font-medium shadow-sm mb-6">
-            <span className="w-2 h-2 bg-[#d4af37] rounded-full mr-2 animate-pulse"></span>
-            Premium Collection
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-8">
+            <button
+              onClick={() => navigate('/')}
+              className="text-3xl text-gray-900 hover:text-[#d4af37] transition-all duration-300 font-bold"
+              style={{ fontFamily: "'Crimson Text', serif", fontWeight: '600' }}
+            >
+              EyeLura
+            </button>
           </div>
-          <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Shop <span className="text-[#d4af37]">Eyewear</span>
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "'Playfair Display', serif" }}>
-            Discover our complete collection of premium eyewear designed for the modern generation
-          </p>
+          
+          <div className="text-center">
+            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full text-sm text-[#d4af37] font-medium shadow-sm mb-6">
+              <span className="w-2 h-2 bg-[#d4af37] rounded-full mr-2 animate-pulse"></span>
+              Premium Collection
+            </div>
+            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Crimson Text', serif", fontWeight: '600' }}>
+              Shop <span className="text-[#d4af37]">Eyewear</span>
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
+              Discover our complete collection of premium eyewear designed for the modern generation
+            </p>
+          </div>
         </div>
       </div>
 
@@ -78,13 +90,13 @@ export default function Shop() {
           {/* Filters Sidebar */}
           <div className={`lg:w-1/4 space-y-6 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
             <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-lg">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
                 Filters
               </h3>
               
               {/* Category Filter */}
               <div className="mb-6">
-                <h4 className="font-medium text-gray-700 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Category</h4>
+                <h4 className="font-medium text-gray-700 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>Category</h4>
                 <div className="space-y-2">
                   {['all', 'sunglasses', 'frames'].map((category) => (
                     <label key={category} className="flex items-center">
@@ -96,7 +108,7 @@ export default function Shop() {
                         onChange={(e) => setSelectedCategory(e.target.value)}
                         className="text-[#d4af37] focus:ring-[#d4af37]"
                       />
-                      <span className="ml-2 text-gray-600 capitalize" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <span className="ml-2 text-gray-600 capitalize" style={{ fontFamily: "'Inter', sans-serif" }}>
                         {category === 'all' ? 'All Products' : category}
                       </span>
                     </label>
@@ -106,7 +118,7 @@ export default function Shop() {
 
               {/* Price Range */}
               <div className="mb-6">
-                <h4 className="font-medium text-gray-700 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Price Range</h4>
+                <h4 className="font-medium text-gray-700 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>Price Range</h4>
                 <div className="space-y-3">
                   <input
                     type="range"
@@ -117,20 +129,20 @@ export default function Shop() {
                     className="w-full accent-[#d4af37]"
                   />
                   <div className="flex justify-between text-sm text-gray-600">
-                    <span>₹{priceRange[0]}</span>
-                    <span>₹{priceRange[1]}</span>
+                    <span style={{ fontFamily: "'Inter', sans-serif" }}>₹{priceRange[0]}</span>
+                    <span style={{ fontFamily: "'Inter', sans-serif" }}>₹{priceRange[1]}</span>
                   </div>
                 </div>
               </div>
 
               {/* Sort By */}
               <div>
-                <h4 className="font-medium text-gray-700 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Sort By</h4>
+                <h4 className="font-medium text-gray-700 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>Sort By</h4>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   <option value="featured">Featured</option>
                   <option value="price-low">Price: Low to High</option>
@@ -145,7 +157,7 @@ export default function Shop() {
           {/* Products Grid */}
           <div className="lg:w-3/4">
             <div className={`mb-6 flex justify-between items-center transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-              <p className="text-gray-600" style={{ fontFamily: "'Playfair Display', serif" }}>
+              <p className="text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
                 Showing {filteredProducts.length} products
               </p>
             </div>
@@ -193,13 +205,13 @@ export default function Shop() {
                   {/* Product Info */}
                   <div className="p-6 space-y-4">
                     <div className="flex justify-between items-start">
-                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#d4af37] transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif" }}>
+                      <h3 className="text-lg font-semibold text-gray-900 group-hover:text-[#d4af37] transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
                         {product.name}
                       </h3>
                       <div className="text-right">
-                        <div className="text-xl font-bold text-gray-900">₹{product.price}</div>
+                        <div className="text-xl font-bold text-gray-900" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '700' }}>₹{product.price}</div>
                         {product.originalPrice && (
-                          <div className="text-sm text-gray-500 line-through">₹{product.originalPrice}</div>
+                          <div className="text-sm text-gray-500 line-through" style={{ fontFamily: "'Inter', sans-serif" }}>₹{product.originalPrice}</div>
                         )}
                       </div>
                     </div>
@@ -210,23 +222,23 @@ export default function Shop() {
                         {'★'.repeat(Math.floor(product.rating))}
                         {'☆'.repeat(5 - Math.floor(product.rating))}
                       </div>
-                      <span>({product.reviews} reviews)</span>
+                      <span style={{ fontFamily: "'Inter', sans-serif" }}>({product.reviews} reviews)</span>
                     </div>
 
                     {/* Category tag */}
                     <div className="flex items-center gap-2">
-                      <span className="px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600 capitalize">
+                      <span className="px-2 py-1 bg-gray-100 rounded-full text-xs text-gray-600 capitalize" style={{ fontFamily: "'Inter', sans-serif" }}>
                         {product.category}
                       </span>
                       {product.category === 'frames' && (
-                        <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs">
+                        <span className="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs" style={{ fontFamily: "'Inter', sans-serif" }}>
                           Prescription Ready
                         </span>
                       )}
                     </div>
 
                     {/* CTA Button */}
-                    <button className="w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black py-3 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    <button className="w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black py-3 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
                       View Details
                     </button>
                   </div>
@@ -237,10 +249,10 @@ export default function Shop() {
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
                 <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
                   No products found
                 </h3>
-                <p className="text-gray-600" style={{ fontFamily: "'Playfair Display', serif" }}>
+                <p className="text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
                   Try adjusting your filters to see more results
                 </p>
               </div>
