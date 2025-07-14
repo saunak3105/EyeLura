@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Header({ onCartClick }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
+  const [authMode, setAuthMode] = useState('login');
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Animation variants
   const mobileMenuVariants = {
@@ -41,6 +44,11 @@ export default function Header({ onCartClick }) {
     setIsAuthModalOpen(true);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsMenuOpen(false);
+  };
+
   return (
     <>
       <motion.header 
@@ -51,29 +59,39 @@ export default function Header({ onCartClick }) {
       >
         <div className="mx-auto flex h-20 justify-between items-center px-4 sm:px-6 md:px-8 max-w-7xl">
           <nav className="flex items-center gap-12">
-            <motion.a 
-              href="#" 
-              className="text-3xl text-white hover:text-[#d4af37] transition-all duration-300 font-playfair"
+            <motion.button 
+              onClick={() => handleNavigation('/')}
+              className="text-3xl text-white hover:text-[#d4af37] transition-all duration-300"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               EyeLura
-            </motion.a>
+            </motion.button>
             <ul className="hidden lg:flex items-center gap-8 text-sm font-medium">
-              {['Shop', 'Virtual Try-On', 'Products', 'Student Deals'].map((item) => (
+              {[
+                { name: 'Shop', path: '/shop' },
+                { name: 'Virtual Try-On', path: '/#try-on' },
+                { name: 'About', path: '/about' },
+                { name: 'Contact', path: '/contact' }
+              ].map((item) => (
                 <motion.li 
-                  key={item}
+                  key={item.name}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <a 
-                    href={`#${item.toLowerCase().replace(' ', '-')}`} 
-                    className="text-white hover:text-[#d4af37] transition-colors duration-300 relative group"
+                  <button 
+                    onClick={() => handleNavigation(item.path)}
+                    className={`text-white hover:text-[#d4af37] transition-colors duration-300 relative group ${
+                      location.pathname === item.path ? 'text-[#d4af37]' : ''
+                    }`}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    {item}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#d4af37] transition-all duration-300 group-hover:w-full"></span>
-                  </a>
+                    {item.name}
+                    <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#d4af37] transition-all duration-300 ${
+                      location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}></span>
+                  </button>
                 </motion.li>
               ))}
             </ul>
@@ -107,6 +125,7 @@ export default function Header({ onCartClick }) {
                 className="text-white hover:text-[#d4af37] transition-colors duration-300 font-medium px-3 py-2"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Login
               </motion.button>
@@ -115,22 +134,24 @@ export default function Header({ onCartClick }) {
                 className="bg-[#d4af37] hover:bg-[#d4af37]/90 text-black px-4 py-2 rounded-full font-medium shadow-lg transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 Sign Up
               </motion.button>
             </div>
 
-            <motion.a 
-              href="#try-on" 
+            <motion.button 
+              onClick={() => handleNavigation('/#try-on')}
               className="hidden md:inline-block bg-[#d4af37] hover:bg-[#d4af37]/90 text-black px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
               whileHover={{ 
                 scale: 1.05,
                 boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.4)"
               }}
               whileTap={{ scale: 0.95 }}
+              style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Try Now
-            </motion.a>
+            </motion.button>
 
             {/* Mobile menu button */}
             <motion.button 
@@ -166,7 +187,7 @@ export default function Header({ onCartClick }) {
           </div>
         </div>
 
-        {/* Mobile menu with AnimatePresence for smooth exit animations */}
+        {/* Mobile menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div 
@@ -177,18 +198,24 @@ export default function Header({ onCartClick }) {
               variants={mobileMenuVariants}
             >
               <nav className="px-4 py-6 space-y-4">
-                {['Collections', 'Virtual Try-On', 'Products', 'Student Deals'].map((item, index) => (
-                  <motion.a 
-                    key={item}
-                    href={`#${item.toLowerCase().replace(' ', '-')}`} 
-                    className="block text-white hover:text-[#d4af37] transition-colors duration-300 font-medium"
+                {[
+                  { name: 'Shop', path: '/shop' },
+                  { name: 'Virtual Try-On', path: '/#try-on' },
+                  { name: 'About', path: '/about' },
+                  { name: 'Contact', path: '/contact' }
+                ].map((item, index) => (
+                  <motion.button 
+                    key={item.name}
+                    onClick={() => handleNavigation(item.path)}
+                    className="block w-full text-left text-white hover:text-[#d4af37] transition-colors duration-300 font-medium"
                     variants={navItemVariants}
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.1 + index * 0.05 }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
-                    {item}
-                  </motion.a>
+                    {item.name}
+                  </motion.button>
                 ))}
                 <div className="flex gap-4 mt-4">
                   <motion.button
@@ -201,6 +228,7 @@ export default function Header({ onCartClick }) {
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.3 }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     Login
                   </motion.button>
@@ -214,22 +242,24 @@ export default function Header({ onCartClick }) {
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: 0.35 }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     Sign Up
                   </motion.button>
                 </div>
-                <motion.a 
-                  href="#try-on" 
-                  className="block bg-[#d4af37] hover:bg-[#d4af37]/90 text-black px-6 py-3 rounded-full font-semibold text-center mt-6"
+                <motion.button 
+                  onClick={() => handleNavigation('/#try-on')}
+                  className="block w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black px-6 py-3 rounded-full font-semibold text-center mt-6"
                   variants={navItemVariants}
                   initial="hidden"
                   animate="visible"
                   transition={{ delay: 0.4 }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   Try Now
-                </motion.a>
+                </motion.button>
               </nav>
             </motion.div>
           )}
@@ -249,7 +279,7 @@ export default function Header({ onCartClick }) {
               transition={{ duration: 0.3 }}
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-white">
+                <h3 className="text-2xl font-bold text-white" style={{ fontFamily: "'Playfair Display', serif" }}>
                   {authMode === 'login' ? 'Login to Your Account' : 'Create an Account'}
                 </h3>
                 <button 
@@ -263,42 +293,46 @@ export default function Header({ onCartClick }) {
               <form className="space-y-6">
                 {authMode === 'signup' && (
                   <div>
-                    <label className="block text-gray-300 mb-2">Full Name</label>
+                    <label className="block text-gray-300 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Full Name</label>
                     <input 
                       type="text" 
                       className="w-full bg-[#0a0a0a] border border-[#0a0a0a] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#d4af37] transition-all duration-300"
                       placeholder="John Doe"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
                     />
                   </div>
                 )}
                 <div>
-                  <label className="block text-gray-300 mb-2">Email Address</label>
+                  <label className="block text-gray-300 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Email Address</label>
                   <input 
                     type="email" 
                     className="w-full bg-[#0a0a0a] border border-[#0a0a0a] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#d4af37] transition-all duration-300"
                     placeholder="your@email.com"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-300 mb-2">Password</label>
+                  <label className="block text-gray-300 mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>Password</label>
                   <input 
                     type="password" 
                     className="w-full bg-[#0a0a0a] border border-[#0a0a0a] rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-[#d4af37] transition-all duration-300"
                     placeholder="••••••••"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   />
                 </div>
                 {authMode === 'login' && (
                   <div className="flex justify-between items-center">
                     <label className="flex items-center space-x-2 text-gray-300">
                       <input type="checkbox" className="rounded bg-[#0a0a0a] border-[#0a0a0a] text-[#d4af37] focus:ring-[#d4af37]" />
-                      <span>Remember me</span>
+                      <span style={{ fontFamily: "'Playfair Display', serif" }}>Remember me</span>
                     </label>
-                    <a href="#forgot-password" className="text-[#d4af37] hover:underline">Forgot password?</a>
+                    <a href="#forgot-password" className="text-[#d4af37] hover:underline" style={{ fontFamily: "'Playfair Display', serif" }}>Forgot password?</a>
                   </div>
                 )}
                 <button 
                   type="submit"
                   className="w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black py-3 px-6 rounded-lg font-semibold transition-all duration-300 shadow-lg"
+                  style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   {authMode === 'login' ? 'Login' : 'Sign Up'}
                 </button>
@@ -306,7 +340,7 @@ export default function Header({ onCartClick }) {
 
               <div className="mt-6 text-center text-gray-400">
                 {authMode === 'login' ? (
-                  <p>
+                  <p style={{ fontFamily: "'Playfair Display', serif" }}>
                     Don't have an account?{' '}
                     <button 
                       onClick={() => setAuthMode('signup')}
@@ -316,7 +350,7 @@ export default function Header({ onCartClick }) {
                     </button>
                   </p>
                 ) : (
-                  <p>
+                  <p style={{ fontFamily: "'Playfair Display', serif" }}>
                     Already have an account?{' '}
                     <button 
                       onClick={() => setAuthMode('login')}
@@ -335,14 +369,14 @@ export default function Header({ onCartClick }) {
                       <div className="w-full border-t border-gray-700"></div>
                     </div>
                     <div className="relative flex justify-center">
-                      <span className="bg-[#070808] px-4 text-gray-400">or continue with</span>
+                      <span className="bg-[#070808] px-4 text-gray-400" style={{ fontFamily: "'Playfair Display', serif" }}>or continue with</span>
                     </div>
                   </div>
                   <div className="mt-6 grid grid-cols-2 gap-4">
-                    <button className="flex items-center justify-center gap-2 bg-[#0a0a0a] hover:bg-[#0a0a0a]/80 text-white py-2 px-4 rounded-lg transition-colors duration-300">
+                    <button className="flex items-center justify-center gap-2 bg-[#0a0a0a] hover:bg-[#0a0a0a]/80 text-white py-2 px-4 rounded-lg transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif" }}>
                       <span>G</span> Google
                     </button>
-                    <button className="flex items-center justify-center gap-2 bg-[#0a0a0a] hover:bg-[#0a0a0a]/80 text-white py-2 px-4 rounded-lg transition-colors duration-300">
+                    <button className="flex items-center justify-center gap-2 bg-[#0a0a0a] hover:bg-[#0a0a0a]/80 text-white py-2 px-4 rounded-lg transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif" }}>
                       <span>F</span> Facebook
                     </button>
                   </div>
