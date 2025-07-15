@@ -3,15 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import { Heart, ShoppingCart, Menu, X } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { Heart, ShoppingCart, Menu, X, User, LogOut } from 'lucide-react';
 
 export default function Header({ onCartClick }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { getCartItemsCount } = useCart();
   const { getWishlistItemsCount } = useWishlist();
+  const { user, logout, openAuthModal } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +27,19 @@ export default function Header({ onCartClick }) {
   const handleNavigation = (path) => {
     navigate(path);
     setIsMenuOpen(false);
+  };
+
+  const handleCartClick = () => {
+    if (!user) {
+      openAuthModal();
+      return;
+    }
+    onCartClick();
+  };
+
+  const handleLogout = () => {
+    logout();
+    setShowUserMenu(false);
   };
 
   const cartItemsCount = getCartItemsCount();
@@ -107,7 +123,7 @@ export default function Header({ onCartClick }) {
 
             {/* Cart Button */}
             <motion.button 
-              onClick={onCartClick}
+              onClick={handleCartClick}
               className="relative group p-2"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -125,6 +141,57 @@ export default function Header({ onCartClick }) {
                 </motion.span>
               )}
             </motion.button>
+
+            {/* Auth Button */}
+            <div className="relative">
+              {user ? (
+                <motion.button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 text-white hover:text-[#d4af37] transition-colors duration-300 p-2"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <User className="w-6 h-6" />
+                  <span className="hidden sm:block font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    {user.name}
+                  </span>
+                </motion.button>
+              ) : (
+                <motion.button
+                  onClick={openAuthModal}
+                  className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-4 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                >
+                  Sign In
+                </motion.button>
+              )}
+
+              {/* User Dropdown Menu */}
+              <AnimatePresence>
+                {showUserMenu && user && (
+                  <motion.div
+                    className="absolute right-0 top-full mt-2 w-48 bg-black/90 backdrop-blur-xl border border-gray-800 rounded-lg shadow-xl"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <div className="p-2">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-white hover:text-[#d4af37] hover:bg-gray-800/50 rounded-md transition-colors duration-300 font-light"
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      >
+                        <LogOut className="w-4 h-4" />
+                        Sign Out
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {/* Mobile Menu Button */}
             <motion.button 
@@ -166,6 +233,21 @@ export default function Header({ onCartClick }) {
                     {item.name}
                   </motion.button>
                 ))}
+                {!user && (
+                  <motion.button
+                    onClick={() => {
+                      openAuthModal();
+                      setIsMenuOpen(false);
+                    }}
+                    className="block w-full text-left bg-[#d4af37] text-black px-4 py-2 rounded-full font-medium mt-4"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navItems.length * 0.1 }}
+                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  >
+                    Sign In
+                  </motion.button>
+                )}
               </nav>
             </motion.div>
           )}

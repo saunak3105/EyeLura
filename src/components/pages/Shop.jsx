@@ -3,6 +3,9 @@ import { products } from '../../data/products';
 import { useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
+import Header from '../ui/Header';
+import CartModal from '../ui/CartModal';
+import AuthModal from '../ui/AuthModal';
 import { Heart, ShoppingCart, Eye, Filter, Grid, List, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -15,6 +18,7 @@ export default function Shop() {
   const [viewMode, setViewMode] = useState('grid');
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isCartOpen, setIsCartOpen] = useState(false);
   
   const navigate = useNavigate();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -86,18 +90,18 @@ export default function Shop() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-20">
-      {/* Header */}
-      <div className={`py-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center">
-            <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-              Premium <span className="text-[#d4af37]">Collection</span>
-            </h1>
-            <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-              Discover exceptional eyewear crafted for discerning taste
-            </p>
-          </div>
+    <div className="min-h-screen bg-black">
+      <Header onCartClick={() => setIsCartOpen(true)} />
+      
+      {/* Hero Section */}
+      <div className={`pt-32 pb-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+            Premium <span className="text-[#d4af37]">Collection</span>
+          </h1>
+          <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            Discover exceptional eyewear crafted for discerning taste
+          </p>
         </div>
       </div>
 
@@ -350,6 +354,13 @@ export default function Shop() {
           </div>
         </div>
       </div>
+
+      <CartModal 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+      />
+      
+      <AuthModal />
     </div>
   );
 }

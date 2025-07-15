@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from '../ui/Header';
+import CartModal from '../ui/CartModal';
+import AuthModal from '../ui/AuthModal';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -57,32 +61,22 @@ export default function Contact() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 pt-20">
-      {/* Hero Section with Logo */}
-      <div className={`py-20 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={() => navigate('/')}
-              className="text-3xl text-gray-900 hover:text-[#d4af37] transition-all duration-300 font-bold"
-              style={{ fontFamily: "'Crimson Text', serif", fontWeight: '600' }}
-            >
-              EyeLura
-            </button>
+    <div className="min-h-screen bg-black">
+      <Header onCartClick={() => setIsCartOpen(true)} />
+      
+      {/* Hero Section */}
+      <div className={`pt-32 pb-20 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+        <div className="max-w-7xl mx-auto text-center">
+          <div className="inline-flex items-center px-4 py-2 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full text-sm text-[#d4af37] font-medium shadow-sm mb-6">
+            <span className="w-2 h-2 bg-[#d4af37] rounded-full mr-2 animate-pulse"></span>
+            Get in Touch
           </div>
-          
-          <div className="text-center">
-            <div className="inline-flex items-center px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full text-sm text-[#d4af37] font-medium shadow-sm mb-6">
-              <span className="w-2 h-2 bg-[#d4af37] rounded-full mr-2 animate-pulse"></span>
-              Get in Touch
-            </div>
-            <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Crimson Text', serif", fontWeight: '600' }}>
-              Contact <span className="text-[#d4af37]">Us</span>
-            </h1>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif" }}>
-              Have questions about our eyewear or need assistance? We're here to help you find the perfect pair.
-            </p>
-          </div>
+          <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+            Contact <span className="text-[#d4af37]">Us</span>
+          </h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            Have questions about our eyewear or need assistance? We're here to help you find the perfect pair.
+          </p>
         </div>
       </div>
 
@@ -91,14 +85,14 @@ export default function Contact() {
           
           {/* Contact Form */}
           <div className={`transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
-            <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 shadow-lg">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6" style={{ fontFamily: "'Crimson Text', serif", fontWeight: '600' }}>
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 shadow-lg">
+              <h2 className="text-3xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Send us a Message
               </h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                       Full Name
                     </label>
                     <input
@@ -106,14 +100,14 @@ export default function Contact() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="Your full name"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-700 font-medium mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                       Email Address
                     </label>
                     <input
@@ -121,24 +115,24 @@ export default function Contact() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
+                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="your@email.com"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     Subject
                   </label>
                   <select
                     name="subject"
                     value={formData.subject}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
+                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                     required
-                    style={{ fontFamily: "'Inter', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                   >
                     <option value="">Select a subject</option>
                     <option value="general">General Inquiry</option>
@@ -150,7 +144,7 @@ export default function Contact() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-700 font-medium mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     Message
                   </label>
                   <textarea
@@ -158,16 +152,16 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleInputChange}
                     rows="6"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300 resize-none"
+                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300 resize-none"
                     placeholder="Tell us how we can help you..."
                     required
-                    style={{ fontFamily: "'Inter', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                   ></textarea>
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black py-4 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}
+                  className="w-full bg-[#d4af37] hover:bg-[#e6c14d] text-black py-4 px-6 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
                 >
                   <Send className="w-5 h-5" />
                   Send Message
@@ -179,29 +173,29 @@ export default function Contact() {
           {/* Contact Information */}
           <div className={`space-y-8 transform transition-all duration-1000 delay-400 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0'}`}>
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold text-gray-900" style={{ fontFamily: "'Crimson Text', serif", fontWeight: '600' }}>
+              <h2 className="text-3xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Get in Touch
               </h2>
-              <p className="text-lg text-gray-600" style={{ fontFamily: "'Inter', sans-serif" }}>
+              <p className="text-lg text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                 We're here to help you with any questions about our products, services, or your order.
               </p>
             </div>
 
             <div className="grid gap-6">
               {contactInfo.map((info, index) => (
-                <div key={index} className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                <div key={index} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#d4af37] rounded-full flex items-center justify-center text-white flex-shrink-0">
+                    <div className="w-12 h-12 bg-[#d4af37] rounded-full flex items-center justify-center text-black flex-shrink-0">
                       {info.icon}
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
+                      <h3 className="text-lg font-light text-white mb-1" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                         {info.title}
                       </h3>
                       <p className="text-[#d4af37] font-medium mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
                         {info.details}
                       </p>
-                      <p className="text-gray-600 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
+                      <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                         {info.description}
                       </p>
                     </div>
@@ -211,32 +205,32 @@ export default function Contact() {
             </div>
 
             {/* FAQ Section */}
-            <div className="bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl p-6 shadow-lg">
-              <h3 className="text-xl font-bold text-gray-900 mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6 shadow-lg">
+              <h3 className="text-xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Quick Answers
               </h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
+                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     How do I get my student discount?
                   </h4>
-                  <p className="text-gray-600 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     Verify your student status during checkout for instant savings.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
+                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     What's your return policy?
                   </h4>
-                  <p className="text-gray-600 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     30-day hassle-free returns with free shipping both ways.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-800 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}>
+                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     How does AR try-on work?
                   </h4>
-                  <p className="text-gray-600 text-sm" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     Use your device's camera to virtually try on frames in real-time.
                   </p>
                 </div>
@@ -245,6 +239,13 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      <CartModal 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+      />
+      
+      <AuthModal />
     </div>
   );
 }
