@@ -1,51 +1,91 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useWishlist } from '../../context/WishlistContext';
+import { useCart } from '../../context/CartContext';
+import { Heart, ShoppingCart, Eye } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const products = [
   {
+    id: 1,
     name: 'Aviator Prestige',
     price: 1329,
     originalPrice: 1599,
     image: 'https://i.ibb.co/271DJ6YD/austin-p-x-ro8-SEHw-Gw-unsplash.jpg',
+    images: [
+      'https://i.ibb.co/271DJ6YD/austin-p-x-ro8-SEHw-Gw-unsplash.jpg',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80'
+    ],
     reviews: 248,
+    rating: 4.8,
     category: 'sunglasses',
     badge: 'Bestseller',
-    discount: 17
+    discount: 17,
+    colors: ['Gold', 'Silver', 'Black'],
+    sizes: ['Small', 'Medium', 'Large']
   },
   {
+    id: 2,
     name: 'Metropolitan Frame',
     price: 1289,
     originalPrice: 1489,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80',
+      'https://i.ibb.co/271DJ6YD/austin-p-x-ro8-SEHw-Gw-unsplash.jpg'
+    ],
     reviews: 192,
+    rating: 4.7,
     badge: 'New',
     category: 'frames',
-    discount: 13
+    discount: 13,
+    colors: ['Black', 'Tortoise', 'Clear'],
+    sizes: ['Small', 'Medium', 'Large']
   },
   {
+    id: 3,
     name: 'Artisan Round',
     price: 1459,
     originalPrice: 1699,
     image: 'https://i.ibb.co/9X2LxTb/giorgio-trovato-K62u25-Jk6vo-unsplash.jpg',
+    images: [
+      'https://i.ibb.co/9X2LxTb/giorgio-trovato-K62u25-Jk6vo-unsplash.jpg',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80'
+    ],
     reviews: 312,
+    rating: 4.9,
     category: 'sunglasses',
     badge: 'Student Fav',
-    discount: 14
+    discount: 14,
+    colors: ['Brown', 'Green', 'Blue'],
+    sizes: ['Small', 'Medium']
   },
   {
+    id: 4,
     name: 'Executive Titan',
     price: 1599,
     originalPrice: 1899,
     image: 'https://i.ibb.co/mF8tGFhf/lucas-george-wendt-3xt-Ce-Uhq-ZWE-unsplash.jpg',
+    images: [
+      'https://i.ibb.co/mF8tGFhf/lucas-george-wendt-3xt-Ce-Uhq-ZWE-unsplash.jpg',
+      'https://i.ibb.co/9X2LxTb/giorgio-trovato-K62u25-Jk6vo-unsplash.jpg'
+    ],
     reviews: 176,
+    rating: 4.6,
     badge: 'Limited',
     category: 'frames',
-    discount: 16
+    discount: 16,
+    colors: ['Gunmetal', 'Silver', 'Black'],
+    sizes: ['Medium', 'Large']
   }
 ];
 
 export default function BestSellers() {
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const navigate = useNavigate();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -62,6 +102,24 @@ export default function BestSellers() {
 
     return () => observer.disconnect();
   }, []);
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
+
+  const handleWishlistToggle = (e, product) => {
+    e.stopPropagation();
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
+  const handleAddToCart = (e, product) => {
+    e.stopPropagation();
+    addToCart(product, product.colors[0], product.sizes[0], 1);
+  };
 
   return (
     <section 
@@ -95,17 +153,20 @@ export default function BestSellers() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {products.map((item, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className={`group relative bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 ${
-                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'
-              }`}
+              className="group relative bg-white/60 backdrop-blur-sm border border-gray-200 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer"
               style={{ 
                 transitionDelay: `${idx * 150}ms`,
                 animation: isVisible ? `slideUp 0.8s ease-out ${idx * 0.1}s both` : 'none'
               }}
               onMouseEnter={() => setHoveredIndex(idx)}
               onMouseLeave={() => setHoveredIndex(null)}
+              onClick={() => handleProductClick(item.id)}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              whileHover={{ scale: 1.02 }}
             >
               {/* Badge */}
               {item.badge && (
@@ -129,9 +190,9 @@ export default function BestSellers() {
               {/* Product Image */}
               <div className="relative aspect-square overflow-hidden">
                 <img
-                  src={item.image}
+                  src={hoveredIndex === idx && item.images[1] ? item.images[1] : item.image}
                   alt={item.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                 />
                 
                 {/* Overlay on hover */}
@@ -143,11 +204,32 @@ export default function BestSellers() {
                 <div className={`absolute inset-0 flex items-center justify-center gap-3 transition-all duration-300 ${
                   hoveredIndex === idx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}>
-                  <button className="bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-colors duration-300 shadow-lg">
-                    <span className="text-[#d4af37]">👁️</span>
+                  <button 
+                    onClick={(e) => handleWishlistToggle(e, item)}
+                    className={`w-12 h-12 rounded-full backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-110 ${
+                      isInWishlist(item.id) 
+                        ? 'bg-red-500 text-white' 
+                        : 'bg-white/10 text-white hover:bg-white/20'
+                    }`}
+                  >
+                    <Heart className={`w-5 h-5 ${isInWishlist(item.id) ? 'fill-current' : ''}`} />
                   </button>
-                  <button className="bg-white/90 backdrop-blur-sm p-3 rounded-full hover:bg-white transition-colors duration-300 shadow-lg">
-                    <span className="text-red-500">❤️</span>
+                  
+                  <button 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleProductClick(item.id);
+                    }}
+                    className="w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/20 transition-all duration-300 hover:scale-110"
+                  >
+                    <Eye className="w-5 h-5" />
+                  </button>
+                  
+                  <button 
+                    onClick={(e) => handleAddToCart(e, item)}
+                    className="w-12 h-12 bg-[#d4af37] rounded-full flex items-center justify-center text-black hover:bg-[#e6c14d] transition-all duration-300 hover:scale-110"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
                   </button>
                 </div>
               </div>
@@ -169,7 +251,8 @@ export default function BestSellers() {
                 {/* Reviews */}
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <div className="flex text-[#d4af37]">
-                    {'★'.repeat(5)}
+                    {'★'.repeat(Math.floor(item.rating))}
+                    {'☆'.repeat(5 - Math.floor(item.rating))}
                   </div>
                   <span>({item.reviews} reviews)</span>
                 </div>
@@ -187,14 +270,20 @@ export default function BestSellers() {
                 </div>
 
                 {/* CTA Button */}
-                <button className="w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black py-3 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                  Add to Collection
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleProductClick(item.id);
+                  }}
+                  className="w-full bg-[#d4af37] hover:bg-[#d4af37]/90 text-black py-3 px-6 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                >
+                  View Details
                 </button>
               </div>
 
               {/* Glowing border effect */}
               <div className={`absolute inset-0 rounded-2xl bg-[#d4af37] opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none`} />
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -208,7 +297,10 @@ export default function BestSellers() {
               Explore our complete collection with <span className="text-[#d4af37] font-semibold">student discounts</span> and virtual try-on features
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-[#d4af37] hover:bg-[#d4af37]/90 text-black px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <button 
+                onClick={() => navigate('/shop')}
+                className="bg-[#d4af37] hover:bg-[#d4af37]/90 text-black px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+              >
                 View All Collections
               </button>
               <button className="border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10 px-8 py-3 rounded-full font-semibold transition-all duration-300">

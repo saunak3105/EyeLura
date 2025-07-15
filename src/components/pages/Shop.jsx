@@ -3,7 +3,7 @@ import { products } from '../../data/products';
 import { useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
-import { Heart, ShoppingCart, Eye, Filter, Grid, List } from 'lucide-react';
+import { Heart, ShoppingCart, Eye, Filter, Grid, List, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Shop() {
@@ -14,6 +14,7 @@ export default function Shop() {
   const [isVisible, setIsVisible] = useState(false);
   const [viewMode, setViewMode] = useState('grid');
   const [hoveredProduct, setHoveredProduct] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const navigate = useNavigate();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -25,6 +26,14 @@ export default function Shop() {
 
   useEffect(() => {
     let filtered = [...products];
+
+    // Filter by search query
+    if (searchQuery) {
+      filtered = filtered.filter(product => 
+        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
 
     // Filter by category
     if (selectedCategory !== 'all') {
@@ -56,7 +65,7 @@ export default function Shop() {
     }
 
     setFilteredProducts(filtered);
-  }, [selectedCategory, sortBy, priceRange]);
+  }, [selectedCategory, sortBy, priceRange, searchQuery]);
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
@@ -81,16 +90,6 @@ export default function Shop() {
       {/* Header */}
       <div className={`py-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={() => navigate('/')}
-              className="text-2xl text-white hover:text-[#d4af37] transition-all duration-300 font-light"
-              style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}
-            >
-              EyeLura
-            </button>
-          </div>
-          
           <div className="text-center">
             <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
               Premium <span className="text-[#d4af37]">Collection</span>
@@ -107,7 +106,7 @@ export default function Shop() {
           
           {/* Filters Sidebar */}
           <div className={`lg:w-1/4 space-y-6 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
-            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 p-6">
+            <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6">
               <div className="flex items-center gap-2 mb-6">
                 <Filter className="w-5 h-5 text-[#d4af37]" />
                 <h3 className="text-lg font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
@@ -115,12 +114,28 @@ export default function Shop() {
                 </h3>
               </div>
               
+              {/* Search */}
+              <div className="mb-6">
+                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Search</h4>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
+                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                  />
+                </div>
+              </div>
+              
               {/* Category Filter */}
               <div className="mb-6">
                 <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Category</h4>
                 <div className="space-y-2">
                   {['all', 'sunglasses', 'frames'].map((category) => (
-                    <label key={category} className="flex items-center cursor-pointer">
+                    <label key={category} className="flex items-center cursor-pointer group">
                       <input
                         type="radio"
                         name="category"
@@ -129,7 +144,7 @@ export default function Shop() {
                         onChange={(e) => setSelectedCategory(e.target.value)}
                         className="text-[#d4af37] focus:ring-[#d4af37] bg-transparent border-gray-600"
                       />
-                      <span className="ml-3 text-gray-300 capitalize font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <span className="ml-3 text-gray-300 capitalize font-light group-hover:text-[#d4af37] transition-colors duration-300" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                         {category === 'all' ? 'All Products' : category}
                       </span>
                     </label>
@@ -147,7 +162,7 @@ export default function Shop() {
                     max="2500"
                     value={priceRange[1]}
                     onChange={(e) => setPriceRange([priceRange[0], parseInt(e.target.value)])}
-                    className="w-full accent-[#d4af37]"
+                    className="w-full accent-[#d4af37] bg-gray-700 rounded-lg appearance-none h-2"
                   />
                   <div className="flex justify-between text-sm text-gray-400 font-light">
                     <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>₹{priceRange[0]}</span>
@@ -162,7 +177,7 @@ export default function Shop() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full p-3 bg-gray-800 border border-gray-700 text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent font-light"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent font-light transition-all duration-300"
                   style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                 >
                   <option value="featured">Featured</option>
@@ -184,11 +199,11 @@ export default function Shop() {
               </p>
               
               <div className="flex items-center gap-4">
-                <div className="flex border border-gray-700">
+                <div className="flex border border-gray-700 rounded-lg overflow-hidden">
                   <button
                     onClick={() => setViewMode('grid')}
                     className={`p-2 transition-colors duration-300 ${
-                      viewMode === 'grid' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'
+                      viewMode === 'grid' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white hover:bg-gray-800'
                     }`}
                   >
                     <Grid className="w-4 h-4" />
@@ -196,7 +211,7 @@ export default function Shop() {
                   <button
                     onClick={() => setViewMode('list')}
                     className={`p-2 transition-colors duration-300 ${
-                      viewMode === 'list' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white'
+                      viewMode === 'list' ? 'bg-[#d4af37] text-black' : 'text-gray-400 hover:text-white hover:bg-gray-800'
                     }`}
                   >
                     <List className="w-4 h-4" />
@@ -210,7 +225,7 @@ export default function Shop() {
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  className="group relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 overflow-hidden transition-all duration-500 hover:border-[#d4af37]/50 hover:shadow-2xl hover:shadow-[#d4af37]/10 cursor-pointer"
+                  className="group relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden transition-all duration-500 hover:border-[#d4af37]/50 hover:shadow-2xl hover:shadow-[#d4af37]/10 cursor-pointer"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -221,7 +236,7 @@ export default function Shop() {
                 >
                   {/* Badge */}
                   {product.badge && (
-                    <div className={`absolute top-4 left-4 z-10 px-3 py-1 text-xs font-medium ${
+                    <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-medium ${
                       product.badge === 'New' ? 'bg-green-500 text-white' :
                       product.badge === 'Limited' ? 'bg-red-500 text-white' :
                       product.badge === 'Student Fav' ? 'bg-blue-500 text-white' :
@@ -235,7 +250,7 @@ export default function Shop() {
 
                   {/* Discount Badge */}
                   {product.discount && (
-                    <div className="absolute top-4 right-4 z-10 bg-red-500 text-white px-2 py-1 text-xs font-medium">
+                    <div className="absolute top-4 right-4 z-10 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                       -{product.discount}%
                     </div>
                   )}
@@ -243,7 +258,7 @@ export default function Shop() {
                   {/* Product Image */}
                   <div className="relative aspect-square overflow-hidden">
                     <img
-                      src={hoveredProduct === product.id && product.images[1] ? product.images[1] : product.image}
+                      src={hoveredProduct === product.id && product.images && product.images[1] ? product.images[1] : product.image}
                       alt={product.name}
                       className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                     />
@@ -307,11 +322,11 @@ export default function Shop() {
 
                     {/* Category tag */}
                     <div className="flex items-center gap-2">
-                      <span className="px-3 py-1 bg-gray-800 text-gray-300 text-xs capitalize font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <span className="px-3 py-1 bg-gray-800 rounded-full text-gray-300 text-xs capitalize font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                         {product.category}
                       </span>
                       {product.category === 'frames' && (
-                        <span className="px-3 py-1 bg-blue-900/50 text-blue-300 text-xs font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                        <span className="px-3 py-1 bg-blue-900/50 text-blue-300 rounded-full text-xs font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                           Prescription Ready
                         </span>
                       )}
