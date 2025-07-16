@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../../data/products';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
-import Header from '../ui/Header';
 import CartModal from '../ui/CartModal';
 import AuthModal from '../ui/AuthModal';
 import { ArrowLeft, Heart, Share2, ShoppingCart, Star, Check, Truck, Shield, RotateCcw } from 'lucide-react';
@@ -74,7 +73,6 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen bg-black pt-20">
-      <Header onCartClick={() => setIsCartOpen(true)} />
       
       {/* Back Button and Logo */}
       <div className={`px-4 sm:px-6 lg:px-8 py-6 transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
