@@ -28,39 +28,22 @@ export default function Wishlist() {
   };
 
   return (
-    <div className="min-h-screen bg-black pt-20">
+    <div className="min-h-screen bg-black">
       <Header onCartClick={() => setIsCartOpen(true)} />
       
-      {/* Header */}
-      <div className={`py-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+      {/* Hero Section */}
+      <div className={`pt-32 pb-20 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-gray-400 hover:text-[#d4af37] transition-colors duration-300"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
-            >
-              <ArrowLeft className="w-5 h-5" />
-              Back
-            </button>
-            
-            <button
-              onClick={() => navigate('/')}
-              className="text-2xl text-white hover:text-[#d4af37] transition-all duration-300 font-light"
-              style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}
-            >
-              EyeLura
-            </button>
+          <div className="inline-flex items-center px-4 py-2 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full text-sm text-[#d4af37] font-medium shadow-sm mb-6">
+            <span className="w-2 h-2 bg-[#d4af37] rounded-full mr-2 animate-pulse"></span>
+            Your Collection
           </div>
-          
-          <div className="text-center">
-            <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-              Your <span className="text-[#d4af37]">Wishlist</span>
-            </h1>
-            <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-              Curated pieces that caught your eye
-            </p>
-          </div>
+          <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+            Your <span className="text-[#d4af37]">Wishlist</span>
+          </h1>
+          <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            Curated pieces that caught your eye
+          </p>
         </div>
       </div>
 
