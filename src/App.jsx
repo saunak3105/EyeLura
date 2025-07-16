@@ -9,6 +9,10 @@ import ProductDetail from './components/pages/ProductDetail';
 import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import Wishlist from './components/pages/Wishlist';
+import StudentDiscount from './components/pages/StudentDiscount';
+import PrivacyPolicy from './components/pages/PrivacyPolicy';
+import TermsOfService from './components/pages/TermsOfService';
+import Accessibility from './components/pages/Accessibility';
 
 function App() {
   return (
@@ -23,6 +27,10 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/student-discount" element={<StudentDiscount />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/accessibility" element={<Accessibility />} />
             </Routes>
           </Router>
         </WishlistProvider>
