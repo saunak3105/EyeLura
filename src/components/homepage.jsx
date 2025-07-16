@@ -7,6 +7,7 @@ import Collections from './ui/Collections';
 import TryOn from './ui/TryOn';
 import BestSellers from './ui/BestSellers';
 import CartModal from './ui/CartModal';
+import AuthModal from './ui/AuthModal';
 import { useInView } from 'react-intersection-observer';
 
 // Animation variants
@@ -69,6 +70,8 @@ function Homepage() {
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)}
       />
+      
+      <AuthModal />
     </>
   );
 }

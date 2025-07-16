@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useWishlist } from '../../context/WishlistContext';
 import { useCart } from '../../context/CartContext';
+import Header from '../ui/Header';
+import CartModal from '../ui/CartModal';
+import AuthModal from '../ui/AuthModal';
 import { Heart, ShoppingCart, Trash2, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Wishlist() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
-  const { items, removeFromWishlist, clearWishlist } = useWishlist();
+  const { wishlistItems, removeFromWishlist, clearWishlist } = useWishlist();
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -25,6 +29,8 @@ export default function Wishlist() {
 
   return (
     <div className="min-h-screen bg-black pt-20">
+      <Header onCartClick={() => setIsCartOpen(true)} />
+      
       {/* Header */}
       <div className={`py-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
         <div className="max-w-7xl mx-auto">
@@ -59,7 +65,7 @@ export default function Wishlist() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        {items.length === 0 ? (
+        {wishlistItems.length === 0 ? (
           /* Empty Wishlist State */
           <motion.div 
             className="text-center py-20"
@@ -89,9 +95,9 @@ export default function Wishlist() {
             {/* Wishlist Header */}
             <div className={`flex items-center justify-between mb-8 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
               <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                {items.length} {items.length === 1 ? 'item' : 'items'} saved
+                {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved
               </p>
-              {items.length > 0 && (
+              {wishlistItems.length > 0 && (
                 <button
                   onClick={clearWishlist}
                   className="text-gray-400 hover:text-red-400 transition-colors duration-300 flex items-center gap-2 font-light"
@@ -105,7 +111,7 @@ export default function Wishlist() {
 
             {/* Wishlist Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {items.map((product, index) => (
+              {wishlistItems.map((product, index) => (
                 <motion.div
                   key={product.id}
                   className="group relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 overflow-hidden transition-all duration-500 hover:border-[#d4af37]/50 hover:shadow-2xl hover:shadow-[#d4af37]/10"
@@ -206,6 +212,13 @@ export default function Wishlist() {
           </>
         )}
       </div>
+      
+      <CartModal 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)}
+      />
+      
+      <AuthModal />
     </div>
   );
 }

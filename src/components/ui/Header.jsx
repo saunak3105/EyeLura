@@ -30,11 +30,9 @@ export default function Header({ onCartClick }) {
   };
 
   const handleCartClick = () => {
-    if (!user) {
-      openAuthModal();
-      return;
+    if (onCartClick) {
+      onCartClick();
     }
-    onCartClick();
   };
 
   const handleLogout = () => {
