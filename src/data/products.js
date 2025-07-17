@@ -227,14 +227,177 @@ export const products = [
   }
 ];
 
+// Add kids products to the main products array for product detail functionality
+export const kidsProducts = [
+  {
+    id: 101,
+    name: 'Rainbow Explorer',
+    price: 899,
+    originalPrice: 1099,
+    image: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    ],
+    reviews: 156,
+    rating: 4.9,
+    category: 'kids-sunglasses',
+    badge: 'Super Cool!',
+    discount: 18,
+    description: 'Colorful sunglasses that make every adventure more fun! Perfect for active kids who love to explore the world with style and safety.',
+    features: [
+      '100% UV Protection',
+      'Flexible TR90 Frame',
+      'Fun Rainbow Colors',
+      'Comfortable All-Day Fit',
+      'Impact Resistant',
+      'Easy to Clean'
+    ],
+    specifications: {
+      frameWidth: '120mm',
+      lensWidth: '45mm',
+      bridgeWidth: '16mm',
+      templeLength: '125mm',
+      weight: '15g',
+      material: 'Flexible TR90'
+    },
+    colors: ['Rainbow', 'Pink', 'Blue'],
+    sizes: ['XS', 'S'],
+    ageRange: '3-8 years',
+    inStock: true,
+    stockCount: 25
+  },
+  {
+    id: 102,
+    name: 'Super Hero Specs',
+    price: 799,
+    originalPrice: 999,
+    image: 'https://images.unsplash.com/photo-1556306535-38febf6782e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1556306535-38febf6782e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    ],
+    reviews: 203,
+    rating: 4.8,
+    category: 'kids-frames',
+    badge: 'Hero Power!',
+    discount: 20,
+    description: 'Transform into your favorite superhero with these awesome frames! Designed for young heroes who need clear vision for their adventures.',
+    features: [
+      'Blue Light Filter',
+      'Durable Hero Design',
+      'Superhero Colors',
+      'Easy Clean Surface',
+      'Prescription Ready',
+      'Impact Resistant'
+    ],
+    specifications: {
+      frameWidth: '125mm',
+      lensWidth: '48mm',
+      bridgeWidth: '18mm',
+      templeLength: '130mm',
+      weight: '18g',
+      material: 'Impact Resistant Acetate'
+    },
+    colors: ['Red', 'Blue', 'Green'],
+    sizes: ['XS', 'S', 'M'],
+    ageRange: '5-12 years',
+    inStock: true,
+    stockCount: 18
+  },
+  {
+    id: 103,
+    name: 'Princess Sparkle',
+    price: 849,
+    originalPrice: 1049,
+    image: 'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1574258495973-f010dfbb5371?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    ],
+    reviews: 89,
+    rating: 4.7,
+    category: 'kids-sunglasses',
+    badge: 'Magical!',
+    discount: 19,
+    description: 'Sparkly frames fit for a princess or prince! These magical glasses add a touch of wonder to every day.',
+    features: [
+      'Glitter Design',
+      '100% UV Protection',
+      'Comfortable Fit',
+      'Magical Sparkle Look',
+      'Lightweight Design',
+      'Easy Care'
+    ],
+    specifications: {
+      frameWidth: '118mm',
+      lensWidth: '44mm',
+      bridgeWidth: '15mm',
+      templeLength: '120mm',
+      weight: '14g',
+      material: 'Sparkle Acetate'
+    },
+    colors: ['Pink', 'Purple', 'Gold'],
+    sizes: ['XS', 'S'],
+    ageRange: '4-10 years',
+    inStock: true,
+    stockCount: 32
+  },
+  {
+    id: 104,
+    name: 'Space Adventure',
+    price: 929,
+    originalPrice: 1129,
+    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80'
+    ],
+    reviews: 124,
+    rating: 4.8,
+    category: 'kids-frames',
+    badge: 'Cosmic!',
+    discount: 18,
+    description: 'Blast off to space with these out-of-this-world frames! Perfect for young astronauts and space explorers.',
+    features: [
+      'Space-Themed Design',
+      'Blue Light Filter',
+      'Glow-in-Dark Effects',
+      'Adventure Ready',
+      'Prescription Compatible',
+      'Durable Construction'
+    ],
+    specifications: {
+      frameWidth: '130mm',
+      lensWidth: '50mm',
+      bridgeWidth: '17mm',
+      templeLength: '135mm',
+      weight: '20g',
+      material: 'Cosmic Polymer'
+    },
+    colors: ['Galaxy', 'Silver', 'Black'],
+    sizes: ['S', 'M'],
+    ageRange: '6-12 years',
+    inStock: true,
+    stockCount: 21
+  }
+];
+
+// Combine all products for unified access
+const allProducts = [...products, ...kidsProducts];
+
 export const getProductById = (id) => {
-  return products.find(product => product.id === parseInt(id));
+  return allProducts.find(product => product.id === parseInt(id));
 };
 
 export const getProductsByCategory = (category) => {
+  if (category.startsWith('kids')) {
+    return kidsProducts.filter(product => product.category === category);
+  }
   return products.filter(product => product.category === category);
 };
 
 export const getFeaturedProducts = () => {
   return products.filter(product => ['Bestseller', 'New', 'Student Fav'].includes(product.badge));
+};
+
+export const getKidsProducts = () => {
+  return kidsProducts;
 };

@@ -71,24 +71,35 @@ export default function ProductDetail() {
     );
   }
 
+  // Check if it's a kids product for special styling
+  const isKidsProduct = product.category?.startsWith('kids');
+
   return (
-    <div className="min-h-screen bg-black pt-20">
+    <div className={`min-h-screen pt-20 ${isKidsProduct ? 'bg-gradient-to-br from-sky-200 via-pink-100 to-yellow-200' : 'bg-black'}`}>
       
       {/* Back Button and Logo */}
       <div className={`px-4 sm:px-6 lg:px-8 py-6 transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
             onClick={() => navigate('/shop')}
-            className="flex items-center gap-2 text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light"
+            className={`flex items-center gap-2 transition-colors duration-300 font-light ${
+              isKidsProduct 
+                ? 'text-purple-600 hover:text-pink-500' 
+                : 'text-gray-400 hover:text-[#d4af37]'
+            }`}
             style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
           >
             <ArrowLeft className="w-5 h-5" />
-            Back to Shop
+            {isKidsProduct ? 'Back to Kids' : 'Back to Shop'}
           </button>
           
           <button
             onClick={() => navigate('/')}
-            className="text-2xl text-white hover:text-[#d4af37] transition-all duration-300 font-light"
+            className={`text-2xl transition-all duration-300 font-light ${
+              isKidsProduct 
+                ? 'text-purple-600 hover:text-pink-500' 
+                : 'text-white hover:text-[#d4af37]'
+            }`}
             style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}
           >
             EyeLura

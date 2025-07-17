@@ -173,7 +173,7 @@ export default function Collections() {
             {/* Bottom CTA */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a href="#try-on" className="group relative bg-gradient-to-r from-[#d4af37] to-[#d4af37] hover:from-[#c9a030] hover:to-[#c9a030] text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl">
-                <span className="relative z-10">Try Virtual Fitting</span>
+                <span className="relative z-10">AR Try On</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#b9992e] to-[#b9992e] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </a>
               <a href="#collections" className="group border-2 border-gray-300 hover:border-[#d4af37] text-gray-700 hover:text-[#d4af37] px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 backdrop-blur-sm hover:bg-[#f8f3e0]">

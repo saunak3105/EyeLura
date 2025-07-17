@@ -303,8 +303,11 @@ export default function BestSellers() {
               >
                 View All Collections
               </button>
-              <button className="border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10 px-8 py-3 rounded-full font-semibold transition-all duration-300">
-                Try AR Experience
+              <button 
+                onClick={() => document.getElementById('try-on')?.scrollIntoView({ behavior: 'smooth' })}
+                className="border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37]/10 px-8 py-3 rounded-full font-semibold transition-all duration-300"
+              >
+                AR Try On
               </button>
             </div>
           </div>

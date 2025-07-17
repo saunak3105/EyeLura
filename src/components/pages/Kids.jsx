@@ -26,6 +26,14 @@ const kidsProducts = [
     discount: 18,
     description: 'Colorful sunglasses that make every adventure more fun!',
     features: ['UV Protection', 'Flexible Frame', 'Fun Colors', 'Comfortable Fit'],
+    specifications: {
+      frameWidth: '120mm',
+      lensWidth: '45mm',
+      bridgeWidth: '16mm',
+      templeLength: '125mm',
+      weight: '15g',
+      material: 'Flexible TR90'
+    },
     colors: ['Rainbow', 'Pink', 'Blue'],
     sizes: ['XS', 'S'],
     ageRange: '3-8 years',
@@ -48,6 +56,14 @@ const kidsProducts = [
     discount: 20,
     description: 'Transform into your favorite superhero with these awesome frames!',
     features: ['Blue Light Filter', 'Durable Design', 'Hero Colors', 'Easy Clean'],
+    specifications: {
+      frameWidth: '125mm',
+      lensWidth: '48mm',
+      bridgeWidth: '18mm',
+      templeLength: '130mm',
+      weight: '18g',
+      material: 'Impact Resistant Acetate'
+    },
     colors: ['Red', 'Blue', 'Green'],
     sizes: ['XS', 'S', 'M'],
     ageRange: '5-12 years',
@@ -70,6 +86,14 @@ const kidsProducts = [
     discount: 19,
     description: 'Sparkly frames fit for a princess or prince!',
     features: ['Glitter Design', 'UV Protection', 'Comfortable', 'Magical Look'],
+    specifications: {
+      frameWidth: '118mm',
+      lensWidth: '44mm',
+      bridgeWidth: '15mm',
+      templeLength: '120mm',
+      weight: '14g',
+      material: 'Sparkle Acetate'
+    },
     colors: ['Pink', 'Purple', 'Gold'],
     sizes: ['XS', 'S'],
     ageRange: '4-10 years',
@@ -92,6 +116,14 @@ const kidsProducts = [
     discount: 18,
     description: 'Blast off to space with these out-of-this-world frames!',
     features: ['Space Design', 'Blue Light Filter', 'Glow Effects', 'Adventure Ready'],
+    specifications: {
+      frameWidth: '130mm',
+      lensWidth: '50mm',
+      bridgeWidth: '17mm',
+      templeLength: '135mm',
+      weight: '20g',
+      material: 'Cosmic Polymer'
+    },
     colors: ['Galaxy', 'Silver', 'Black'],
     sizes: ['S', 'M'],
     ageRange: '6-12 years',
@@ -146,6 +178,10 @@ export default function Kids() {
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  const handleProductClick = (productId) => {
+    navigate(`/product/${productId}`);
+  };
 
   const handleAddToCart = (e, product) => {
     e.stopPropagation();
@@ -268,6 +304,7 @@ export default function Kids() {
             transition={{ duration: 0.8, delay: 0.8 }}
           >
             <motion.button
+              onClick={() => navigate('/shop')}
               className="group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl transform transition-all duration-300"
               style={{ fontFamily: "'Baloo 2', cursive" }}
               whileHover={{ scale: 1.05, y: -2 }}
@@ -284,6 +321,7 @@ export default function Kids() {
             </motion.button>
             
             <motion.button
+              onClick={() => document.getElementById('try-on')?.scrollIntoView({ behavior: 'smooth' })}
               className="group border-4 border-yellow-400 hover:border-yellow-500 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-10 py-4 rounded-full text-xl font-bold shadow-xl transform transition-all duration-300"
               style={{ fontFamily: "'Baloo 2', cursive" }}
               whileHover={{ scale: 1.05, y: -2 }}
@@ -326,6 +364,7 @@ export default function Kids() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
+                onClick={() => handleProductClick(product.id)}
               >
                 {/* Fun Badge */}
                 <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg ${
@@ -416,13 +455,16 @@ export default function Kids() {
 
                   {/* CTA Button */}
                   <motion.button 
-                    onClick={(e) => handleAddToCart(e, product)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleProductClick(product.id);
+                    }}
                     className="w-full bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg"
                     style={{ fontFamily: "'Baloo 2', cursive" }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    🛒 Add to Cart!
+                    👀 View Details!
                   </motion.button>
                 </div>
               </motion.div>
@@ -488,6 +530,7 @@ export default function Kids() {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <motion.button
+              onClick={() => navigate('/shop')}
               className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white px-12 py-4 rounded-full text-xl font-bold shadow-xl"
               style={{ fontFamily: "'Baloo 2', cursive" }}
               whileHover={{ scale: 1.05, y: -2 }}
@@ -497,6 +540,7 @@ export default function Kids() {
             </motion.button>
             
             <motion.button
+              onClick={() => navigate('/contact')}
               className="border-4 border-pink-400 hover:border-pink-500 bg-pink-100 hover:bg-pink-200 text-pink-800 px-12 py-4 rounded-full text-xl font-bold shadow-xl"
               style={{ fontFamily: "'Baloo 2', cursive" }}
               whileHover={{ scale: 1.05, y: -2 }}

@@ -76,11 +76,11 @@ export default function Hero() {
             </a>
             
             <a 
-              href="#collections" 
+              href="#try-on" 
               className="group border border-gray-600 hover:border-[#d4af37] text-gray-300 hover:text-[#d4af37] px-10 py-4 text-lg font-medium transition-all duration-300 backdrop-blur-sm hover:bg-[#d4af37]/10"
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
             >
-              <span>Discover More</span>
+              <span>AR Try On</span>
               <span className="ml-3 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </a>
           </div>

@@ -16,6 +16,9 @@ export default function Header({ onCartClick }) {
   const { getWishlistItemsCount } = useWishlist();
   const { user, logout, openAuthModal } = useAuth();
 
+  // Check if we're on the kids page for special header styling
+  const isKidsPage = location.pathname === '/kids';
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -53,9 +56,13 @@ export default function Header({ onCartClick }) {
   return (
     <motion.header 
       className={`fixed w-full z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-2xl' 
-          : 'bg-transparent'
+        isKidsPage
+          ? scrolled
+            ? 'bg-gradient-to-r from-purple-600/90 via-pink-500/90 to-blue-500/90 backdrop-blur-xl border-b border-white/20 shadow-2xl'
+            : 'bg-gradient-to-r from-purple-500/80 via-pink-400/80 to-blue-400/80 backdrop-blur-sm'
+          : scrolled 
+            ? 'bg-black/80 backdrop-blur-xl border-b border-white/10 shadow-2xl' 
+            : 'bg-transparent'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -67,7 +74,11 @@ export default function Header({ onCartClick }) {
           {/* Logo */}
           <motion.button 
             onClick={() => handleNavigation('/')}
-            className="text-2xl md:text-3xl text-white hover:text-[#d4af37] transition-all duration-300 font-light"
+            className={`text-2xl md:text-3xl transition-all duration-300 font-light ${
+              isKidsPage 
+                ? 'text-white hover:text-yellow-200 drop-shadow-lg' 
+                : 'text-white hover:text-[#d4af37]'
+            }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}
@@ -81,16 +92,20 @@ export default function Header({ onCartClick }) {
               <motion.button
                 key={item.name}
                 onClick={() => handleNavigation(item.path)}
-                className={`text-white hover:text-[#d4af37] transition-all duration-300 font-light relative group ${
-                  location.pathname === item.path ? 'text-[#d4af37]' : ''
+                className={`transition-all duration-300 font-light relative group ${
+                  isKidsPage
+                    ? `text-white hover:text-yellow-200 drop-shadow-md ${location.pathname === item.path ? 'text-yellow-200' : ''}`
+                    : `text-white hover:text-[#d4af37] ${location.pathname === item.path ? 'text-[#d4af37]' : ''}`
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
               >
                 {item.name}
-                <span className={`absolute -bottom-1 left-0 h-px bg-[#d4af37] transition-all duration-300 ${
-                  location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'
+                <span className={`absolute -bottom-1 left-0 h-px transition-all duration-300 ${
+                  isKidsPage
+                    ? `bg-yellow-200 ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'}`
+                    : `bg-[#d4af37] ${location.pathname === item.path ? 'w-full' : 'w-0 group-hover:w-full'}`
                 }`}></span>
               </motion.button>
             ))}
@@ -106,10 +121,18 @@ export default function Header({ onCartClick }) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <Heart className="w-6 h-6 text-white group-hover:text-[#d4af37] transition-colors duration-300" />
+              <Heart className={`w-6 h-6 transition-colors duration-300 ${
+                isKidsPage 
+                  ? 'text-white group-hover:text-yellow-200 drop-shadow-md' 
+                  : 'text-white group-hover:text-[#d4af37]'
+              }`} />
               {wishlistItemsCount > 0 && (
                 <motion.span 
-                  className="absolute -top-1 -right-1 bg-[#d4af37] text-black text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+                  className={`absolute -top-1 -right-1 text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium ${
+                    isKidsPage 
+                      ? 'bg-yellow-300 text-purple-800' 
+                      : 'bg-[#d4af37] text-black'
+                  }`}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 500 }}
@@ -127,10 +150,18 @@ export default function Header({ onCartClick }) {
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
-              <ShoppingCart className="w-6 h-6 text-white group-hover:text-[#d4af37] transition-colors duration-300" />
+              <ShoppingCart className={`w-6 h-6 transition-colors duration-300 ${
+                isKidsPage 
+                  ? 'text-white group-hover:text-yellow-200 drop-shadow-md' 
+                  : 'text-white group-hover:text-[#d4af37]'
+              }`} />
               {cartItemsCount > 0 && (
                 <motion.span 
-                  className="absolute -top-1 -right-1 bg-[#d4af37] text-black text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium"
+                  className={`absolute -top-1 -right-1 text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium ${
+                    isKidsPage 
+                      ? 'bg-yellow-300 text-purple-800' 
+                      : 'bg-[#d4af37] text-black'
+                  }`}
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 500 }}
@@ -146,7 +177,11 @@ export default function Header({ onCartClick }) {
               {user ? (
                 <motion.button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center gap-2 text-white hover:text-[#d4af37] transition-colors duration-300 p-2"
+                  className={`flex items-center gap-2 transition-colors duration-300 p-2 ${
+                    isKidsPage 
+                      ? 'text-white hover:text-yellow-200 drop-shadow-md' 
+                      : 'text-white hover:text-[#d4af37]'
+                  }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -158,7 +193,11 @@ export default function Header({ onCartClick }) {
               ) : (
                 <motion.button
                   onClick={openAuthModal}
-                  className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-4 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105"
+                  className={`px-4 py-2 rounded-full font-medium transition-all duration-300 transform hover:scale-105 ${
+                    isKidsPage 
+                      ? 'bg-yellow-300 hover:bg-yellow-200 text-purple-800' 
+                      : 'bg-[#d4af37] hover:bg-[#e6c14d] text-black'
+                  }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
@@ -180,7 +219,11 @@ export default function Header({ onCartClick }) {
                     <div className="p-2">
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-white hover:text-[#d4af37] hover:bg-gray-800/50 rounded-md transition-colors duration-300 font-light"
+                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-300 font-light ${
+                          isKidsPage 
+                            ? 'text-white hover:text-yellow-200 hover:bg-purple-800/50' 
+                            : 'text-white hover:text-[#d4af37] hover:bg-gray-800/50'
+                        }`}
                         style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                       >
                         <LogOut className="w-4 h-4" />
@@ -200,9 +243,9 @@ export default function Header({ onCartClick }) {
               whileTap={{ scale: 0.9 }}
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6 text-white" />
+                <X className={`w-6 h-6 ${isKidsPage ? 'text-white drop-shadow-md' : 'text-white'}`} />
               ) : (
-                <Menu className="w-6 h-6 text-white" />
+                <Menu className={`w-6 h-6 ${isKidsPage ? 'text-white drop-shadow-md' : 'text-white'}`} />
               )}
             </motion.button>
           </div>
@@ -212,7 +255,11 @@ export default function Header({ onCartClick }) {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div 
-              className="lg:hidden bg-black/95 backdrop-blur-xl border-t border-white/10"
+              className={`lg:hidden backdrop-blur-xl border-t ${
+                isKidsPage 
+                  ? 'bg-gradient-to-r from-purple-600/95 via-pink-500/95 to-blue-500/95 border-white/20' 
+                  : 'bg-black/95 border-white/10'
+              }`}
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
@@ -223,7 +270,11 @@ export default function Header({ onCartClick }) {
                   <motion.button
                     key={item.name}
                     onClick={() => handleNavigation(item.path)}
-                    className="block w-full text-left text-white hover:text-[#d4af37] transition-colors duration-300 font-light py-2"
+                    className={`block w-full text-left transition-colors duration-300 font-light py-2 ${
+                      isKidsPage 
+                        ? 'text-white hover:text-yellow-200' 
+                        : 'text-white hover:text-[#d4af37]'
+                    }`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -238,7 +289,11 @@ export default function Header({ onCartClick }) {
                       openAuthModal();
                       setIsMenuOpen(false);
                     }}
-                    className="block w-full text-left bg-[#d4af37] text-black px-4 py-2 rounded-full font-medium mt-4"
+                    className={`block w-full text-left px-4 py-2 rounded-full font-medium mt-4 ${
+                      isKidsPage 
+                        ? 'bg-yellow-300 text-purple-800' 
+                        : 'bg-[#d4af37] text-black'
+                    }`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: navItems.length * 0.1 }}
