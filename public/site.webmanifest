@@ -1,0 +1,22 @@
+{
+  "name": "EyeLura - Premium Eyewear",
+  "short_name": "EyeLura",
+  "description": "Premium eyewear for adults and kids with virtual try-on technology",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#d4af37",
+  "background_color": "#000000",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

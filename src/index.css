@@ -205,3 +205,62 @@ textarea:focus {
 * {
   transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
+
+/* Browser-specific fixes */
+.browser-brave {
+  /* Brave browser specific styles */
+}
+
+.browser-chrome {
+  /* Chrome specific styles */
+}
+
+.browser-firefox {
+  /* Firefox specific styles */
+}
+
+.browser-safari {
+  /* Safari specific styles */
+}
+
+.browser-edge {
+  /* Edge specific styles */
+}
+
+/* Fallback styles for older browsers */
+@supports not (display: grid) {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .backdrop-blur-sm,
+  .backdrop-blur-xl {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Ensure compatibility with various browsers */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Fix for some browser rendering issues */
+* {
+  box-sizing: border-box;
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Improve font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
