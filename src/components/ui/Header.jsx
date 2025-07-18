@@ -47,6 +47,7 @@ export default function Header({ onCartClick }) {
   const wishlistItemsCount = getWishlistItemsCount();
 
   const navItems = [
+    { name: 'Home', path: '/' },
     { name: 'Shop', path: '/shop' },
     { name: 'Kids', path: '/kids' },
     { name: 'About', path: '/about' },

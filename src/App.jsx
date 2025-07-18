@@ -15,6 +15,12 @@ import StudentDiscount from './components/pages/StudentDiscount';
 import PrivacyPolicy from './components/pages/PrivacyPolicy';
 import TermsOfService from './components/pages/TermsOfService';
 import Accessibility from './components/pages/Accessibility';
+import FirstTimeBuyer from './components/pages/FirstTimeBuyer';
+import PrescriptionDeals from './components/pages/PrescriptionDeals';
+import BulkOrders from './components/pages/BulkOrders';
+import SizeGuide from './components/pages/SizeGuide';
+import ShippingReturns from './components/pages/ShippingReturns';
+import FAQ from './components/pages/FAQ';
 
 function App() {
   return (
@@ -32,6 +38,12 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/student-discount" element={<StudentDiscount />} />
+                <Route path="/first-time-buyer" element={<FirstTimeBuyer />} />
+                <Route path="/prescription-deals" element={<PrescriptionDeals />} />
+                <Route path="/bulk-orders" element={<BulkOrders />} />
+                <Route path="/size-guide" element={<SizeGuide />} />
+                <Route path="/shipping-returns" element={<ShippingReturns />} />
+                <Route path="/faq" element={<FAQ />} />
                 <Route path="/privacy" element={<PrivacyPolicy />} />
                 <Route path="/terms" element={<TermsOfService />} />
                 <Route path="/accessibility" element={<Accessibility />} />

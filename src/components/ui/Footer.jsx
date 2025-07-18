@@ -222,7 +222,6 @@ export default function Footer() {
                 <li><button onClick={() => handleNavigation('/first-time-buyer')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>First-Time Buyer</button></li>
                 <li><button onClick={() => handleNavigation('/prescription-deals')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Prescription Deals</button></li>
                 <li><button onClick={() => handleNavigation('/bulk-orders')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Bulk Orders</button></li>
-                <li><button onClick={() => handleNavigation('/referral')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Referral Program</button></li>
               </ul>
             </div>
 
@@ -236,7 +235,7 @@ export default function Footer() {
                 <li><button onClick={() => handleNavigation('/contact')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Contact Us</button></li>
                 <li><button onClick={() => handleNavigation('/about')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>About Us</button></li>
                 <li><button onClick={() => handleNavigation('/size-guide')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Size Guide</button></li>
-                <li><button onClick={() => handleNavigation('/shipping')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Shipping & Returns</button></li>
+                <li><button onClick={() => handleNavigation('/shipping-returns')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Shipping & Returns</button></li>
                 <li><button onClick={() => handleNavigation('/faq')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>FAQ</button></li>
               </ul>
             </div>
