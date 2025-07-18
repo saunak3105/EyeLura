@@ -6,6 +6,7 @@ export default function TryOn() {
   const [selectedFrame, setSelectedFrame] = useState(null);
   const [isWebcamActive, setIsWebcamActive] = useState(false);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [webcamError, setWebcamError] = useState(null);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -38,6 +39,7 @@ export default function TryOn() {
   ];
 
   const startWebcam = async () => {
+    setWebcamError(null);
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
         video: { 
@@ -52,7 +54,19 @@ export default function TryOn() {
       }
     } catch (error) {
       console.error('Error accessing webcam:', error);
-      alert('Unable to access webcam. Please check permissions.');
+      let errorMessage = 'Unable to access webcam. ';
+      
+      if (error.name === 'NotAllowedError' || error.message.includes('Permission denied')) {
+        errorMessage += 'Please allow camera access by clicking the camera icon in your browser\'s address bar, or check your browser\'s privacy settings to enable camera access for this site.';
+      } else if (error.name === 'NotFoundError') {
+        errorMessage += 'No camera found on your device.';
+      } else if (error.name === 'NotReadableError') {
+        errorMessage += 'Camera is already in use by another application.';
+      } else {
+        errorMessage += 'Please check your camera permissions and try again.';
+      }
+      
+      setWebcamError(errorMessage);
     }
   };
 
@@ -63,6 +77,7 @@ export default function TryOn() {
       videoRef.current.srcObject = null;
       setIsWebcamActive(false);
     }
+    setWebcamError(null);
   };
 
   const handleImageUpload = (event) => {
@@ -105,6 +120,7 @@ export default function TryOn() {
   const resetTryOn = () => {
     setSelectedFrame(null);
     setUploadedImage(null);
+    setWebcamError(null);
     stopWebcam();
   };
 
@@ -169,6 +185,35 @@ export default function TryOn() {
               </h3>
               
               <div className="space-y-4">
+                {/* Webcam Error Message */}
+                <AnimatePresence>
+                  {webcamError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="bg-red-500/10 border border-red-500/30 rounded-xl p-4"
+                    >
+                      <div className="flex items-start">
+                        <div className="flex-shrink-0">
+                          <Camera className="w-5 h-5 text-red-400 mt-0.5" />
+                        </div>
+                        <div className="ml-3">
+                          <h4 className="text-red-400 font-semibold text-sm mb-1">Camera Access Required</h4>
+                          <p className="text-red-300 text-sm leading-relaxed">{webcamError}</p>
+                          <motion.button
+                            onClick={startWebcam}
+                            className="mt-3 text-red-400 hover:text-red-300 text-sm font-semibold underline"
+                            whileHover={{ scale: 1.02 }}
+                          >
+                            Try Again
+                          </motion.button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {!uploadedImage && !isWebcamActive && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <motion.button
