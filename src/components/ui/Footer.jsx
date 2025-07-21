@@ -86,7 +86,7 @@ export default function Footer() {
               </h2>
               
               {/* Subtext */}
-              <p className="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-xl text-gray-300 leading-relaxed max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Get exclusive deals, new arrivals, and <span className="text-[#d4af37] font-medium">student discounts</span> delivered to your inbox.
               </p>
 
@@ -100,14 +100,14 @@ export default function Footer() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full pl-12 pr-4 py-4 bg-gray-900/60 backdrop-blur-sm border border-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300 text-white placeholder-gray-500 shadow-lg"
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     required
                   />
                 </div>
                 <button 
                   type="submit"
                   className="group bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-4 rounded-full font-medium transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl whitespace-nowrap flex items-center gap-2"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                 >
                   {isSubscribed ? (
                     <>
@@ -127,15 +127,15 @@ export default function Footer() {
               <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-gray-500">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-[#d4af37]" />
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>No spam, ever</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>No spam, ever</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="w-5 h-5 text-[#d4af37]" />
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Exclusive offers</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Exclusive offers</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Truck className="w-5 h-5 text-[#d4af37]" />
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Early access</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Early access</span>
                 </div>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function Footer() {
                     onClick={() => handleNavigation('/')}>
                   EyeLura
                 </h2>
-                <p className="text-gray-300 mb-8 leading-relaxed text-lg max-w-md font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-300 mb-8 leading-relaxed text-lg max-w-md font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   Redefining eyewear for the modern generation. Premium quality, affordable prices, and cutting-edge virtual try-on technology.
                 </p>
               </div>
@@ -163,15 +163,15 @@ export default function Footer() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-gray-300 hover:text-[#d4af37] transition-colors duration-300 cursor-pointer">
                   <Mail className="w-5 h-5" />
-                  <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>support@eyelura.com</span>
+                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>support@eyelura.com</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300 hover:text-[#d4af37] transition-colors duration-300 cursor-pointer">
                   <Phone className="w-5 h-5" />
-                  <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>+1 (555) 123-4567</span>
+                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>+1 (555) 123-4567</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300 hover:text-[#d4af37] transition-colors duration-300 cursor-pointer">
                   <MapPin className="w-5 h-5" />
-                  <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>123 Vision Street, NY 10001</span>
+                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>123 Vision Street, NY 10001</span>
                 </div>
               </div>
               
@@ -202,12 +202,12 @@ export default function Footer() {
                 <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-[#d4af37] rounded-full"></div>
               </h3>
               <ul className="space-y-4">
-                <li><button onClick={() => handleNavigation('/shop')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>All Collections</button></li>
-                <li><button onClick={() => handleNavigation('/shop/kids')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Kids Collection</button></li>
-                <li><button onClick={() => handleNavigation('/shop?category=new')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>New Arrivals</button></li>
-                <li><button onClick={() => handleNavigation('/shop?category=bestsellers')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Best Sellers</button></li>
-                <li><a href="#try-on" className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>AR Try-On</a></li>
-                <li><button onClick={() => handleNavigation('/shop?category=limited')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Limited Editions</button></li>
+                <li><button onClick={() => handleNavigation('/shop')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>All Collections</button></li>
+                <li><button onClick={() => handleNavigation('/shop/kids')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Kids Collection</button></li>
+                <li><button onClick={() => handleNavigation('/shop?category=new')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>New Arrivals</button></li>
+                <li><button onClick={() => handleNavigation('/shop?category=bestsellers')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Best Sellers</button></li>
+                <li><a href="#try-on" className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>AR Try-On</a></li>
+                <li><button onClick={() => handleNavigation('/shop?category=limited')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Limited Editions</button></li>
               </ul>
             </div>
 
@@ -218,10 +218,10 @@ export default function Footer() {
                 <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-[#d4af37] rounded-full"></div>
               </h3>
               <ul className="space-y-4">
-                <li><button onClick={() => handleNavigation('/student-discount')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Student Discount</button></li>
-                <li><button onClick={() => handleNavigation('/first-time-buyer')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>First-Time Buyer</button></li>
-                <li><button onClick={() => handleNavigation('/prescription-deals')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Prescription Deals</button></li>
-                <li><button onClick={() => handleNavigation('/bulk-orders')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Bulk Orders</button></li>
+                <li><button onClick={() => handleNavigation('/student-discount')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Student Discount</button></li>
+                <li><button onClick={() => handleNavigation('/first-time-buyer')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>First-Time Buyer</button></li>
+                <li><button onClick={() => handleNavigation('/prescription-deals')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Prescription Deals</button></li>
+                <li><button onClick={() => handleNavigation('/bulk-orders')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Bulk Orders</button></li>
               </ul>
             </div>
 
@@ -232,11 +232,11 @@ export default function Footer() {
                 <div className="absolute -bottom-2 left-0 w-12 h-0.5 bg-[#d4af37] rounded-full"></div>
               </h3>
               <ul className="space-y-4">
-                <li><button onClick={() => handleNavigation('/contact')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Contact Us</button></li>
-                <li><button onClick={() => handleNavigation('/about')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>About Us</button></li>
-                <li><button onClick={() => handleNavigation('/size-guide')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Size Guide</button></li>
-                <li><button onClick={() => handleNavigation('/shipping-returns')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Shipping & Returns</button></li>
-                <li><button onClick={() => handleNavigation('/faq')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>FAQ</button></li>
+                <li><button onClick={() => handleNavigation('/contact')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Contact Us</button></li>
+                <li><button onClick={() => handleNavigation('/about')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>About Us</button></li>
+                <li><button onClick={() => handleNavigation('/size-guide')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Size Guide</button></li>
+                <li><button onClick={() => handleNavigation('/shipping-returns')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Shipping & Returns</button></li>
+                <li><button onClick={() => handleNavigation('/faq')} className="text-gray-300 hover:text-[#d4af37] transition-colors duration-300 text-base font-light block text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>FAQ</button></li>
               </ul>
             </div>
           </div>
@@ -246,15 +246,15 @@ export default function Footer() {
         <div className={`border-t border-gray-800/50 py-12 transform transition-all duration-1000 delay-500 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
           <div className="max-w-7xl mx-auto px-6 sm:px-8 md:px-12">
             <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-              <div className="text-gray-400 text-base font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <div className="text-gray-400 text-base font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 © 2025 EyeLura. Crafted with <Heart className="w-4 h-4 inline text-[#d4af37] fill-current mx-1" /> for clear vision.
               </div>
               <div className="flex flex-wrap items-center gap-6 text-base">
-                <button onClick={() => handleNavigation('/privacy')} className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Privacy Policy</button>
+                <button onClick={() => handleNavigation('/privacy')} className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Privacy Policy</button>
                 <span className="text-gray-600">•</span>
-                <button onClick={() => handleNavigation('/terms')} className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Terms of Service</button>
+                <button onClick={() => handleNavigation('/terms')} className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Terms of Service</button>
                 <span className="text-gray-600">•</span>
-                <button onClick={() => handleNavigation('/accessibility')} className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Accessibility</button>
+                <button onClick={() => handleNavigation('/accessibility')} className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Accessibility</button>
               </div>
             </div>
           </div>

@@ -59,7 +59,7 @@ export default function Hero() {
 
           {/* Subtext - Left Aligned */}
           <div className={`mb-12 transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-            <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed tracking-wide max-w-2xl text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed tracking-wide max-w-2xl text-left" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Where Style Strikes Bold and Vision Feels Effortless — This is EyeLura.
             </p>
           </div>
@@ -69,7 +69,7 @@ export default function Hero() {
             <a 
               href="/shop" 
               className="group relative bg-[#d4af37] hover:bg-[#e6c14d] text-black px-10 py-4 text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl overflow-hidden"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
             >
               <span className="relative z-10">Explore Collection</span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#c9a42f] to-[#d4af37] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
@@ -78,7 +78,7 @@ export default function Hero() {
             <a 
               href="#try-on" 
               className="group border border-gray-600 hover:border-[#d4af37] text-gray-300 hover:text-[#d4af37] px-10 py-4 text-lg font-medium transition-all duration-300 backdrop-blur-sm hover:bg-[#d4af37]/10"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
             >
               <span>AR Try On - Own the Look</span>
               <span className="ml-3 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
@@ -94,10 +94,10 @@ export default function Hero() {
                 <div className="w-10 h-10 bg-gradient-to-r from-[#d4af37]/60 to-[#e6c14d]/60 rounded-full border-2 border-black shadow-lg"></div>
               </div>
               <div className="text-left">
-                <div className="text-white font-medium text-lg" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                <div className="text-white font-medium text-lg" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                   Trusted by <span className="text-[#d4af37]">10,000+</span> customers
                 </div>
-                <div className="text-gray-500 text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <div className="text-gray-500 text-sm" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   Premium eyewear enthusiasts All over India
                 </div>
               </div>
@@ -106,10 +106,10 @@ export default function Hero() {
             <div className="h-8 w-px bg-gray-700 hidden sm:block"></div>
             
             <div className="text-left">
-              <div className="text-white font-medium text-lg" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+              <div className="text-white font-medium text-lg" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                 <span className="text-[#d4af37]">4.2/5</span> Excellence Rating
               </div>
-              <div className="text-gray-500 text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <div className="text-gray-500 text-sm" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Based on verified customer reviews
               </div>
             </div>

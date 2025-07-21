@@ -10,7 +10,7 @@ const products = [
     id: 1,
     name: 'Aviator Prestige',
     price: 1329,
-    originalPrice: 1599,
+    originalPrice: 2199,
     image: 'https://i.ibb.co/271DJ6YD/austin-p-x-ro8-SEHw-Gw-unsplash.jpg',
     images: [
       'https://i.ibb.co/271DJ6YD/austin-p-x-ro8-SEHw-Gw-unsplash.jpg',
@@ -26,9 +26,9 @@ const products = [
   },
   {
     id: 2,
-    name: 'Metropolitan Frame',
+    name: 'Metro Frame',
     price: 1289,
-    originalPrice: 1489,
+    originalPrice: 2489,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80',
     images: [
       'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80',
@@ -46,7 +46,7 @@ const products = [
     id: 3,
     name: 'Artisan Round',
     price: 1459,
-    originalPrice: 1699,
+    originalPrice: 2699,
     image: 'https://i.ibb.co/9X2LxTb/giorgio-trovato-K62u25-Jk6vo-unsplash.jpg',
     images: [
       'https://i.ibb.co/9X2LxTb/giorgio-trovato-K62u25-Jk6vo-unsplash.jpg',
@@ -64,7 +64,7 @@ const products = [
     id: 4,
     name: 'Executive Titan',
     price: 1599,
-    originalPrice: 1899,
+    originalPrice: 2899,
     image: 'https://i.ibb.co/mF8tGFhf/lucas-george-wendt-3xt-Ce-Uhq-ZWE-unsplash.jpg',
     images: [
       'https://i.ibb.co/mF8tGFhf/lucas-george-wendt-3xt-Ce-Uhq-ZWE-unsplash.jpg',
@@ -146,7 +146,7 @@ export default function BestSellers() {
           </h2>
           
           <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Our most coveted designs, chosen by discerning customers who appreciate exceptional craftsmanship
+            Our most loved designs, handpicked considering quality and style
           </p>
         </div>
 
@@ -294,7 +294,7 @@ export default function BestSellers() {
               Can't Find Your Perfect Match?
             </h3>
             <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Explore our complete collection with <span className="text-[#d4af37] font-semibold">student discounts</span> and virtual try-on features
+              Explore our collection with <span className="text-[#d4af37] font-semibold">Special Offers</span> and virtual try-on features
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button 

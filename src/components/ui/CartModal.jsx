@@ -58,7 +58,7 @@ export default function CartModal({ isOpen, onClose }) {
                 <div className="w-8 h-8 bg-[#d4af37] rounded-full flex items-center justify-center">
                   <ShoppingBag className="w-4 h-4 text-black" />
                 </div>
-                <h2 className="text-xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                <h2 className="text-xl font-light text-white" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                   Shopping Cart
                 </h2>
               </div>
@@ -78,16 +78,16 @@ export default function CartModal({ isOpen, onClose }) {
                   <div className="w-20 h-20 bg-gray-900 rounded-full flex items-center justify-center mb-6">
                     <ShoppingBag className="w-10 h-10 text-gray-600" />
                   </div>
-                  <h3 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                  <h3 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                     Your cart is empty
                   </h3>
-                  <p className="text-gray-400 mb-6 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <p className="text-gray-400 mb-6 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Discover exceptional eyewear
                   </p>
                   <button 
                     onClick={onClose}
                     className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-6 py-3 font-medium transition-all duration-300 transform hover:scale-105"
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                   >
                     Continue Shopping
                   </button>
@@ -119,7 +119,7 @@ export default function CartModal({ isOpen, onClose }) {
                         
                         <div className="flex-1 min-w-0">
                           <div className="flex justify-between items-start mb-2">
-                            <h4 className="font-light text-white text-sm truncate" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                            <h4 className="font-light text-white text-sm truncate" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                               {item.name}
                             </h4>
                             <button 
@@ -131,7 +131,7 @@ export default function CartModal({ isOpen, onClose }) {
                           </div>
                           
                           <div className="flex items-center gap-2 mb-2">
-                            <span className="text-sm font-medium text-[#d4af37]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                            <span className="text-sm font-medium text-[#d4af37]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                               ₹{item.price}
                             </span>
                             {item.originalPrice && (
@@ -159,7 +159,7 @@ export default function CartModal({ isOpen, onClose }) {
                               >
                                 <Minus className="w-3 h-3" />
                               </button>
-                              <span className="font-medium text-sm px-2 text-white min-w-[2rem] text-center" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                              <span className="font-medium text-sm px-2 text-white min-w-[2rem] text-center" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                                 {item.quantity}
                               </span>
                               <button 
@@ -184,7 +184,7 @@ export default function CartModal({ isOpen, onClose }) {
                 {/* Savings Banner */}
                 {savings > 0 && (
                   <div className="bg-gray-900/50 border border-[#d4af37]/30 p-3 text-center">
-                    <p className="text-[#d4af37] font-medium text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                    <p className="text-[#d4af37] font-medium text-sm" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                       You're saving ₹{savings} on this order
                     </p>
                   </div>
@@ -193,38 +193,38 @@ export default function CartModal({ isOpen, onClose }) {
                 {/* Order Summary */}
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm text-gray-300 font-light">
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Subtotal ({items.reduce((sum, item) => sum + item.quantity, 0)} items)
                     </span>
-                    <span className="font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>₹{subtotal}</span>
+                    <span className="font-medium" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>₹{subtotal}</span>
                   </div>
                   <div className="flex justify-between text-sm text-gray-300 font-light">
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Shipping</span>
-                    <span className="font-medium text-[#d4af37]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>Free</span>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Shipping</span>
+                    <span className="font-medium text-[#d4af37]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>Free</span>
                   </div>
                   <div className="flex justify-between text-lg font-medium text-[#d4af37] pt-2 border-t border-gray-800">
-                    <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: '400' }}>Total</span>
-                    <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: '400' }}>₹{subtotal}</span>
+                    <span style={{ fontFamily: "'Poppins', serif", fontWeight: '400' }}>Total</span>
+                    <span style={{ fontFamily: "'Poppins', serif", fontWeight: '400' }}>₹{subtotal}</span>
                   </div>
                 </div>
 
                 {/* Action Buttons */}
                 <div className="space-y-3">
-                  <button className="w-full bg-[#d4af37] hover:bg-[#e6c14d] text-black py-3 font-medium transition-all duration-300 transform hover:scale-105" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                  <button className="w-full bg-[#d4af37] hover:bg-[#e6c14d] text-black py-3 font-medium transition-all duration-300 transform hover:scale-105" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                     Proceed to Checkout
                   </button>
                   <div className="flex gap-2">
                     <button 
                       onClick={onClose}
                       className="flex-1 border border-gray-700 hover:border-[#d4af37] text-gray-300 hover:text-[#d4af37] py-3 font-medium transition-all duration-300 hover:bg-gray-900"
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                     >
                       Continue Shopping
                     </button>
                     <button 
                       onClick={clearCart}
                       className="px-4 border border-red-500/50 hover:border-red-400 text-red-400 hover:text-red-300 py-3 font-medium transition-all duration-300 hover:bg-red-500/10"
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                     >
                       Clear
                     </button>
@@ -235,15 +235,15 @@ export default function CartModal({ isOpen, onClose }) {
                 <div className="flex justify-center gap-6 pt-4 text-xs text-gray-500 font-light">
                   <div className="flex items-center gap-1">
                     <span>🔒</span>
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Secure Payment</span>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Secure Payment</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span>🚚</span>
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Free Shipping</span>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Free Shipping</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <span>↩️</span>
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Easy Returns</span>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Easy Returns</span>
                   </div>
                 </div>
               </div>

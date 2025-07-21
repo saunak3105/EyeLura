@@ -13,7 +13,7 @@ const collections = [
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?ixlib=rb-4.0.3&auto=format&fit=crop&w=1280&q=80',
     category: 'sunglasses',
     badge: '100% UV Protection',
-    price: 'From ₹1,199',
+    price: 'From ₹2,299',
     gradient: 'from-orange-400 to-red-500',
     icon: Sun,
     features: [
@@ -36,7 +36,7 @@ const collections = [
     image: 'https://i.ibb.co/XkXbMGrZ/lensabl-0-Gf-Plommtx-M-unsplash.jpg',
     category: 'frames',
     badge: 'Blue Light Filter',
-    price: 'From ₹1,289',
+    price: 'From ₹2,289',
     gradient: 'from-blue-400 to-indigo-500',
     icon: Glasses,
     features: [
@@ -125,10 +125,10 @@ export default function Collections() {
               {' '}Collections
             </h1>
             
-            <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed max-w-3xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-              Meticulously curated eyewear that defines contemporary luxury and timeless sophistication.
+            <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed max-w-3xl mx-auto" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+              Meticulously curated eyewear that defines contemporary luxury. 
               <br />
-              <span className="text-[#d4af37] font-medium">Student discounts available</span> on all frames.
+              <span className="text-[#d4af37] font-medium">Student discounts available</span> on all frames!!
             </p>
           </motion.div>
 
@@ -201,7 +201,7 @@ export default function Collections() {
                         <h3 className="text-3xl font-light text-white group-hover:text-[#d4af37] transition-colors duration-300 mb-3" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                           {collection.title}
                         </h3>
-                        <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                        <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                           {collection.description}
                         </p>
                       </div>
@@ -228,7 +228,7 @@ export default function Collections() {
                             <div className={`w-5 h-5 bg-gradient-to-r ${collection.gradient} rounded-full flex items-center justify-center`}>
                               <span className="text-white text-xs font-bold">✓</span>
                             </div>
-                            <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>{feature}</span>
+                            <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>{feature}</span>
                           </div>
                         ))}
                       </div>
@@ -239,7 +239,7 @@ export default function Collections() {
                         className={`group/btn relative w-full bg-gradient-to-r ${collection.gradient} hover:shadow-2xl text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl overflow-hidden`}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}
+                        style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '600' }}
                       >
                         <span className="relative z-10 flex items-center justify-center gap-3">
                           Explore {collection.title}
@@ -268,10 +268,10 @@ export default function Collections() {
                     <div key={i} className={`w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full border-2 border-black shadow-lg`} />
                   ))}
                 </div>
-                <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>10K+ happy customers</span>
+                <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>10K+ happy customers</span>
               </div>
-              <div className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                <span className="text-[#d4af37] font-semibold">4.9/5</span> average rating
+              <div className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+                <span className="text-[#d4af37] font-semibold">4.2/5</span> average rating
               </div>
             </div>
 
@@ -282,7 +282,7 @@ export default function Collections() {
                 className="group relative bg-gradient-to-r from-[#d4af37] to-[#f0d666] hover:from-[#c9a030] hover:to-[#e6c14d] text-black px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '600' }}
               >
                 <span className="relative z-10">Shop All Collections</span>
                 <div className="absolute inset-0 bg-gradient-to-r from-[#b8962a] to-[#d4af37] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -292,7 +292,7 @@ export default function Collections() {
                 className="group border-2 border-gray-600 hover:border-[#d4af37] text-gray-300 hover:text-[#d4af37] px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 backdrop-blur-sm hover:bg-[#d4af37]/10"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '600' }}
               >
                 AR Try-On Experience
                 <span className="ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
