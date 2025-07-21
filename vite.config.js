@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  base: './',
   plugins: [react(), tailwindcss()],
   server: {
     host: true,
@@ -17,8 +18,11 @@ export default defineConfig({
       'X-Frame-Options': 'SAMEORIGIN',
       'X-XSS-Protection': '1; mode=block',
       'Referrer-Policy': 'strict-origin-when-cross-origin'
-    }
+    },
+    // ✅ Correct usage:
+    allowedHosts: ['b08ce78e-51fe-4799-9932-1399fdb159d4-00-3v98s9zkrp2pf.pike.replit.dev']
   },
+
   build: {
     rollupOptions: {
       output: {
