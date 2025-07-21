@@ -10,7 +10,7 @@ export default function AuthModal() {
     email: '',
     password: ''
   });
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShbuttonowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -104,7 +104,7 @@ export default function AuthModal() {
                     placeholder="Full Name"
                     required
                     className="w-full pl-12 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   />
                 </div>
               )}
@@ -119,7 +119,7 @@ export default function AuthModal() {
                   placeholder="Email Address"
                   required
                   className="w-full pl-12 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                 />
               </div>
 
@@ -133,7 +133,7 @@ export default function AuthModal() {
                   placeholder="Password"
                   required
                   className="w-full pl-12 pr-12 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                 />
                 <button
                   type="button"
@@ -148,7 +148,7 @@ export default function AuthModal() {
                 type="submit"
                 disabled={isLoading}
                 className="w-full bg-[#d4af37] hover:bg-[#e6c14d] disabled:bg-gray-600 text-black py-3 px-6 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 {isLoading ? 'Please wait...' : (authMode === 'signin' ? 'Sign In' : 'Create Account')}
               </button>
@@ -158,7 +158,7 @@ export default function AuthModal() {
                   type="button"
                   onClick={switchMode}
                   className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300 font-light"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                 >
                   {authMode === 'signin' 
                     ? "Don't have an account? Sign up" 
@@ -169,7 +169,7 @@ export default function AuthModal() {
             </form>
 
             {/* Footer */}
-            <div className="px-6 pb-6 text-center text-xs text-gray-500 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <div className="px-6 pb-6 text-center text-xs text-gray-500 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               By continuing, you agree to our Terms of Service and Privacy Policy
             </div>
           </motion.div>

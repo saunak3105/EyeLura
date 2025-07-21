@@ -6,7 +6,7 @@ export default function Hero() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const texts = ['Elegance', 'Sophistication', 'Excellence', 'Luxury'];
+  const texts = ['Elegance', 'Comfort', 'Excellence', 'Luxury', 'Precision', 'Dominance', 'Presence', 'Freedom'];
   const staticText = 'Clarity Meets ';
 
   useEffect(() => {
@@ -14,7 +14,7 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const typeSpeed = isDeleting ? 50 : 100;
+    const typeSpeed = isDeleting ? 150 : 200;
     const currentWord = texts[currentIndex];
     
     const timer = setTimeout(() => {
@@ -60,7 +60,7 @@ export default function Hero() {
           {/* Subtext - Left Aligned */}
           <div className={`mb-12 transform transition-all duration-1000 delay-300 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
             <p className="text-xl md:text-2xl text-gray-300 font-light leading-relaxed tracking-wide max-w-2xl text-left" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-              Discover premium eyewear crafted for the modern connoisseur
+              Where Style Strikes Bold and Vision Feels Effortless — This is EyeLura.
             </p>
           </div>
 
@@ -80,7 +80,7 @@ export default function Hero() {
               className="group border border-gray-600 hover:border-[#d4af37] text-gray-300 hover:text-[#d4af37] px-10 py-4 text-lg font-medium transition-all duration-300 backdrop-blur-sm hover:bg-[#d4af37]/10"
               style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
             >
-              <span>AR Try On</span>
+              <span>AR Try On - Own the Look</span>
               <span className="ml-3 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </a>
           </div>
@@ -98,7 +98,7 @@ export default function Hero() {
                   Trusted by <span className="text-[#d4af37]">10,000+</span> customers
                 </div>
                 <div className="text-gray-500 text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                  Premium eyewear enthusiasts worldwide
+                  Premium eyewear enthusiasts All over India
                 </div>
               </div>
             </div>
@@ -107,7 +107,7 @@ export default function Hero() {
             
             <div className="text-left">
               <div className="text-white font-medium text-lg" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
-                <span className="text-[#d4af37]">4.9/5</span> Excellence Rating
+                <span className="text-[#d4af37]">4.2/5</span> Excellence Rating
               </div>
               <div className="text-gray-500 text-sm" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                 Based on verified customer reviews
