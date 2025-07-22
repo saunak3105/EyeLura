@@ -69,7 +69,7 @@ export default function FirstTimeBuyer() {
           <h1 className="text-5xl lg:text-7xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Welcome to <span className="text-[#d4af37]">EyeLura</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto font-light mb-8" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto font-light mb-8" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Start your premium eyewear journey with exclusive first-time buyer benefits
           </p>
           
@@ -103,7 +103,7 @@ export default function FirstTimeBuyer() {
                 <h3 className="text-xl font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {benefit.title}
                 </h3>
-                <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {benefit.description}
                 </p>
               </motion.div>
@@ -119,7 +119,7 @@ export default function FirstTimeBuyer() {
             <h2 className="text-4xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
               How It Works
             </h2>
-            <p className="text-xl text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-xl text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Your journey to perfect eyewear in 4 simple steps
             </p>
           </div>
@@ -139,7 +139,7 @@ export default function FirstTimeBuyer() {
                 <h3 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {step.title}
                 </h3>
-                <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {step.description}
                 </p>
               </motion.div>

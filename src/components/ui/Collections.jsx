@@ -289,12 +289,13 @@ export default function Collections() {
               </motion.button>
               
               <motion.button
+                onClick={() => navigate('/size-guide')}
                 className="group border-2 border-gray-600 hover:border-[#d4af37] text-gray-300 hover:text-[#d4af37] px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 backdrop-blur-sm hover:bg-[#d4af37]/10"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '600' }}
               >
-                AR Try-On Experience
+                Check out Size Guide 
                 <span className="ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
               </motion.button>
             </div>

@@ -131,7 +131,7 @@ export default function FAQ() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Frequently Asked <span className="text-[#d4af37]">Questions</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Find answers to common questions about our products, services, and policies.
           </p>
         </div>
@@ -150,7 +150,7 @@ export default function FAQ() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-4 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
             />
           </div>
 
@@ -165,7 +165,7 @@ export default function FAQ() {
                     ? 'bg-[#d4af37] text-black'
                     : 'bg-gray-900/50 text-gray-300 hover:text-white border border-gray-800 hover:border-gray-700'
                 }`}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 {category.name}
               </button>
@@ -181,7 +181,7 @@ export default function FAQ() {
               <h3 className="text-xl font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 No questions found
               </h3>
-              <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Try adjusting your search or category filter
               </p>
             </div>
@@ -220,7 +220,7 @@ export default function FAQ() {
                       className="overflow-hidden"
                     >
                       <div className="px-8 pb-6 border-t border-gray-800">
-                        <p className="text-gray-300 leading-relaxed pt-4 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                        <p className="text-gray-300 leading-relaxed pt-4 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                           {faq.answer}
                         </p>
                       </div>
@@ -239,21 +239,21 @@ export default function FAQ() {
             <h3 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
               Still Need Help?
             </h3>
-            <p className="text-gray-400 mb-6 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-gray-400 mb-6 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Can't find what you're looking for? Our support team is here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => window.location.href = '/contact'}
                 className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Contact Support
               </button>
               <button
                 onClick={() => window.location.href = 'mailto:support@eyelura.com'}
                 className="border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black px-8 py-3 rounded-lg font-medium transition-all duration-300"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Email Us
               </button>

@@ -12,14 +12,18 @@
   "dependencies": {
     "@fontsource/baloo-2": "^5.2.6",
     "@fontsource/fredoka-one": "^5.2.5",
+    "@react-three/drei": "^10.5.1",
+    "@react-three/fiber": "^9.2.0",
     "@tailwindcss/vite": "^4.1.11",
-    "framer-motion": "^12.23.0",
+    "@types/three": "^0.178.1",
+    "framer-motion": "^12.23.6",
     "lucide-react": "^0.525.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-intersection-observer": "^9.16.0",
     "react-router-dom": "^7.6.3",
-    "tailwindcss": "^4.1.11"
+    "tailwindcss": "^4.1.11",
+    "three": "^0.178.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

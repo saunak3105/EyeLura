@@ -49,7 +49,7 @@ export default function TermsOfService() {
       content: [
         'Our liability is limited to the purchase price of products',
         'We are not responsible for indirect or consequential damages',
-        'Service availability may be interrupted for maintenance',
+        'Service availability may be Interrupted for maintenance',
         'These terms are governed by the laws of New York State'
       ]
     }
@@ -69,12 +69,12 @@ export default function TermsOfService() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Terms of <span className="text-[#d4af37]">Service</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             These terms govern your use of EyeLura's services and products. Please read them carefully.
           </p>
           <div className="flex items-center justify-center gap-2 mt-6 text-gray-500">
             <Calendar className="w-4 h-4" />
-            <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Last updated: January 15, 2025
             </span>
           </div>
@@ -88,10 +88,10 @@ export default function TermsOfService() {
           <h2 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Agreement to Terms
           </h2>
-          <p className="text-gray-300 leading-relaxed font-light mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light mb-4" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             By accessing and using EyeLura's website and services, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
           </p>
-          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             These terms apply to all visitors, users, and others who access or use our service.
           </p>
         </div>
@@ -116,7 +116,7 @@ export default function TermsOfService() {
                 {section.content.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-[#d4af37] rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <span className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       {item}
                     </span>
                   </li>
@@ -139,15 +139,15 @@ export default function TermsOfService() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>30-day return window from delivery</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>30-day return window from delivery</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Items must be in original condition</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Items must be in original condition</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Free return shipping provided</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Free return shipping provided</span>
                 </li>
               </ul>
             </div>
@@ -158,15 +158,15 @@ export default function TermsOfService() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Refunds processed within 5-7 business days</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Refunds processed within 5-7 business days</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Original payment method used</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Original payment method used</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Email confirmation sent</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Email confirmation sent</span>
                 </li>
               </ul>
             </div>
@@ -178,10 +178,10 @@ export default function TermsOfService() {
           <h3 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Changes to Terms
           </h3>
-          <p className="text-gray-300 leading-relaxed font-light mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light mb-4" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to our website. Your continued use of our services after changes constitutes acceptance of the new terms.
           </p>
-          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             We recommend reviewing these terms periodically for any updates.
           </p>
         </div>
@@ -192,13 +192,13 @@ export default function TermsOfService() {
           <h3 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Questions About These Terms?
           </h3>
-          <p className="text-gray-300 mb-6 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 mb-6 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Our legal team is available to clarify any questions about these terms.
           </p>
           <a 
             href="mailto:legal@eyelura.com"
             className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 inline-block"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
           >
             Contact Legal Team
           </a>

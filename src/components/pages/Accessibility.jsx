@@ -76,13 +76,13 @@ export default function Accessibility() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Accessibility <span className="text-[#d4af37]">Statement</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             We're committed to making EyeLura accessible to everyone, regardless of ability or technology.
           </p>
           <div className="flex items-center justify-center gap-2 mt-6 text-gray-500">
             <Calendar className="w-4 h-4" />
-            <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-              Last updated: January 15, 2025
+            <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+              Last updated: May 31st, 2025
             </span>
           </div>
         </div>
@@ -95,10 +95,10 @@ export default function Accessibility() {
           <h2 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Our Commitment
           </h2>
-          <p className="text-gray-300 leading-relaxed font-light mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light mb-4" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             At EyeLura, we believe that everyone deserves access to quality eyewear and an exceptional online shopping experience. We're committed to ensuring our website and services are accessible to people with disabilities.
           </p>
-          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             We continuously work to improve accessibility and usability for all our customers, following established guidelines and best practices.
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function Accessibility() {
                 {feature.content.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-[#d4af37] rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <span className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       {item}
                     </span>
                   </li>
@@ -138,14 +138,14 @@ export default function Accessibility() {
           <h3 className="text-2xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Standards & Guidelines
           </h3>
-          <p className="text-gray-300 leading-relaxed font-light mb-6" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light mb-6" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Our accessibility efforts are guided by internationally recognized standards and guidelines:
           </p>
           <div className="grid md:grid-cols-2 gap-4">
             {standards.map((standard, index) => (
               <div key={index} className="flex items-center gap-3 p-4 bg-gray-800/50 rounded-lg">
                 <div className="w-3 h-3 bg-[#d4af37] rounded-full flex-shrink-0"></div>
-                <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <span className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {standard}
                 </span>
               </div>
@@ -158,7 +158,7 @@ export default function Accessibility() {
           <h3 className="text-2xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Supported Technologies
           </h3>
-          <p className="text-gray-300 leading-relaxed font-light mb-6" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light mb-6" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Our website is designed to work with a wide range of assistive technologies:
           </p>
           <div className="grid md:grid-cols-3 gap-6">
@@ -169,7 +169,7 @@ export default function Accessibility() {
               <h4 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Screen Readers
               </h4>
-              <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 JAWS, NVDA, VoiceOver
               </p>
             </div>
@@ -180,7 +180,7 @@ export default function Accessibility() {
               <h4 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Voice Control
               </h4>
-              <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Dragon, Voice Control
               </p>
             </div>
@@ -191,7 +191,7 @@ export default function Accessibility() {
               <h4 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Switch Navigation
               </h4>
-              <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Switch Control, Eye Gaze
               </p>
             </div>
@@ -211,15 +211,15 @@ export default function Accessibility() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Regular accessibility audits</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Regular accessibility audits</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>User testing with disabled users</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>User testing with disabled users</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Staff accessibility training</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Staff accessibility training</span>
                 </li>
               </ul>
             </div>
@@ -230,15 +230,15 @@ export default function Accessibility() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Enhanced AR try-on accessibility</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Enhanced AR try-on accessibility</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Multi-language support</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Multi-language support</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Advanced personalization options</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Advanced personalization options</span>
                 </li>
               </ul>
             </div>
@@ -251,13 +251,13 @@ export default function Accessibility() {
           <h3 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Help Us Improve
           </h3>
-          <p className="text-gray-300 mb-6 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 mb-6 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Your feedback helps us create a more accessible experience for everyone. Let us know how we can improve.
           </p>
           <a 
             href="mailto:accessibility@eyelura.com"
             className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 inline-block"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
           >
             Send Accessibility Feedback
           </a>

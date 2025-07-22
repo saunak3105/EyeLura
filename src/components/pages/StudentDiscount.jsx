@@ -54,7 +54,7 @@ export default function StudentDiscount() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Student <span className="text-[#d4af37]">Discount</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Exclusive 20% discount for students. Premium eyewear made affordable for your academic journey.
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function StudentDiscount() {
                   </h2>
                   <form onSubmit={handleVerification} className="space-y-6">
                     <div>
-                      <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         Student Email Address
                       </label>
                       <input
@@ -83,11 +83,11 @@ export default function StudentDiscount() {
                         className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                         placeholder="your.name@university.edu"
                         required
-                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                        style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                       />
                     </div>
                     <div>
-                      <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         Student ID or Institution Name
                       </label>
                       <input
@@ -97,13 +97,13 @@ export default function StudentDiscount() {
                         className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                         placeholder="Student ID or University Name"
                         required
-                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                        style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                       />
                     </div>
                     <button
                       type="submit"
                       className="w-full bg-[#d4af37] hover:bg-[#e6c14d] text-black py-4 px-6 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                     >
                       <Shield className="w-5 h-5" />
                       Verify Student Status
@@ -118,13 +118,13 @@ export default function StudentDiscount() {
                   <h2 className="text-3xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                     Verification Complete!
                   </h2>
-                  <p className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <p className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Your student discount is now active. Start shopping with 20% off!
                   </p>
                   <button
                     onClick={() => navigate('/shop')}
                     className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex items-center gap-2 mx-auto"
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                   >
                     Start Shopping
                     <ArrowRight className="w-5 h-5" />
@@ -150,7 +150,7 @@ export default function StudentDiscount() {
                       <h3 className="text-lg font-light text-white mb-1" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                         {benefit.title}
                       </h3>
-                      <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         {benefit.description}
                       </p>
                     </div>
@@ -168,7 +168,7 @@ export default function StudentDiscount() {
                 {eligibleInstitutions.map((institution, index) => (
                   <div key={index} className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-[#d4af37]" />
-                    <span className="text-gray-300 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <span className="text-gray-300 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       {institution}
                     </span>
                   </div>
@@ -185,7 +185,7 @@ export default function StudentDiscount() {
               <div className="text-4xl font-light text-[#d4af37] mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 25K+
               </div>
-              <div className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <div className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Students Verified
               </div>
             </div>
@@ -193,7 +193,7 @@ export default function StudentDiscount() {
               <div className="text-4xl font-light text-[#d4af37] mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 500+
               </div>
-              <div className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <div className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Partner Universities
               </div>
             </div>
@@ -201,7 +201,7 @@ export default function StudentDiscount() {
               <div className="text-4xl font-light text-[#d4af37] mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 $2M+
               </div>
-              <div className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <div className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 Student Savings
               </div>
             </div>

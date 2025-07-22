@@ -41,7 +41,7 @@ export default function Wishlist() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Your <span className="text-[#d4af37]">Wishlist</span>
           </h1>
-          <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 font-light max-w-2xl mx-auto" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Curated pieces that caught your eye
           </p>
         </div>
@@ -62,13 +62,13 @@ export default function Wishlist() {
             <h3 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
               Your wishlist is empty
             </h3>
-            <p className="text-gray-400 mb-8 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-gray-400 mb-8 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Discover exceptional eyewear and save your favorites
             </p>
             <button
               onClick={() => navigate('/shop')}
               className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-3 font-medium transition-all duration-300 transform hover:scale-105"
-              style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
             >
               Explore Collection
             </button>
@@ -77,14 +77,14 @@ export default function Wishlist() {
           <>
             {/* Wishlist Header */}
             <div className={`flex items-center justify-between mb-8 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-              <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'} saved
               </p>
               {wishlistItems.length > 0 && (
                 <button
                   onClick={clearWishlist}
                   className="text-gray-400 hover:text-red-400 transition-colors duration-300 flex items-center gap-2 font-light"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                 >
                   <Trash2 className="w-4 h-4" />
                   Clear All
@@ -151,11 +151,11 @@ export default function Wishlist() {
                         {product.name}
                       </h3>
                       <div className="text-right">
-                        <div className="text-lg font-medium text-[#d4af37]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                        <div className="text-lg font-medium text-[#d4af37]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                           ₹{product.price}
                         </div>
                         {product.originalPrice && (
-                          <div className="text-sm text-gray-500 line-through" style={{ fontFamily: "'Inter', sans-serif" }}>
+                          <div className="text-sm text-gray-500 line-through" style={{ fontFamily: "'Poppins', sans-serif" }}>
                             ₹{product.originalPrice}
                           </div>
                         )}
@@ -168,7 +168,7 @@ export default function Wishlist() {
                         {'★'.repeat(Math.floor(product.rating))}
                         {'☆'.repeat(5 - Math.floor(product.rating))}
                       </div>
-                      <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>({product.reviews})</span>
+                      <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>({product.reviews})</span>
                     </div>
 
                     {/* Action Buttons */}
@@ -176,7 +176,7 @@ export default function Wishlist() {
                       <button
                         onClick={() => handleAddToCart(product)}
                         className="flex-1 bg-[#d4af37] hover:bg-[#e6c14d] text-black py-2 px-4 font-medium transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
-                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                        style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                       >
                         <ShoppingCart className="w-4 h-4" />
                         Add to Cart

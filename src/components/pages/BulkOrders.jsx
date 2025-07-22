@@ -96,7 +96,7 @@ export default function BulkOrders() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Bulk <span className="text-[#d4af37]">Orders</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Special pricing for organizations, schools, and businesses. The more you order, the more you save.
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function BulkOrders() {
                       <h3 className="text-xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                         {tier.quantity}
                       </h3>
-                      <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         Volume discount
                       </p>
                     </div>
@@ -149,7 +149,7 @@ export default function BulkOrders() {
                     {tier.features.map((feature, idx) => (
                       <li key={idx} className="flex items-center gap-3 text-gray-300">
                         <div className="w-2 h-2 bg-[#d4af37] rounded-full"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                           {feature}
                         </span>
                       </li>
@@ -169,7 +169,7 @@ export default function BulkOrders() {
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Organization Type
                   </label>
                   <select
@@ -178,7 +178,7 @@ export default function BulkOrders() {
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                     required
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   >
                     <option value="">Select organization type</option>
                     <option value="corporate">Corporate</option>
@@ -191,7 +191,7 @@ export default function BulkOrders() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Organization Name
                     </label>
                     <input
@@ -202,11 +202,11 @@ export default function BulkOrders() {
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="Your organization"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Contact Name
                     </label>
                     <input
@@ -217,14 +217,14 @@ export default function BulkOrders() {
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="Your name"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Email
                     </label>
                     <input
@@ -235,11 +235,11 @@ export default function BulkOrders() {
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="your@email.com"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Phone
                     </label>
                     <input
@@ -249,13 +249,13 @@ export default function BulkOrders() {
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="Your phone number"
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Estimated Quantity
                   </label>
                   <select
@@ -264,7 +264,7 @@ export default function BulkOrders() {
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                     required
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   >
                     <option value="">Select quantity range</option>
                     <option value="10-49">10-49 units</option>
@@ -275,7 +275,7 @@ export default function BulkOrders() {
                 </div>
 
                 <div>
-                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Additional Details
                   </label>
                   <textarea
@@ -285,14 +285,14 @@ export default function BulkOrders() {
                     rows="4"
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300 resize-none"
                     placeholder="Tell us about your requirements..."
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
                   className="w-full bg-[#d4af37] hover:bg-[#e6c14d] text-black py-4 px-6 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                 >
                   Request Quote
                 </button>
@@ -325,7 +325,7 @@ export default function BulkOrders() {
                 <h3 className="text-xl font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {type.title}
                 </h3>
-                <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {type.description}
                 </p>
               </motion.div>

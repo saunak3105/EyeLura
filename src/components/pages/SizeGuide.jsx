@@ -93,7 +93,7 @@ export default function SizeGuide() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Size <span className="text-[#d4af37]">Guide</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Find your perfect fit with our comprehensive sizing guide and face shape recommendations.
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function SizeGuide() {
                     ? 'bg-[#d4af37] text-black'
                     : 'text-gray-300 hover:text-white'
                 }`}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Adults
               </button>
@@ -123,7 +123,7 @@ export default function SizeGuide() {
                     ? 'bg-[#d4af37] text-black'
                     : 'text-gray-300 hover:text-white'
                 }`}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Kids
               </button>
@@ -185,7 +185,7 @@ export default function SizeGuide() {
             <h2 className="text-4xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
               How to Measure
             </h2>
-            <p className="text-xl text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-xl text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Understanding frame measurements for the perfect fit
             </p>
           </div>
@@ -206,11 +206,11 @@ export default function SizeGuide() {
                 <h3 className="text-lg font-light text-white mb-2 text-center" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {tip.title}
                 </h3>
-                <p className="text-gray-400 text-sm mb-3 text-center font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 text-sm mb-3 text-center font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {tip.description}
                 </p>
                 <div className="bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-lg p-3">
-                  <p className="text-[#d4af37] text-xs text-center font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <p className="text-[#d4af37] text-xs text-center font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     💡 {tip.tip}
                   </p>
                 </div>
@@ -225,7 +225,7 @@ export default function SizeGuide() {
             <h2 className="text-4xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
               Face Shape Guide
             </h2>
-            <p className="text-xl text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-xl text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Choose frames that complement your unique features
             </p>
           </div>
@@ -246,17 +246,17 @@ export default function SizeGuide() {
                 <h3 className="text-lg font-light text-white mb-3 text-center" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {face.shape} Face
                 </h3>
-                <p className="text-gray-400 text-sm mb-4 text-center font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 text-sm mb-4 text-center font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {face.characteristics}
                 </p>
                 <div className="space-y-3">
                   <div className="bg-green-900/30 border border-green-500/30 rounded-lg p-3">
-                    <p className="text-green-400 text-xs font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <p className="text-green-400 text-xs font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       ✓ Recommended: {face.recommended}
                     </p>
                   </div>
                   <div className="bg-red-900/30 border border-red-500/30 rounded-lg p-3">
-                    <p className="text-red-400 text-xs font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <p className="text-red-400 text-xs font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       ✗ Avoid: {face.avoid}
                     </p>
                   </div>

@@ -99,7 +99,7 @@ export default function Header({ onCartClick }) {
                 }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
+                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
               >
                 {item.name}
                 <span className={`absolute -bottom-1 left-0 h-px transition-all duration-300 ${
@@ -136,7 +136,7 @@ export default function Header({ onCartClick }) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 500 }}
-                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
                 >
                   {wishlistItemsCount}
                 </motion.span>
@@ -165,7 +165,7 @@ export default function Header({ onCartClick }) {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 500 }}
-                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
                 >
                   {cartItemsCount}
                 </motion.span>
@@ -186,7 +186,7 @@ export default function Header({ onCartClick }) {
                   whileTap={{ scale: 0.95 }}
                 >
                   <User className="w-6 h-6" />
-                  <span className="hidden sm:block font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+                  <span className="hidden sm:block font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
                     {user.name}
                   </span>
                 </motion.button>
@@ -200,7 +200,7 @@ export default function Header({ onCartClick }) {
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
                 >
                   Sign In
                 </motion.button>
@@ -224,7 +224,7 @@ export default function Header({ onCartClick }) {
                             ? 'text-white hover:text-yellow-200 hover:bg-purple-800/50' 
                             : 'text-white hover:text-[#d4af37] hover:bg-gray-800/50'
                         }`}
-                        style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
+                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                       >
                         <LogOut className="w-4 h-4" />
                         Sign Out
@@ -278,7 +278,7 @@ export default function Header({ onCartClick }) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
                   >
                     {item.name}
                   </motion.button>
@@ -297,7 +297,7 @@ export default function Header({ onCartClick }) {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: navItems.length * 0.1 }}
-                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
+                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
                   >
                     Sign In
                   </motion.button>

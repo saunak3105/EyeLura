@@ -74,7 +74,7 @@ export default function PrescriptionDeals() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Prescription <span className="text-[#d4af37]">Deals</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Premium prescription eyewear at unbeatable prices. Clear vision shouldn't cost a fortune.
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function PrescriptionDeals() {
                   {deal.features.map((feature, idx) => (
                     <li key={idx} className="flex items-center gap-3 text-gray-300">
                       <CheckCircle className="w-5 h-5 text-[#d4af37]" />
-                      <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         {feature}
                       </span>
                     </li>
@@ -134,7 +134,7 @@ export default function PrescriptionDeals() {
                       ? 'bg-[#d4af37] hover:bg-[#e6c14d] text-black'
                       : 'border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black'
                   }`}
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                 >
                   Get This Deal
                 </button>
@@ -169,7 +169,7 @@ export default function PrescriptionDeals() {
                 <h3 className="text-xl font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {service.title}
                 </h3>
-                <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {service.description}
                 </p>
               </motion.div>

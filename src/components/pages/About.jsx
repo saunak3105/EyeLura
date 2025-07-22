@@ -1,221 +1,226 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../ui/Header';
 import CartModal from '../ui/CartModal';
 import AuthModal from '../ui/AuthModal';
-import { Eye, Users, Award, Globe } from 'lucide-react';
+import { Eye, Users, Award, Globe, TrendingUp, Shield, LayoutDashboard, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function About() {
-  const [isVisible, setIsVisible] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  const marketStats = [
+    { value: "$10.4B", label: "India Eyewear Market (2024)" },
+    { value: "30%", label: "Organized Market Share (2024)" },
+    { value: "45%", label: "Expected Organized Share (2030)" },
+    { value: "₹204.97L", label: "Projected 5-Year Profit" }
+  ];
 
-  const stats = [
-    { icon: <Users className="w-8 h-8" />, number: '50K+', label: 'Happy Customers' },
-    { icon: <Eye className="w-8 h-8" />, number: '100K+', label: 'AR Try-Ons' },
-    { icon: <Award className="w-8 h-8" />, number: '4.9/5', label: 'Customer Rating' },
-    { icon: <Globe className="w-8 h-8" />, number: '25+', label: 'Countries Served' }
+  const strategyPillars = [
+    {
+      icon: <TrendingUp size={28} />,
+      title: "Strategic Positioning",
+      description: "Targeting underserved Tier 2 & 3 cities where demand is rising, but quality is absent."
+    },
+    {
+      icon: <LayoutDashboard size={28} />,
+      title: "Omni-Channel Retail",
+      description: "Combining e-commerce, AR tech, and physical stores to scale quickly and efficiently."
+    },
+    {
+      icon: <Shield size={28} />,
+      title: "Trust & Quality",
+      description: "Built on premium, tested materials — not unbranded imports. EyeLura is a brand you can trust."
+    }
+  ];
+
+  const cityExpansion = [
+    "Coimbatore", "Ludhiana", "Indore", "Surat", "Lucknow", "Vadodara", "Kochi", "Jaipur", "Bhubaneswar"
   ];
 
   const team = [
     {
-      name: 'Sarah Chen',
-      role: 'Founder & CEO',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b9e0e4d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Former tech executive with a passion for accessible eyewear'
+      name: 'Saunak Mohan',
+      role: 'CEO',
+      bio: 'Former tech executive, building scalable retail ecosystems.'
     },
     {
-      name: 'Marcus Rodriguez',
-      role: 'Head of Design',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Award-winning designer with 15+ years in luxury fashion'
+      name: 'Saurabh Mohan',
+      role: 'CMO',
+      bio: '15+ years in fashion retail, brand-building specialist.'
     },
     {
-      name: 'Dr. Emily Watson',
-      role: 'Chief Optometrist',
-      image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
-      bio: 'Leading optometrist specializing in digital eye strain'
+      name: 'Abhilasha Mohan',
+      role: 'Founder',
+      bio: 'Visionary behind EyeLura, committed to accessible design.'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-black content-wrapper">
+    <div className="min-h-screen bg-black text-white relative">
       <Header onCartClick={() => setIsCartOpen(true)} />
-      
-      {/* Hero Section */}
-      <div className={`pt-24 sm:pt-32 pb-20 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-full text-sm text-[#d4af37] font-medium shadow-sm mb-6">
-            <span className="w-2 h-2 bg-[#d4af37] rounded-full mr-2 animate-pulse"></span>
-            Our Story
-          </div>
-          <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-            Redefining <span className="text-[#d4af37]">Vision</span>
-          </h1>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-            At EyeLura, we believe that exceptional eyewear should be accessible to everyone. 
-            Our mission is to combine cutting-edge technology with timeless design to create 
-            the perfect pair of glasses for the modern generation.
+
+      {/* Background Glow (from Shop.jsx) */}
+      <div className="absolute inset-0 opacity-10 -z-10">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl animate-pulse delay-1000"></div>
+      </div>
+
+      {/* HERO */}
+      <section className="pt-32 pb-20 px-6 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-5xl md:text-6xl font-bold mb-6 leading-tight"
+        >
+          Revolutionizing India’s Vision Economy
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+          className="text-xl max-w-3xl mx-auto text-gray-300"
+        >
+          EyeLura blends fashion, technology, and strategy to lead India's eyewear evolution — accessible, scalable, and data-driven.
+        </motion.p>
+        <div className="mt-10 flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => navigate('/faq')}
+            className="px-6 py-3 bg-[#d4af37] text-black rounded-full hover:bg-[#e6c14d] transition flex items-center gap-2"
+          >
+            Explore FAQ's<ArrowRight size={18} />
+          </button>
+          <button
+            onClick={() => navigate('/accessibility')}
+            className="px-6 py-3 border border-[#d4af37] text-[#d4af37] rounded-full hover:bg-[#d4af37]/10 transition"
+          >
+            Accessibility
+          </button>
+        </div>
+      </section>
+
+      {/* MARKET STATS */}
+      <section className="py-24 px-6">
+        <div className="max-w-6xl mx-auto text-center mb-16">
+          <h2 className="text-4xl font-semibold mb-4 text-white">India's Eyewear Market Landscape</h2>
+          <p className="text-gray-400 text-lg">
+            We're tapping into one of the most dynamic segments in modern retail. Here's how the numbers stack up:
           </p>
         </div>
-      </div>
-
-      {/* Stats Section */}
-      <div className={`py-16 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-                <div className="w-16 h-16 bg-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-4 text-black">
-                  {stat.icon}
-                </div>
-                <div className="text-3xl font-medium text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '400' }}>
-                  {stat.number}
-                </div>
-                <div className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {marketStats.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="rounded-xl bg-white/5 p-6 border border-[#d4af37]/20 shadow hover:shadow-xl transition"
+            >
+              <div className="text-3xl font-bold text-[#d4af37] mb-2">{item.value}</div>
+              <div className="text-gray-300 text-sm">{item.label}</div>
+            </motion.div>
+          ))}
         </div>
-      </div>
+      </section>
 
-      {/* Story Section */}
-      <div className={`py-20 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <h2 className="text-4xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-                Our Journey
-              </h2>
-              <p className="text-lg text-gray-400 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                Founded in 2020 by a team of passionate designers and technologists, EyeLura emerged 
-                from a simple observation: quality eyewear was either too expensive or lacked the 
-                innovation that modern consumers deserved.
-              </p>
-              <p className="text-lg text-gray-400 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                We set out to change that by combining premium materials, cutting-edge AR technology, 
-                and direct-to-consumer pricing to make exceptional eyewear accessible to students 
-                and young professionals worldwide.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Premium materials at affordable prices</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Revolutionary AR try-on technology</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Student-focused pricing and discounts</span>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden shadow-lg">
-                <img
-                  src="https://images.unsplash.com/photo-1556306535-38febf6782e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                  alt="EyeLura Workshop"
-                  className="w-full h-80 object-cover"
-                />
-              </div>
-            </div>
-          </div>
+      {/* STRATEGIC MODEL */}
+      <section id="model" className="py-24 px-6">
+        <div className="max-w-6xl mx-auto text-center mb-16">
+          <h2 className="text-4xl font-semibold mb-4 text-white">The EyeLura Model</h2>
+          <p className="text-gray-400 text-lg">
+            Our strategy combines product, platform, and place — built on solid financials and powerful customer insights.
+          </p>
         </div>
-      </div>
-
-      {/* Team Section */}
-      <div className={`py-20 px-4 sm:px-6 lg:px-8 bg-gray-900/20 transform transition-all duration-1000 delay-600 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-              Meet Our Team
-            </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-              The passionate individuals behind EyeLura's vision and innovation
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {strategyPillars.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white/5 rounded-xl p-6 border border-[#d4af37]/20 shadow hover:shadow-xl"
+            >
+              <div className="w-12 h-12 bg-[#d4af37]/20 text-[#d4af37] flex items-center justify-center rounded-md mb-4">
+                {item.icon}
+              </div>
+              <h4 className="text-xl font-semibold mb-2">{item.title}</h4>
+              <p className="text-gray-300 text-sm">{item.description}</p>
+            </motion.div>
+          ))}
+        </div>
+        <div className="grid md:grid-cols-2 gap-10">
+          <div className="p-6 bg-white/5 rounded-xl shadow border border-[#d4af37]/20">
+            <h3 className="text-xl font-semibold mb-4 text-white">Tier 2 & 3 City Expansion</h3>
+            <p className="text-gray-400 mb-4 text-sm">
+              We're scaling into high-potential cities where demand is strong, but modern eyewear options are limited.
             </p>
+            <div className="flex flex-wrap gap-2">
+              {cityExpansion.map((city, idx) => (
+                <span key={idx} className="text-sm bg-[#d4af37]/10 text-[#d4af37] px-3 py-1 rounded-full">
+                  {city}
+                </span>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <div key={index} className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="w-full h-64 object-cover"
-                />
-                <div className="p-6 text-center">
-                  <h3 className="text-xl font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-                    {member.name}
-                  </h3>
-                  <p className="text-[#d4af37] font-medium mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
-                    {member.role}
-                  </p>
-                  <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                    {member.bio}
-                  </p>
-                </div>
-              </div>
-            ))}
+          <div className="p-6 bg-[#d4af37] text-black rounded-xl shadow-md">
+            <h3 className="text-xl font-semibold mb-4">Financial Highlights</h3>
+            <ul className="space-y-3 text-sm font-medium">
+              <li>• Breakeven: 6 months</li>
+              <li>• Year 1 Net Profit: ₹63.2L</li>
+              <li>• 5-Year Profit: ₹204.97L</li>
+              <li>• ROI by Year 3: 75–80%</li>
+            </ul>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Values Section */}
-      <div className={`py-20 px-4 sm:px-6 lg:px-8 transform transition-all duration-1000 delay-800 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-4xl font-light text-white mb-16" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-            Our Values
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-[#d4af37] rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl">🎯</span>
-              </div>
-              <h3 className="text-xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-                Quality First
-              </h3>
-              <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                We never compromise on quality, using only premium materials and rigorous testing
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-[#d4af37] rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl">🚀</span>
-              </div>
-              <h3 className="text-xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-                Innovation
-              </h3>
-              <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                Constantly pushing boundaries with AR technology and modern design
-              </p>
-            </div>
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-[#d4af37] rounded-full flex items-center justify-center mx-auto">
-                <span className="text-2xl">🤝</span>
-              </div>
-              <h3 className="text-xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
-                Accessibility
-              </h3>
-              <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                Making premium eyewear accessible to students and young professionals
-              </p>
-            </div>
-          </div>
+      {/* TEAM */}
+      <section className="py-24 px-6">
+        <div className="max-w-6xl mx-auto text-center mb-16">
+          <h2 className="text-4xl font-semibold mb-4 text-white">Meet the Visionaries</h2>
+          <p className="text-gray-400 text-lg">The minds and hearts behind EyeLura’s journey.</p>
         </div>
-      </div>
+        <div className="grid md:grid-cols-3 gap-8">
+          {team.map((member, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              className="bg-white/5 p-6 rounded-xl text-center shadow hover:shadow-xl border border-[#d4af37]/20"
+            >
+              <div className="h-32 w-32 mx-auto rounded-full bg-gradient-to-br from-yellow-100 to-orange-100 mb-4" />
+              <h4 className="text-lg font-semibold text-white">{member.name}</h4>
+              <p className="text-[#d4af37] font-medium">{member.role}</p>
+              <p className="text-gray-400 text-sm mt-2">{member.bio}</p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
 
-      <CartModal 
-        isOpen={isCartOpen} 
-        onClose={() => setIsCartOpen(false)}
-      />
-      
+      {/* CTA */}
+      <section className="py-20 px-6 bg-[#d4af37] text-black text-center">
+        <h2 className="text-4xl font-bold mb-4">Ready to See the Future?</h2>
+        <p className="text-lg mb-8">Join the movement that’s redefining Indian eyewear — with trust, tech, and taste.</p>
+        <div className="flex justify-center gap-4 flex-wrap">
+          <button
+            onClick={() => navigate('/shop')}
+            className="px-8 py-3 bg-black text-[#d4af37] rounded-full hover:bg-gray-900 transition"
+          >
+            Shop Now
+          </button>
+          <button
+            onClick={() => navigate('/contact')}
+            className="px-8 py-3 border border-black rounded-full hover:bg-black/10 transition"
+          >
+            Contact Us
+          </button>
+        </div>
+      </section>
+
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       <AuthModal />
     </div>
   );

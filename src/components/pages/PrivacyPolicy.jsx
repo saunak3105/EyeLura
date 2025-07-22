@@ -69,12 +69,12 @@ export default function PrivacyPolicy() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Privacy <span className="text-[#d4af37]">Policy</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             We're committed to protecting your privacy and being transparent about how we handle your data.
           </p>
           <div className="flex items-center justify-center gap-2 mt-6 text-gray-500">
             <Calendar className="w-4 h-4" />
-            <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               Last updated: January 15, 2025
             </span>
           </div>
@@ -88,7 +88,7 @@ export default function PrivacyPolicy() {
           <h2 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Our Commitment to You
           </h2>
-          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             At EyeLura, we believe privacy is a fundamental right. This policy explains how we collect, use, and protect your personal information when you use our website and services. We're committed to being transparent and giving you control over your data.
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function PrivacyPolicy() {
                 {section.content.map((item, itemIndex) => (
                   <li key={itemIndex} className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-[#d4af37] rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <span className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       {item}
                     </span>
                   </li>
@@ -136,15 +136,15 @@ export default function PrivacyPolicy() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Request a copy of your data</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Request a copy of your data</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Update or correct your information</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Update or correct your information</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Delete your account and data</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Delete your account and data</span>
                 </li>
               </ul>
             </div>
@@ -155,15 +155,15 @@ export default function PrivacyPolicy() {
               <ul className="space-y-2 text-gray-300">
                 <li className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Opt out of marketing emails</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Opt out of marketing emails</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Control cookie preferences</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Control cookie preferences</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <div className="w-1 h-1 bg-[#d4af37] rounded-full"></div>
-                  <span className="text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Report privacy concerns</span>
+                  <span className="text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Report privacy concerns</span>
                 </li>
               </ul>
             </div>
@@ -176,13 +176,13 @@ export default function PrivacyPolicy() {
           <h3 className="text-2xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Questions About Privacy?
           </h3>
-          <p className="text-gray-300 mb-6 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-gray-300 mb-6 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Our privacy team is here to help with any questions or concerns.
           </p>
           <a 
             href="mailto:privacy@eyelura.com"
             className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-8 py-3 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 inline-block"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
           >
             Contact Privacy Team
           </a>

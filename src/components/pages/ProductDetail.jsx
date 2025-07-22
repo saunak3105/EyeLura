@@ -62,7 +62,7 @@ export default function ProductDetail() {
           <button
             onClick={() => navigate('/shop')}
             className="bg-[#d4af37] hover:bg-[#e6c14d] text-black px-6 py-3 font-medium transition-all duration-300"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
           >
             Back to Shop
           </button>
@@ -87,7 +87,7 @@ export default function ProductDetail() {
                 ? 'text-purple-600 hover:text-pink-500' 
                 : 'text-gray-400 hover:text-[#d4af37]'
             }`}
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
           >
             <ArrowLeft className="w-5 h-5" />
             {isKidsProduct ? 'Back to Kids' : 'Back to Shop'}
@@ -174,22 +174,22 @@ export default function ProductDetail() {
             {/* Header */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1 bg-gray-800 text-sm text-gray-300 capitalize font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <span className="px-3 py-1 bg-gray-800 text-sm text-gray-300 capitalize font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   {product.category}
                 </span>
                 {product.inStock ? (
-                  <span className="px-3 py-1 bg-green-900/50 text-green-300 text-sm flex items-center gap-1 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <span className="px-3 py-1 bg-green-900/50 text-green-300 text-sm flex items-center gap-1 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     <Check className="w-3 h-3" />
                     In Stock
                   </span>
                 ) : (
-                  <span className="px-3 py-1 bg-red-900/50 text-red-300 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <span className="px-3 py-1 bg-red-900/50 text-red-300 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Out of Stock
                   </span>
                 )}
               </div>
 
-              <h1 className="text-4xl lg:text-5xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+              <h1 className="text-4xl lg:text-5xl font-light text-white" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                 {product.name}
               </h1>
 
@@ -201,17 +201,17 @@ export default function ProductDetail() {
                       className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'text-[#d4af37] fill-current' : 'text-gray-600'}`}
                     />
                   ))}
-                  <span className="text-gray-400 ml-2 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>({product.reviews} reviews)</span>
+                  <span className="text-gray-400 ml-2 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>({product.reviews} reviews)</span>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
-                <span className="text-3xl font-medium text-[#d4af37]" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '400' }}>₹{product.price}</span>
+                <span className="text-3xl font-medium text-[#d4af37]" style={{ fontFamily: "'Poppins', serif", fontWeight: '400' }}>₹{product.price}</span>
                 {product.originalPrice && (
-                  <span className="text-xl text-gray-500 line-through font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>₹{product.originalPrice}</span>
+                  <span className="text-xl text-gray-500 line-through font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>₹{product.originalPrice}</span>
                 )}
                 {product.discount && (
-                  <span className="px-2 py-1 bg-red-900/50 text-red-300 text-sm font-medium" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                  <span className="px-2 py-1 bg-red-900/50 text-red-300 text-sm font-medium" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                     Save {product.discount}%
                   </span>
                 )}
@@ -219,7 +219,7 @@ export default function ProductDetail() {
             </div>
 
             {/* Description */}
-            <p className="text-lg text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+            <p className="text-lg text-gray-300 leading-relaxed font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
               {product.description}
             </p>
 
@@ -227,7 +227,7 @@ export default function ProductDetail() {
             <div className="space-y-6">
               {/* Color Selection */}
               <div>
-                <h3 className="text-lg font-light text-white mb-3" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                <h3 className="text-lg font-light text-white mb-3" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                   Color: {selectedColor}
                 </h3>
                 <div className="flex gap-3">
@@ -240,7 +240,7 @@ export default function ProductDetail() {
                           ? 'border-[#d4af37] bg-[#d4af37] text-black'
                           : 'border-gray-700 hover:border-gray-600 text-gray-300'
                       }`}
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     >
                       {color}
                     </button>
@@ -250,7 +250,7 @@ export default function ProductDetail() {
 
               {/* Size Selection */}
               <div>
-                <h3 className="text-lg font-light text-white mb-3" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                <h3 className="text-lg font-light text-white mb-3" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                   Size: {selectedSize}
                 </h3>
                 <div className="flex gap-3">
@@ -263,7 +263,7 @@ export default function ProductDetail() {
                           ? 'border-[#d4af37] bg-[#d4af37] text-black'
                           : 'border-gray-700 hover:border-gray-600 text-gray-300'
                       }`}
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     >
                       {size}
                     </button>
@@ -273,7 +273,7 @@ export default function ProductDetail() {
 
               {/* Quantity */}
               <div>
-                <h3 className="text-lg font-light text-white mb-3" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                <h3 className="text-lg font-light text-white mb-3" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                   Quantity
                 </h3>
                 <div className="flex items-center gap-4">
@@ -281,20 +281,20 @@ export default function ProductDetail() {
                     <button
                       onClick={() => setQuantity(Math.max(1, quantity - 1))}
                       className="px-3 py-2 hover:bg-gray-800 transition-colors duration-300 text-white font-light"
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     >
                       -
                     </button>
-                    <span className="px-4 py-2 font-medium text-white" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>{quantity}</span>
+                    <span className="px-4 py-2 font-medium text-white" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>{quantity}</span>
                     <button
                       onClick={() => setQuantity(Math.min(product.stockCount, quantity + 1))}
                       className="px-3 py-2 hover:bg-gray-800 transition-colors duration-300 text-white font-light"
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     >
                       +
                     </button>
                   </div>
-                  <span className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <span className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     {product.stockCount} available
                   </span>
                 </div>
@@ -311,7 +311,7 @@ export default function ProductDetail() {
                       ? 'bg-green-500 text-white' 
                       : 'bg-[#d4af37] hover:bg-[#e6c14d] text-black'
                   }`}
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                 >
                   {addedToCart ? (
                     <>
@@ -342,7 +342,7 @@ export default function ProductDetail() {
 
               <button
                 className="w-full border-2 border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black py-4 px-6 font-medium transition-all duration-300"
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Try Virtual Fitting
               </button>
@@ -352,15 +352,15 @@ export default function ProductDetail() {
             <div className="grid grid-cols-3 gap-4 pt-6 border-t border-gray-800">
               <div className="text-center">
                 <Truck className="w-8 h-8 text-[#d4af37] mx-auto mb-2" />
-                <p className="text-sm text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Free Shipping</p>
+                <p className="text-sm text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Free Shipping</p>
               </div>
               <div className="text-center">
                 <Shield className="w-8 h-8 text-[#d4af37] mx-auto mb-2" />
-                <p className="text-sm text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>2 Year Warranty</p>
+                <p className="text-sm text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>2 Year Warranty</p>
               </div>
               <div className="text-center">
                 <RotateCcw className="w-8 h-8 text-[#d4af37] mx-auto mb-2" />
-                <p className="text-sm text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Easy Returns</p>
+                <p className="text-sm text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Easy Returns</p>
               </div>
             </div>
           </motion.div>
@@ -385,7 +385,7 @@ export default function ProductDetail() {
                       ? 'text-[#d4af37] border-b-2 border-[#d4af37] bg-gray-800/50'
                       : 'text-gray-400 hover:text-gray-300'
                   }`}
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                 >
                   {tab}
                 </button>
@@ -396,14 +396,14 @@ export default function ProductDetail() {
             <div className="p-8">
               {activeTab === 'description' && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                  <h3 className="text-2xl font-light text-white" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                     Product Features
                   </h3>
                   <div className="grid md:grid-cols-2 gap-4">
                     {product.features.map((feature, index) => (
                       <div key={index} className="flex items-center gap-3">
                         <Check className="w-5 h-5 text-[#d4af37]" />
-                        <span className="text-gray-300 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>{feature}</span>
+                        <span className="text-gray-300 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -412,16 +412,16 @@ export default function ProductDetail() {
 
               {activeTab === 'specifications' && (
                 <div className="space-y-6">
-                  <h3 className="text-2xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                  <h3 className="text-2xl font-light text-white" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                     Technical Specifications
                   </h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     {Object.entries(product.specifications).map(([key, value]) => (
                       <div key={key} className="flex justify-between py-2 border-b border-gray-800">
-                        <span className="font-light text-gray-300 capitalize" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                        <span className="font-light text-gray-300 capitalize" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                           {key.replace(/([A-Z])/g, ' $1').trim()}
                         </span>
-                        <span className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>{value}</span>
+                        <span className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>{value}</span>
                       </div>
                     ))}
                   </div>
@@ -439,12 +439,12 @@ export default function ProductDetail() {
                         {'★'.repeat(Math.floor(product.rating))}
                         {'☆'.repeat(5 - Math.floor(product.rating))}
                       </div>
-                      <span className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>({product.reviews} reviews)</span>
+                      <span className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>({product.reviews} reviews)</span>
                     </div>
                   </div>
                   <div className="text-center py-12 text-gray-500">
                     <div className="text-4xl mb-4">💬</div>
-                    <p className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Reviews feature coming soon</p>
+                    <p className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Reviews feature coming soon</p>
                   </div>
                 </div>
               )}

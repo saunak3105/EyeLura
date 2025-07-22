@@ -102,7 +102,7 @@ export default function ShippingReturns() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Shipping & <span className="text-[#d4af37]">Returns</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Fast, secure delivery and hassle-free returns. Your satisfaction is our priority.
           </p>
         </div>
@@ -121,7 +121,7 @@ export default function ShippingReturns() {
                     ? 'bg-[#d4af37] text-black'
                     : 'text-gray-300 hover:text-white'
                 }`}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Shipping
               </button>
@@ -132,7 +132,7 @@ export default function ShippingReturns() {
                     ? 'bg-[#d4af37] text-black'
                     : 'text-gray-300 hover:text-white'
                 }`}
-                style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
               >
                 Returns
               </button>
@@ -167,7 +167,7 @@ export default function ShippingReturns() {
                     </h3>
                     <div className="text-[#d4af37] font-semibold mb-2">{option.time}</div>
                     <div className="text-gray-300 font-medium mb-4">{option.cost}</div>
-                    <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       {option.description}
                     </p>
                   </motion.div>
@@ -190,15 +190,15 @@ export default function ShippingReturns() {
                     <ul className="space-y-2 text-gray-300">
                       <li className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-[#d4af37]" />
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Mumbai, Delhi, Bangalore, Chennai</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Mumbai, Delhi, Bangalore, Chennai</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-[#d4af37]" />
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Hyderabad, Pune, Kolkata, Ahmedabad</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Hyderabad, Pune, Kolkata, Ahmedabad</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Clock className="w-4 h-4 text-green-400" />
-                        <span className="font-light text-green-400" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Same-day delivery available</span>
+                        <span className="font-light text-green-400" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Same-day delivery available</span>
                       </li>
                     </ul>
                   </div>
@@ -210,15 +210,15 @@ export default function ShippingReturns() {
                     <ul className="space-y-2 text-gray-300">
                       <li className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-[#d4af37]" />
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>All major cities and towns</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>All major cities and towns</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Truck className="w-4 h-4 text-blue-400" />
-                        <span className="font-light text-blue-400" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Standard & Express delivery</span>
+                        <span className="font-light text-blue-400" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Standard & Express delivery</span>
                       </li>
                       <li className="flex items-center gap-2">
                         <Package className="w-4 h-4 text-purple-400" />
-                        <span className="font-light text-purple-400" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Secure packaging guaranteed</span>
+                        <span className="font-light text-purple-400" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Secure packaging guaranteed</span>
                       </li>
                     </ul>
                   </div>
@@ -255,7 +255,7 @@ export default function ShippingReturns() {
                     <h3 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                       {step.title}
                     </h3>
-                    <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       {step.description}
                     </p>
                   </motion.div>
@@ -278,15 +278,15 @@ export default function ShippingReturns() {
                     <ul className="space-y-2 text-gray-300">
                       <li className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Unused items in original packaging</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Unused items in original packaging</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Items with all original accessories</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Items with all original accessories</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-green-400 rounded-full mt-2"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Non-prescription eyewear</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Non-prescription eyewear</span>
                       </li>
                     </ul>
                   </div>
@@ -298,15 +298,15 @@ export default function ShippingReturns() {
                     <ul className="space-y-2 text-gray-300">
                       <li className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Prescription glasses (special terms apply)</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Prescription glasses (special terms apply)</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Damaged or modified items</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Damaged or modified items</span>
                       </li>
                       <li className="flex items-start gap-2">
                         <div className="w-2 h-2 bg-red-400 rounded-full mt-2"></div>
-                        <span className="font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Items returned after 30 days</span>
+                        <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Items returned after 30 days</span>
                       </li>
                     </ul>
                   </div>
@@ -337,14 +337,14 @@ export default function ShippingReturns() {
                 <h3 className="text-lg font-light text-white mb-2" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   {policy.title}
                 </h3>
-                <p className="text-[#d4af37] font-medium mb-4" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                <p className="text-[#d4af37] font-medium mb-4" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                   {policy.description}
                 </p>
                 <ul className="space-y-1">
                   {policy.details.map((detail, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <div className="w-1 h-1 bg-[#d4af37] rounded-full mt-2"></div>
-                      <span className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <span className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         {detail}
                       </span>
                     </li>

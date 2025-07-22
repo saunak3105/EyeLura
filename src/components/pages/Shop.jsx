@@ -125,17 +125,17 @@ export default function Shop() {
   };
 
   const categories = [
-    { id: 'all', name: 'All Products', icon: '👓' },
-    { id: 'sunglasses', name: 'Sunglasses', icon: '🕶️' },
-    { id: 'frames', name: 'Frames', icon: '👓' }
+    { id: 'all', name: 'All Products'},
+    { id: 'sunglasses', name: 'Sunglasses'},
+    { id: 'frames', name: 'Frames'}
   ];
 
   const genders = [
-    { id: 'all', name: 'All', icon: '👥' },
-    { id: 'mens', name: 'Men\'s', icon: '👨' },
-    { id: 'womens', name: 'Women\'s', icon: '👩' },
-    { id: 'unisex', name: 'Unisex', icon: '🤝' },
-    { id: 'kids', name: 'Kids', icon: '👶' }
+    { id: 'all', name: 'All'},
+    { id: 'mens', name: 'Men\'s'},
+    { id: 'womens', name: 'Women\'s'},
+    { id: 'unisex', name: 'Unisex'},
+    { id: 'kids', name: 'Kids'}
   ];
 
   return (
@@ -164,7 +164,7 @@ export default function Shop() {
           <h1 className="text-5xl lg:text-7xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Discover Your <span className="text-[#d4af37]">Perfect</span> Style
           </h1>
-          <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Explore our curated collection of premium eyewear designed for every lifestyle and personality
           </p>
         </div>
@@ -192,7 +192,7 @@ export default function Shop() {
                     }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                   >
                     <span className="text-lg">{category.icon}</span>
                     {category.name}
@@ -218,7 +218,7 @@ export default function Shop() {
                     }`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                   >
                     <span>{gender.icon}</span>
                     {gender.name}
@@ -243,7 +243,7 @@ export default function Shop() {
               
               {/* Enhanced Search */}
               <div className="mb-6">
-                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Search</h4>
+                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Search</h4>
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <input
@@ -252,14 +252,14 @@ export default function Shop() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   />
                 </div>
               </div>
 
               {/* Enhanced Price Range */}
               <div className="mb-6">
-                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Price Range</h4>
+                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Price Range</h4>
                 <div className="space-y-3">
                   <input
                     type="range"
@@ -270,12 +270,12 @@ export default function Shop() {
                     className="w-full accent-[#d4af37] bg-gray-700 rounded-lg appearance-none h-2"
                   />
                   <div className="flex justify-between text-sm text-gray-400 font-light">
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>₹{priceRange[0]}</span>
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>₹{priceRange[1]}</span>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>₹{priceRange[0]}</span>
+                    <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>₹{priceRange[1]}</span>
                   </div>
                   <div className="bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-lg p-3">
-                    <p className="text-[#d4af37] text-xs text-center font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                      💡 Student discounts available on all frames!
+                    <p className="text-[#d4af37] text-xs text-center font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+                      Student discounts available on all frames!
                     </p>
                   </div>
                 </div>
@@ -283,18 +283,18 @@ export default function Shop() {
 
               {/* Enhanced Sort By */}
               <div>
-                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>Sort By</h4>
+                <h4 className="font-light text-gray-300 mb-3" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Sort By</h4>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="w-full p-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent font-light transition-all duration-300"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                 >
-                  <option value="featured">✨ Featured</option>
-                  <option value="price-low">💰 Price: Low to High</option>
-                  <option value="price-high">💎 Price: High to Low</option>
-                  <option value="rating">⭐ Highest Rated</option>
-                  <option value="newest">🆕 Newest First</option>
+                  <option value="featured">Featured</option>
+                  <option value="price-low">Price: Low to High</option>
+                  <option value="price-high">Price: High to Low</option>
+                  <option value="rating">Highest Rated</option>
+                  <option value="newest">Newest First</option>
                 </select>
               </div>
             </div>
@@ -305,7 +305,7 @@ export default function Shop() {
             {/* Enhanced Toolbar */}
             <div className={`mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 transform transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
               <div className="flex items-center gap-4">
-                <p className="text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   Showing <span className="text-[#d4af37] font-semibold">{filteredProducts.length}</span> products
                 </p>
                 {filteredProducts.length > 0 && (
@@ -437,13 +437,13 @@ export default function Shop() {
                     {/* Enhanced Product Info */}
                     <div className="p-6 space-y-4">
                       <div className="flex justify-between items-start">
-                        <h3 className="text-lg font-light text-white group-hover:text-[#d4af37] transition-colors duration-300" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+                        <h3 className="text-lg font-light text-white group-hover:text-[#d4af37] transition-colors duration-300" style={{ fontFamily: "'Poppins', serif", fontWeight: '300' }}>
                           {product.name}
                         </h3>
                         <div className="text-right">
-                          <div className="text-lg font-medium text-[#d4af37]" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>₹{product.price}</div>
+                          <div className="text-lg font-medium text-[#d4af37]" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>₹{product.price}</div>
                           {product.originalPrice && (
-                            <div className="text-sm text-gray-500 line-through" style={{ fontFamily: "'Inter', sans-serif" }}>₹{product.originalPrice}</div>
+                            <div className="text-sm text-gray-500 line-through" style={{ fontFamily: "'Poppins', sans-serif" }}>₹{product.originalPrice}</div>
                           )}
                         </div>
                       </div>
@@ -455,7 +455,7 @@ export default function Shop() {
                             {'★'.repeat(Math.floor(product.rating))}
                             {'☆'.repeat(5 - Math.floor(product.rating))}
                           </div>
-                          <span style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>({product.reviews})</span>
+                          <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>({product.reviews})</span>
                         </div>
                         <div className="text-green-400 text-xs font-semibold">
                           ✓ In Stock
@@ -464,12 +464,12 @@ export default function Shop() {
 
                       {/* Enhanced Category tags */}
                       <div className="flex items-center justify-between">
-                        <span className="px-3 py-1 bg-gray-800/50 rounded-full text-gray-300 text-xs capitalize font-light border border-gray-700" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                        <span className="px-3 py-1 bg-gray-800/50 rounded-full text-gray-300 text-xs capitalize font-light border border-gray-700" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                           {product.category}
                         </span>
                         {product.category === 'frames' && (
-                          <span className="px-3 py-1 bg-blue-900/30 text-blue-300 rounded-full text-xs font-light border border-blue-500/30" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                            💎 Prescription Ready
+                          <span className="px-3 py-1 bg-blue-900/30 text-blue-300 rounded-full text-xs font-light border border-blue-500/30" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+                            Prescription Ready
                           </span>
                         )}
                       </div>
@@ -481,11 +481,11 @@ export default function Shop() {
                           handleProductClick(product.id);
                         }}
                         className="w-full bg-gradient-to-r from-[#d4af37] to-[#e6c14d] hover:from-[#e6c14d] hover:to-[#f0d666] text-black py-3 px-6 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-                        style={{ fontFamily: "'Inter', sans-serif", fontWeight: '600' }}
+                        style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '600' }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        ✨ View Details
+                        View Details
                       </motion.button>
                     </div>
                   </motion.div>
@@ -505,7 +505,7 @@ export default function Shop() {
                 <h3 className="text-3xl font-light text-white mb-4" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                   No products found
                 </h3>
-                <p className="text-gray-400 font-light mb-8" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                <p className="text-gray-400 font-light mb-8" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                   Try adjusting your filters or search terms
                 </p>
                 <motion.button

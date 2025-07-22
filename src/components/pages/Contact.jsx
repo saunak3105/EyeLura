@@ -37,19 +37,19 @@ export default function Contact() {
     {
       icon: <Mail className="w-6 h-6" />,
       title: 'Email Us',
-      details: 'support@eyelura.com',
+      details: 'info@eyelura.in',
       description: 'Get in touch for any questions'
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: 'Call Us',
-      details: '+1 (555) 123-4567',
-      description: 'Mon-Fri 9AM-6PM EST'
+      details: '+91 9874997460',
+      description: 'Mon-Fri 10AM-6PM EST'
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: 'Visit Us',
-      details: '123 Vision Street, NY 10001',
+      details: 'Sapphire Blue, Kolkata - 700136',
       description: 'Our flagship showroom'
     },
     {
@@ -74,7 +74,7 @@ export default function Contact() {
           <h1 className="text-5xl lg:text-6xl font-light text-white mb-6" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
             Contact <span className="text-[#d4af37]">Us</span>
           </h1>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
             Have questions about our eyewear or need assistance? We're here to help you find the perfect pair.
           </p>
         </div>
@@ -92,7 +92,7 @@ export default function Contact() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Full Name
                     </label>
                     <input
@@ -103,11 +103,11 @@ export default function Contact() {
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="Your full name"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                   <div>
-                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                    <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                       Email Address
                     </label>
                     <input
@@ -118,12 +118,12 @@ export default function Contact() {
                       className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                       placeholder="your@email.com"
                       required
-                      style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                      style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Subject
                   </label>
                   <select
@@ -132,7 +132,7 @@ export default function Contact() {
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300"
                     required
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   >
                     <option value="">Select a subject</option>
                     <option value="general">General Inquiry</option>
@@ -144,7 +144,7 @@ export default function Contact() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <label className="block text-gray-300 font-light mb-2" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Message
                   </label>
                   <textarea
@@ -155,13 +155,13 @@ export default function Contact() {
                     className="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:ring-2 focus:ring-[#d4af37] focus:border-transparent transition-all duration-300 resize-none"
                     placeholder="Tell us how we can help you..."
                     required
-                    style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}
+                    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}
                   ></textarea>
                 </div>
                 <button
                   type="submit"
                   className="w-full bg-[#d4af37] hover:bg-[#e6c14d] text-black py-4 px-6 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                  style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}
+                  style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}
                 >
                   <Send className="w-5 h-5" />
                   Send Message
@@ -176,7 +176,7 @@ export default function Contact() {
               <h2 className="text-3xl font-light text-white" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                 Get in Touch
               </h2>
-              <p className="text-lg text-gray-400 font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+              <p className="text-lg text-gray-400 font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                 We're here to help you with any questions about our products, services, or your order.
               </p>
             </div>
@@ -192,10 +192,10 @@ export default function Contact() {
                       <h3 className="text-lg font-light text-white mb-1" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
                         {info.title}
                       </h3>
-                      <p className="text-[#d4af37] font-medium mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '500' }}>
+                      <p className="text-[#d4af37] font-medium mb-1" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '500' }}>
                         {info.details}
                       </p>
-                      <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                      <p className="text-gray-400 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                         {info.description}
                       </p>
                     </div>
@@ -211,26 +211,26 @@ export default function Contact() {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     How do I get my student discount?
                   </h4>
-                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Verify your student status during checkout for instant savings.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     What's your return policy?
                   </h4>
-                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     30-day hassle-free returns with free shipping both ways.
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <h4 className="font-light text-gray-300 mb-1" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     How does AR try-on work?
                   </h4>
-                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
+                  <p className="text-gray-500 text-sm font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
                     Use your device's camera to virtually try on frames in real-time.
                   </p>
                 </div>
