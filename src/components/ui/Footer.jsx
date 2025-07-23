@@ -163,15 +163,15 @@ export default function Footer() {
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-gray-300 hover:text-[#d4af37] transition-colors duration-300 cursor-pointer">
                   <Mail className="w-5 h-5" />
-                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>support@eyelura.com</span>
+                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>info@eyelura.in</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300 hover:text-[#d4af37] transition-colors duration-300 cursor-pointer">
                   <Phone className="w-5 h-5" />
-                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>+1 (555) 123-4567</span>
+                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>+91 9874997460</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-300 hover:text-[#d4af37] transition-colors duration-300 cursor-pointer">
                   <MapPin className="w-5 h-5" />
-                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>123 Vision Street, NY 10001</span>
+                  <span className="font-light" style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>Sapphire Blue, Kolkata 700136, IN</span>
                 </div>
               </div>
               
@@ -179,16 +179,16 @@ export default function Footer() {
               <div className="space-y-6">
                 <h4 className="text-white font-light text-lg" style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>Follow Our Journey</h4>
                 <div className="flex space-x-4">
-                  <a href="#" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
+                  <a href="https://www.instagram.com/eyelura?igsh=cWJsOHIxcnVlOTVl" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
                     <Instagram className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                   </a>
                   <a href="#" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
                     <Facebook className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                   </a>
-                  <a href="#" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
+                  <a href="https://x.com/EyeLura" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
                     <Twitter className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                   </a>
-                  <a href="#" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
+                  <a href="https://www.linkedin.com/company/eyelura/" className="group w-12 h-12 bg-gray-900/60 backdrop-blur-sm rounded-full flex items-center justify-center border border-gray-700 hover:border-[#d4af37] hover:bg-[#d4af37] transition-all duration-300 transform hover:scale-110">
                     <Linkedin className="w-5 h-5 text-gray-400 group-hover:text-black transition-colors duration-300" />
                   </a>
                 </div>

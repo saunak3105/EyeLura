@@ -31,7 +31,7 @@ export default function About() {
     {
       icon: <Shield size={28} />,
       title: "Trust & Quality",
-      description: "Built on premium, tested materials — not unbranded imports. EyeLura is a brand you can trust."
+      description: "Built on premium, tested materials and imports — EyeLura is a brand you can trust."
     }
   ];
 

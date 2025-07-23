@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +7,7 @@ import { useWishlist } from '../../context/WishlistContext';
 import Header from '../ui/Header';
 import CartModal from '../ui/CartModal';
 import AuthModal from '../ui/AuthModal';
-import { Heart, ShoppingCart, Star, Sparkles, Rainbow, Sun, Cloud } from 'lucide-react';
+import { Heart, ShoppingCart, Star, Sparkles, Rainbow, Sun, Cloud, Zap, Gift } from 'lucide-react';
 
 const kidsProducts = [
   {
@@ -132,32 +133,33 @@ const kidsProducts = [
   }
 ];
 
-const FloatingElement = ({ children, delay = 0, duration = 3 }) => (
+const FloatingBubble = ({ size, color, delay, position }) => (
   <motion.div
+    className={`absolute ${position} w-${size} h-${size} ${color} rounded-full opacity-20`}
     animate={{
-      y: [0, -10, 0],
-      rotate: [0, 5, -5, 0]
+      y: [0, -30, 0],
+      x: [0, 10, -10, 0],
+      scale: [1, 1.1, 1]
     }}
     transition={{
-      duration,
+      duration: 4 + Math.random() * 2,
       repeat: Infinity,
       delay,
       ease: "easeInOut"
     }}
-  >
-    {children}
-  </motion.div>
+  />
 );
 
-const BouncingIcon = ({ icon, color, size = "text-4xl", delay = 0 }) => (
+const MagicalIcon = ({ icon, delay = 0, className = "" }) => (
   <motion.div
-    className={`${color} ${size} absolute`}
+    className={`text-4xl ${className}`}
     animate={{
-      y: [0, -20, 0],
-      scale: [1, 1.2, 1]
+      rotate: [0, 10, -10, 0],
+      scale: [1, 1.2, 1],
+      y: [0, -5, 0]
     }}
     transition={{
-      duration: 2,
+      duration: 3,
       repeat: Infinity,
       delay,
       ease: "easeInOut"
@@ -198,143 +200,163 @@ export default function Kids() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-200 via-pink-100 to-yellow-200 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 relative overflow-hidden">
       <Header onCartClick={() => setIsCartOpen(true)} />
       
-      {/* Floating Background Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <BouncingIcon icon="🌈" color="text-pink-400" delay={0} />
-        <BouncingIcon icon="⭐" color="text-yellow-400" delay={0.5} />
-        <BouncingIcon icon="🎈" color="text-red-400" delay={1} />
-        <BouncingIcon icon="☁️" color="text-blue-300" delay={1.5} />
-        <BouncingIcon icon="🦄" color="text-purple-400" delay={2} />
+      {/* Animated Background Elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        <FloatingBubble size="32" color="bg-yellow-300" delay={0} position="top-20 left-10" />
+        <FloatingBubble size="24" color="bg-pink-300" delay={1} position="top-40 right-20" />
+        <FloatingBubble size="28" color="bg-blue-300" delay={2} position="bottom-40 left-20" />
+        <FloatingBubble size="20" color="bg-green-300" delay={0.5} position="top-60 right-10" />
+        <FloatingBubble size="36" color="bg-purple-300" delay={1.5} position="bottom-20 right-1/4" />
         
-        <div className="absolute top-20 left-10">
-          <BouncingIcon icon="🌟" color="text-yellow-300" size="text-6xl" delay={0.3} />
+        {/* Floating Icons */}
+        <div className="absolute top-24 left-16">
+          <MagicalIcon icon="🌟" delay={0} />
         </div>
-        <div className="absolute top-40 right-20">
-          <BouncingIcon icon="🎨" color="text-pink-400" size="text-5xl" delay={0.8} />
+        <div className="absolute top-36 right-24">
+          <MagicalIcon icon="🎨" delay={0.5} />
         </div>
-        <div className="absolute bottom-20 left-20">
-          <BouncingIcon icon="🚀" color="text-blue-400" size="text-5xl" delay={1.2} />
+        <div className="absolute bottom-32 left-24">
+          <MagicalIcon icon="🚀" delay={1} />
         </div>
-        <div className="absolute bottom-40 right-10">
-          <BouncingIcon icon="🎪" color="text-red-400" size="text-4xl" delay={1.8} />
+        <div className="absolute bottom-48 right-16">
+          <MagicalIcon icon="🦄" delay={1.5} />
+        </div>
+        <div className="absolute top-1/2 left-1/3">
+          <MagicalIcon icon="⚡" delay={2} />
         </div>
       </div>
 
       {/* Hero Section */}
-      <div className={`pt-32 pb-20 px-4 sm:px-6 lg:px-8 relative transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto text-center">
           
-          {/* Fun Badge */}
+          {/* Magical Badge */}
           <motion.div 
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full text-white font-bold shadow-lg mb-8"
-            animate={{ scale: [1, 1.05, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
+            className="inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-lg rounded-full text-white font-bold text-lg shadow-2xl mb-8 border border-white/30"
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ duration: 0.8, type: "spring" }}
           >
-            <Sparkles className="w-5 h-5 mr-2" />
-            Kids' Eyewear Wonderland! 
-            <Star className="w-5 h-5 ml-2" />
+            <Sparkles className="w-6 h-6 mr-3 text-yellow-300" />
+            Welcome to Kids Wonderland! 
+            <Star className="w-6 h-6 ml-3 text-yellow-300" />
           </motion.div>
           
           {/* Main Title */}
           <motion.h1 
-            className="text-6xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-6 leading-tight"
-            style={{ fontFamily: "'Fredoka One', cursive" }}
-            initial={{ scale: 0.8, opacity: 0 }}
+            className="text-6xl md:text-8xl lg:text-9xl font-black text-white mb-8 leading-none"
+            style={{ 
+              fontFamily: "'Fredoka One', cursive",
+              textShadow: '0 4px 20px rgba(0,0,0,0.3)'
+            }}
+            initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 1, delay: 0.3 }}
           >
             Super Cool
             <br />
-            <span className="text-gradient-to-r from-yellow-400 to-orange-500">
-              Kids Glasses! 
+            <span className="bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300 bg-clip-text text-transparent">
+              Kids Glasses!
             </span>
             <motion.span
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 1, repeat: Infinity, delay: 1 }}
+              animate={{ 
+                rotate: [0, 15, -15, 0],
+                scale: [1, 1.2, 1]
+              }}
+              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
               className="inline-block ml-4"
             >
               😎
             </motion.span>
           </motion.h1>
           
-          {/* Fun Subtitle */}
+          {/* Subtitle */}
           <motion.p 
-            className="text-2xl lg:text-3xl text-gray-700 font-bold mb-8 max-w-4xl mx-auto"
-            style={{ fontFamily: "'Baloo 2', cursive" }}
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            🌟 Where Style Meets Adventure! 🌟
-            <br />
-            <span className="text-lg text-gray-600">
-              Discover magical eyewear that makes every kid feel like a superhero! 
-            </span>
-          </motion.p>
-
-          {/* Fun Stats */}
-          <motion.div 
-            className="flex flex-wrap justify-center gap-8 mb-12"
+            className="text-2xl md:text-3xl text-white/90 font-bold mb-12 max-w-4xl mx-auto leading-relaxed"
+            style={{ 
+              fontFamily: "'Baloo 2', cursive",
+              textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+            }}
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-              <div className="text-3xl font-black text-pink-500">1000+</div>
-              <div className="text-sm text-gray-600 font-semibold">Happy Kids! 😊</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-              <div className="text-3xl font-black text-blue-500">100%</div>
-              <div className="text-sm text-gray-600 font-semibold">Fun Guaranteed! 🎉</div>
-            </div>
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 shadow-lg">
-              <div className="text-3xl font-black text-green-500">Safe</div>
-              <div className="text-sm text-gray-600 font-semibold">& Comfortable! ✅</div>
-            </div>
+            🌈 Where Every Kid Becomes a Superhero! 🌈
+            <br />
+            <span className="text-xl text-white/80">
+              Discover magical eyewear that makes learning and playing super fun!
+            </span>
+          </motion.p>
+
+          {/* Stats Cards */}
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-12"
+            initial={{ y: 40, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.9 }}
+          >
+            {[
+              { number: "5000+", label: "Happy Kids", icon: "😊", color: "from-pink-400 to-red-400" },
+              { number: "100%", label: "Safe & Fun", icon: "🛡️", color: "from-blue-400 to-indigo-400" },
+              { number: "★★★★★", label: "Parent Approved", icon: "👨‍👩‍👧‍👦", color: "from-green-400 to-teal-400" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                className={`bg-gradient-to-br ${stat.color} rounded-3xl p-6 shadow-2xl border border-white/20`}
+                whileHover={{ scale: 1.05, y: -5 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="text-4xl mb-2">{stat.icon}</div>
+                <div className="text-3xl font-black text-white mb-1">{stat.number}</div>
+                <div className="text-white/90 font-bold" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                  {stat.label}
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
 
           {/* CTA Buttons */}
           <motion.div 
             className="flex flex-col sm:flex-row gap-6 justify-center"
-            initial={{ y: 40, opacity: 0 }}
+            initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
           >
             <motion.button
-              onClick={() => navigate('/shop')}
-              className="group bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white px-10 py-4 rounded-full text-xl font-bold shadow-xl transform transition-all duration-300"
+              onClick={() => navigate('/shop/kids')}
+              className="group bg-white hover:bg-yellow-100 text-purple-600 px-12 py-5 rounded-full text-2xl font-bold shadow-2xl transition-all duration-300"
               style={{ fontFamily: "'Baloo 2', cursive" }}
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
-              🛍️ Shop Cool Glasses!
+              🛍️ Start Shopping Adventure!
               <motion.span
                 className="inline-block ml-2"
                 animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1, repeat: Infinity }}
+                transition={{ duration: 1.5, repeat: Infinity }}
               >
                 →
               </motion.span>
             </motion.button>
             
             <motion.button
-              onClick={() => document.getElementById('try-on')?.scrollIntoView({ behavior: 'smooth' })}
-              className="group border-4 border-yellow-400 hover:border-yellow-500 bg-yellow-100 hover:bg-yellow-200 text-yellow-800 px-10 py-4 rounded-full text-xl font-bold shadow-xl transform transition-all duration-300"
+              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+              className="group border-4 border-white hover:border-yellow-300 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white px-12 py-5 rounded-full text-2xl font-bold shadow-2xl transition-all duration-300"
               style={{ fontFamily: "'Baloo 2', cursive" }}
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
-              🎮 Try Virtual Fitting!
+              ✨ Learn More Magic!
             </motion.button>
           </motion.div>
         </div>
-      </div>
+      </section>
 
-      {/* Products Section */}
-      <div className="py-20 px-4 sm:px-6 lg:px-8 relative">
+      {/* Featured Products Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/10 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
           
           {/* Section Header */}
@@ -342,13 +364,13 @@ export default function Kids() {
             className="text-center mb-16"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1 }}
+            transition={{ duration: 0.8 }}
           >
-            <h2 className="text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-green-500 mb-4" style={{ fontFamily: "'Fredoka One', cursive" }}>
-              Amazing Collection! 🎨
+            <h2 className="text-5xl lg:text-7xl font-black text-white mb-6" style={{ fontFamily: "'Fredoka One', cursive" }}>
+              Our Magical Collection! ✨
             </h2>
-            <p className="text-xl text-gray-700 font-semibold" style={{ fontFamily: "'Baloo 2', cursive" }}>
-              Pick your favorite style and become the coolest kid in school! 
+            <p className="text-xl text-white/90 font-bold max-w-2xl mx-auto" style={{ fontFamily: "'Baloo 2', cursive" }}>
+              Each pair is specially designed to make kids feel amazing and confident!
             </p>
           </motion.div>
 
@@ -357,64 +379,68 @@ export default function Kids() {
             {kidsProducts.map((product, index) => (
               <motion.div
                 key={product.id}
-                className="group relative bg-white/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer"
-                initial={{ y: 50, opacity: 0 }}
+                className="group relative bg-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer"
+                initial={{ y: 60, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 1.2 + index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -10 }}
+                transition={{ duration: 0.8, delay: 0.2 + index * 0.1 }}
+                whileHover={{ scale: 1.02, y: -8 }}
                 onMouseEnter={() => setHoveredProduct(product.id)}
                 onMouseLeave={() => setHoveredProduct(null)}
                 onClick={() => handleProductClick(product.id)}
               >
-                {/* Fun Badge */}
-                <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg ${
-                  product.badge === 'Super Cool!' ? 'bg-gradient-to-r from-pink-400 to-red-500' :
+                {/* Badge */}
+                <div className={`absolute top-4 left-4 z-10 px-4 py-2 rounded-full text-sm font-bold text-white shadow-xl ${
+                  product.badge === 'Super Cool!' ? 'bg-gradient-to-r from-pink-500 to-red-500' :
                   product.badge === 'Hero Power!' ? 'bg-gradient-to-r from-blue-500 to-purple-600' :
-                  product.badge === 'Magical!' ? 'bg-gradient-to-r from-purple-400 to-pink-500' :
-                  'bg-gradient-to-r from-green-400 to-blue-500'
+                  product.badge === 'Magical!' ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
+                  'bg-gradient-to-r from-green-500 to-blue-500'
                 }`}>
                   {product.badge}
                 </div>
 
                 {/* Discount Badge */}
                 {product.discount && (
-                  <div className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+                  <motion.div 
+                    className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-2 rounded-full text-sm font-bold shadow-xl"
+                    animate={{ rotate: [0, 5, -5, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
                     -{product.discount}% OFF!
-                  </div>
+                  </motion.div>
                 )}
 
                 {/* Product Image */}
-                <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sky-100 to-pink-100">
+                <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">
                   <img
                     src={hoveredProduct === product.id && product.images[1] ? product.images[1] : product.image}
                     alt={product.name}
                     className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
                   />
                   
-                  {/* Floating Action Buttons */}
-                  <div className={`absolute inset-0 flex items-center justify-center gap-3 transition-all duration-300 ${
+                  {/* Action Buttons */}
+                  <div className={`absolute inset-0 flex items-center justify-center gap-4 transition-all duration-300 ${
                     hoveredProduct === product.id ? 'opacity-100' : 'opacity-0'
                   }`}>
                     <motion.button
                       onClick={(e) => handleWishlistToggle(e, product)}
-                      className={`w-12 h-12 rounded-full backdrop-blur-sm border-2 border-white/50 flex items-center justify-center transition-all duration-300 ${
+                      className={`w-14 h-14 rounded-full backdrop-blur-sm border-2 border-white/50 flex items-center justify-center transition-all duration-300 shadow-lg ${
                         isInWishlist(product.id) 
-                          ? 'bg-red-500 text-white' 
+                          ? 'bg-red-500 text-white border-red-400' 
                           : 'bg-white/20 text-white hover:bg-white/30'
                       }`}
-                      whileHover={{ scale: 1.1 }}
+                      whileHover={{ scale: 1.15 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <Heart className={`w-5 h-5 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                      <Heart className={`w-6 h-6 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
                     </motion.button>
                     
                     <motion.button
                       onClick={(e) => handleAddToCart(e, product)}
-                      className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white hover:from-green-500 hover:to-blue-600 transition-all duration-300"
-                      whileHover={{ scale: 1.1 }}
+                      className="w-14 h-14 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center text-white hover:from-green-600 hover:to-blue-600 transition-all duration-300 shadow-lg"
+                      whileHover={{ scale: 1.15 }}
                       whileTap={{ scale: 0.9 }}
                     >
-                      <ShoppingCart className="w-5 h-5" />
+                      <ShoppingCart className="w-6 h-6" />
                     </motion.button>
                   </div>
                 </div>
@@ -426,7 +452,7 @@ export default function Kids() {
                       {product.name}
                     </h3>
                     <div className="text-right">
-                      <div className="text-xl font-bold text-green-600">₹{product.price}</div>
+                      <div className="text-2xl font-bold text-green-600">₹{product.price}</div>
                       {product.originalPrice && (
                         <div className="text-sm text-gray-500 line-through">₹{product.originalPrice}</div>
                       )}
@@ -434,22 +460,22 @@ export default function Kids() {
                   </div>
 
                   {/* Age Range */}
-                  <div className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-full px-3 py-1 text-center">
-                    <span className="text-sm font-semibold text-orange-700">
+                  <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-full px-4 py-2 text-center">
+                    <span className="text-sm font-bold text-orange-800">
                       Perfect for {product.ageRange} 👶
                     </span>
                   </div>
 
                   {/* Reviews */}
                   <div className="flex items-center justify-center gap-2 text-sm">
-                    <div className="flex text-yellow-400">
-                      {'⭐'.repeat(Math.floor(product.rating))}
+                    <div className="flex text-yellow-500">
+                      {'★'.repeat(Math.floor(product.rating))}
                     </div>
-                    <span className="text-gray-600 font-semibold">({product.reviews} happy kids!)</span>
+                    <span className="text-gray-600 font-bold">({product.reviews} happy kids!)</span>
                   </div>
 
-                  {/* Fun Description */}
-                  <p className="text-gray-600 text-center font-medium" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                  {/* Description */}
+                  <p className="text-gray-600 text-center font-medium leading-relaxed" style={{ fontFamily: "'Baloo 2', cursive" }}>
                     {product.description}
                   </p>
 
@@ -459,98 +485,111 @@ export default function Kids() {
                       e.stopPropagation();
                       handleProductClick(product.id);
                     }}
-                    className="w-full bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg"
+                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-4 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-lg"
                     style={{ fontFamily: "'Baloo 2', cursive" }}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    👀 View Details!
+                    👀 See All Details!
                   </motion.button>
                 </div>
               </motion.div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Fun Features Section */}
-      <div className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-purple-200 via-pink-200 to-yellow-200">
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <motion.h2 
-            className="text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-blue-500 mb-16"
+            className="text-5xl lg:text-6xl font-black text-white mb-16"
             style={{ fontFamily: "'Fredoka One', cursive" }}
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
           >
-            Why Kids Love Us! 💖
+            Why Kids & Parents Love Us! 💝
           </motion.h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: '🛡️', title: 'Super Safe!', desc: 'UV protection & durable materials' },
-              { icon: '🎨', title: 'Amazing Colors!', desc: 'Rainbow of fun colors to choose from' },
-              { icon: '😊', title: 'Comfy Fit!', desc: 'Lightweight & comfortable all day long' }
+              { icon: '🛡️', title: 'Super Safe!', desc: 'UV protection & unbreakable materials for active kids' },
+              { icon: '🎨', title: 'Amazing Colors!', desc: 'Endless rainbow of fun colors and magical designs' },
+              { icon: '😊', title: 'Comfy All Day!', desc: 'Lightweight & comfortable for school and play time' }
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="bg-white/90 backdrop-blur-sm rounded-3xl p-8 shadow-xl"
+                className="bg-white/20 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white/20"
                 initial={{ y: 50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 whileHover={{ scale: 1.05, y: -5 }}
               >
-                <div className="text-6xl mb-4">{feature.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                <motion.div 
+                  className="text-7xl mb-6"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    rotate: [0, 5, -5, 0]
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: index * 0.3
+                  }}
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="text-3xl font-bold text-white mb-4" style={{ fontFamily: "'Baloo 2', cursive" }}>
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 font-medium" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                <p className="text-white/90 font-medium text-lg leading-relaxed" style={{ fontFamily: "'Baloo 2', cursive" }}>
                   {feature.desc}
                 </p>
               </motion.div>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Bottom CTA Section */}
-      <div className="py-20 px-4 sm:px-6 lg:px-8 text-center">
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white/10 backdrop-blur-sm">
         <motion.div
-          className="max-w-4xl mx-auto"
+          className="max-w-4xl mx-auto text-center"
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600 mb-8" style={{ fontFamily: "'Fredoka One', cursive" }}>
-            Ready for an Adventure? 🚀
+          <h2 className="text-4xl lg:text-6xl font-black text-white mb-8" style={{ fontFamily: "'Fredoka One', cursive" }}>
+            Ready for the Adventure? 🚀
           </h2>
-          <p className="text-xl text-gray-700 font-semibold mb-8" style={{ fontFamily: "'Baloo 2', cursive" }}>
-            Join thousands of happy kids who found their perfect glasses!
+          <p className="text-2xl text-white/90 font-bold mb-12 leading-relaxed" style={{ fontFamily: "'Baloo 2', cursive" }}>
+            Join thousands of happy kids who found their perfect magical glasses!
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <motion.button
-              onClick={() => navigate('/shop')}
-              className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white px-12 py-4 rounded-full text-xl font-bold shadow-xl"
+              onClick={() => navigate('/shop/kids')}
+              className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white px-12 py-5 rounded-full text-2xl font-bold shadow-2xl"
               style={{ fontFamily: "'Baloo 2', cursive" }}
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
-              🌟 Start Shopping Now!
+              🌟 Start Shopping Magic!
             </motion.button>
             
             <motion.button
               onClick={() => navigate('/contact')}
-              className="border-4 border-pink-400 hover:border-pink-500 bg-pink-100 hover:bg-pink-200 text-pink-800 px-12 py-4 rounded-full text-xl font-bold shadow-xl"
+              className="border-4 border-white hover:border-yellow-300 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white px-12 py-5 rounded-full text-2xl font-bold shadow-2xl"
               style={{ fontFamily: "'Baloo 2', cursive" }}
-              whileHover={{ scale: 1.05, y: -2 }}
+              whileHover={{ scale: 1.05, y: -3 }}
               whileTap={{ scale: 0.95 }}
             >
-              📞 Ask Mom & Dad!
+              📞 Ask Parents First!
             </motion.button>
           </div>
         </motion.div>
-      </div>
+      </section>
 
       <CartModal 
         isOpen={isCartOpen} 

@@ -75,13 +75,13 @@ export default function ProductDetail() {
   const isKidsProduct = product.category?.startsWith('kids');
 
   return (
-    <div className={`min-h-screen pt-16 sm:pt-20 content-wrapper ${isKidsProduct ? 'bg-gradient-to-br from-sky-200 via-pink-100 to-yellow-200' : 'bg-black'}`}>
+    <div className={`min-h-screen pt-16 sm:pt-20 content-wrapper ${isKidsProduct ? 'bg-gradient-to-br from-black via-purple-900 to-pink-700' : 'bg-black'}`}>
       
       {/* Back Button and Logo */}
       <div className={`px-4 sm:px-6 lg:px-8 py-4 sm:py-6 transform transition-all duration-1000 ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-12 opacity-0'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <button
-            onClick={() => navigate('/shop')}
+            onClick={() => navigate(isKidsProduct ? '/shop/kids' : '/shop')}
             className={`flex items-center gap-2 transition-colors duration-300 font-light ${
               isKidsProduct 
                 ? 'text-purple-600 hover:text-pink-500' 
@@ -115,7 +115,7 @@ export default function ProductDetail() {
             className="space-y-6"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 1.0, delay: 0.5 }}
           >
             {/* Main Image */}
             <div className="relative bg-gray-900/50 backdrop-blur-sm border border-gray-800 overflow-hidden">
@@ -168,7 +168,7 @@ export default function ProductDetail() {
             className="space-y-8"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 1.0, delay: 0.5 }}
           >
             
             {/* Header */}
@@ -371,7 +371,7 @@ export default function ProductDetail() {
           className="mt-20"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
+          transition={{ duration: 1.0, delay: 0.6 }}
         >
           <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 overflow-hidden">
             {/* Tab Headers */}

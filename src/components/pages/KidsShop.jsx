@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -7,14 +8,14 @@ import { kidsProducts } from '../../data/products';
 import Header from '../ui/Header';
 import CartModal from '../ui/CartModal';
 import AuthModal from '../ui/AuthModal';
-import { Heart, ShoppingCart, Eye, Filter, Search, Sparkles, Star, Rainbow } from 'lucide-react';
+import { Heart, ShoppingCart, Eye, Filter, Search, Sparkles, Star, Rainbow, SlidersHorizontal, Grid, List } from 'lucide-react';
 
 // Floating Animation Components
 const FloatingElement = ({ children, delay = 0, duration = 3 }) => (
   <motion.div
     animate={{
-      y: [0, -10, 0],
-      rotate: [0, 5, -5, 0]
+      y: [0, -15, 0],
+      rotate: [0, 3, -3, 0]
     }}
     transition={{
       duration,
@@ -29,13 +30,14 @@ const FloatingElement = ({ children, delay = 0, duration = 3 }) => (
 
 const BouncingIcon = ({ icon, color, size = "text-4xl", delay = 0, position }) => (
   <motion.div
-    className={`${color} ${size} absolute ${position}`}
+    className={`${color} ${size} absolute ${position} opacity-60`}
     animate={{
       y: [0, -20, 0],
-      scale: [1, 1.2, 1]
+      scale: [1, 1.2, 1],
+      rotate: [0, 10, -10, 0]
     }}
     transition={{
-      duration: 2,
+      duration: 3,
       repeat: Infinity,
       delay,
       ease: "easeInOut"
@@ -55,6 +57,8 @@ export default function KidsShop() {
   const [hoveredProduct, setHoveredProduct] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [viewMode, setViewMode] = useState('grid'); // grid or list
+  const [showFilters, setShowFilters] = useState(false);
   
   const navigate = useNavigate();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -136,194 +140,281 @@ export default function KidsShop() {
   };
 
   const categories = [
-    { id: 'all', name: 'All Fun Glasses', icon: '🌈' },
-    { id: 'kids-sunglasses', name: 'Cool Sunglasses', icon: '🕶️' },
-    { id: 'kids-frames', name: 'Smart Frames', icon: '🤓' }
+    { id: 'all', name: 'All Magic Glasses' },
+    { id: 'kids-sunglasses', name: 'Cool Sunglasses' },
+    { id: 'kids-frames', name: 'Smart Frames'}
   ];
 
   const ageRanges = [
-    { id: 'all', name: 'All Ages', icon: '👶' },
-    { id: '2-5', name: '2-5 Years', icon: '🧒' },
-    { id: '6-8', name: '6-8 Years', icon: '👦' },
-    { id: '9-12', name: '9-12 Years', icon: '👧' }
+    { id: 'all', name: 'All Ages'},
+    { id: '2-5', name: '2-5 Years'},
+    { id: '6-8', name: '6-8 Years'},
+    { id: '9-12', name: '9-12 Years'}
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-200 via-pink-100 to-yellow-200 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500 overflow-hidden">
       <Header onCartClick={() => setIsCartOpen(true)} />
       
-      {/* Floating Background Elements */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <BouncingIcon icon="🌈" color="text-pink-400" delay={0} position="top-20 left-10" />
-        <BouncingIcon icon="⭐" color="text-yellow-400" delay={0.5} position="top-40 right-20" />
-        <BouncingIcon icon="🎈" color="text-red-400" delay={1} position="bottom-40 left-20" />
-        <BouncingIcon icon="☁️" color="text-blue-300" delay={1.5} position="top-60 left-1/2" />
-        <BouncingIcon icon="🦄" color="text-purple-400" delay={2} position="bottom-20 right-10" />
-        <BouncingIcon icon="🌟" color="text-yellow-300" size="text-6xl" delay={0.3} position="top-32 right-1/4" />
-        <BouncingIcon icon="🎨" color="text-pink-400" size="text-5xl" delay={0.8} position="bottom-60 left-1/4" />
-        <BouncingIcon icon="🚀" color="text-blue-400" size="text-5xl" delay={1.2} position="top-1/2 right-20" />
-        <BouncingIcon icon="🎪" color="text-red-400" size="text-4xl" delay={1.8} position="bottom-32 right-1/3" />
-      </div>
+
 
       {/* Hero Section */}
-      <div className={`pt-32 pb-16 px-4 sm:px-6 lg:px-8 relative transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+      <div className={`pt-32 pb-12 px-4 sm:px-6 lg:px-8 relative transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
         <div className="max-w-7xl mx-auto text-center">
           
           {/* Fun Badge */}
           <motion.div 
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-pink-400 to-purple-500 rounded-full text-white font-bold shadow-lg mb-8"
+            className="inline-flex items-center px-8 py-4 bg-white/20 backdrop-blur-lg rounded-full text-white font-bold text-lg shadow-2xl mb-8 border border-white/30"
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
           >
-            <Sparkles className="w-5 h-5 mr-2" />
-            Kids' Eyewear Shop! 
-            <Star className="w-5 h-5 ml-2" />
+            <Sparkles className="w-6 h-6 mr-3" />
+            Kids' Ultimate Eyewear Shop! 
+            <Star className="w-6 h-6 ml-3" />
           </motion.div>
           
           {/* Main Title */}
           <motion.h1 
-            className="text-5xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 mb-6 leading-tight"
-            style={{ fontFamily: "'Fredoka One', cursive" }}
+            className="text-5xl lg:text-7xl font-black text-white mb-6 leading-tight"
+            style={{ 
+              fontFamily: "'Fredoka One', cursive",
+              textShadow: '0 4px 20px rgba(0,0,0,0.3)'
+            }}
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Amazing Kids
+            Magical Kids
             <br />
-            <span className="text-gradient-to-r from-yellow-400 to-orange-500">
-              Glasses Store! 
+            <span className="text-cyan-300">
+              Glasses Adventure! 
             </span>
             <motion.span
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ duration: 1, repeat: Infinity, delay: 1 }}
               className="inline-block ml-4"
             >
-              😎
+              
             </motion.span>
           </motion.h1>
           
-          {/* Fun Subtitle */}
+          {/* Subtitle */}
           <motion.p 
-            className="text-xl lg:text-2xl text-gray-700 font-bold mb-8 max-w-3xl mx-auto"
-            style={{ fontFamily: "'Baloo 2', cursive" }}
+            className="text-xl lg:text-2xl text-white/90 font-bold mb-8 max-w-3xl mx-auto"
+            style={{ 
+              fontFamily: "'Baloo 2', cursive",
+              textShadow: '0 2px 10px rgba(0,0,0,0.2)'
+            }}
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            🌟 Find Your Perfect Superhero Look! 🌟
+            Discover Your Perfect Superhero Look! 
           </motion.p>
+
+          {/* Quick Stats */}
+          <motion.div 
+            className="flex flex-wrap justify-center gap-6 mb-8"
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/30">
+              <span className="text-2xl font-bold text-white">{kidsProducts.length}</span>
+              <span className="text-white/90 ml-2 font-medium">Amazing Styles</span>
+            </div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/30">
+              <span className="text-2xl font-bold text-white">100%</span>
+              <span className="text-white/90 ml-2 font-medium">Safe & Fun</span>
+            </div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-2xl px-6 py-3 border border-white/30">
+              <span className="text-2xl font-bold text-white">FREE</span>
+              <span className="text-white/90 ml-2 font-medium">Home Delivery</span>
+            </div>
+          </motion.div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
         
-        {/* Fun Filters Section */}
-        <div className={`mb-12 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+        {/* Search and View Controls */}
+        <div className={`mb-8 transform transition-all duration-1000 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
             
-            {/* Categories */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-              <h3 className="text-lg font-bold text-purple-600 mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
-                <Rainbow className="w-5 h-5 mr-2" />
-                Choose Style
-              </h3>
-              <div className="space-y-3">
-                {categories.map((category) => (
-                  <motion.button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold transition-all duration-300 ${
-                      selectedCategory === category.id
-                        ? 'bg-gradient-to-r from-pink-400 to-purple-500 text-white shadow-lg'
-                        : 'bg-white/50 text-purple-600 hover:bg-pink-100'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: "'Baloo 2', cursive" }}
-                  >
-                    <span className="text-xl">{category.icon}</span>
-                    {category.name}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* Age Range */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-              <h3 className="text-lg font-bold text-blue-600 mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
-                <span className="text-xl mr-2">🎂</span>
-                Age Group
-              </h3>
-              <div className="space-y-3">
-                {ageRanges.map((age) => (
-                  <motion.button
-                    key={age.id}
-                    onClick={() => setAgeRange(age.id)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold transition-all duration-300 ${
-                      ageRange === age.id
-                        ? 'bg-gradient-to-r from-blue-400 to-cyan-500 text-white shadow-lg'
-                        : 'bg-white/50 text-blue-600 hover:bg-blue-100'
-                    }`}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    style={{ fontFamily: "'Baloo 2', cursive" }}
-                  >
-                    <span className="text-xl">{age.icon}</span>
-                    {age.name}
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* Search */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-              <h3 className="text-lg font-bold text-green-600 mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
-                <Search className="w-5 h-5 mr-2" />
-                Find Glasses
-              </h3>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
-                <input
-                  type="text"
-                  placeholder="Search for cool glasses..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-white/70 border-2 border-green-200 rounded-2xl text-gray-700 placeholder-gray-500 focus:ring-2 focus:ring-green-400 focus:border-transparent transition-all duration-300"
-                  style={{ fontFamily: "'Baloo 2', cursive" }}
-                />
-              </div>
-            </div>
-
-            {/* Sort */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 shadow-xl">
-              <h3 className="text-lg font-bold text-orange-600 mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
-                <span className="text-xl mr-2">🎯</span>
-                Sort By
-              </h3>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full p-3 bg-white/70 border-2 border-orange-200 rounded-2xl text-gray-700 focus:ring-2 focus:ring-orange-400 focus:border-transparent font-bold transition-all duration-300"
+            {/* Search Bar */}
+            <div className="relative w-full lg:w-96">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/60" />
+              <input
+                type="text"
+                placeholder="Search for magical glasses..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 bg-white/20 backdrop-blur-lg border-2 border-white/30 rounded-full text-white placeholder-white/60 focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-all duration-300 font-bold"
                 style={{ fontFamily: "'Baloo 2', cursive" }}
+              />
+            </div>
+
+            {/* Controls */}
+            <div className="flex items-center gap-4">
+              {/* Filters Toggle */}
+              <motion.button
+                onClick={() => setShowFilters(!showFilters)}
+                className="flex items-center gap-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 border border-white/30"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <option value="featured">✨ Most Popular</option>
-                <option value="price-low">💰 Cheapest First</option>
-                <option value="price-high">💎 Most Expensive</option>
-                <option value="rating">⭐ Best Rated</option>
-                <option value="newest">🆕 Newest</option>
-              </select>
+                <SlidersHorizontal className="w-5 h-5" />
+                Filters
+              </motion.button>
+
+              {/* View Mode Toggle */}
+              <div className="flex bg-white/20 backdrop-blur-sm rounded-full p-1 border border-white/30">
+                <button
+                  onClick={() => setViewMode('grid')}
+                  className={`p-3 rounded-full transition-all duration-300 ${
+                    viewMode === 'grid' 
+                      ? 'bg-white text-purple-600' 
+                      : 'text-white hover:bg-white/20'
+                  }`}
+                >
+                  <Grid className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-3 rounded-full transition-all duration-300 ${
+                    viewMode === 'list' 
+                      ? 'bg-white text-purple-600' 
+                      : 'text-white hover:bg-white/20'
+                  }`}
+                >
+                  <List className="w-5 h-5" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className={`transform transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-          <div className="mb-8 text-center">
-            <p className="text-xl text-purple-600 font-bold" style={{ fontFamily: "'Baloo 2', cursive" }}>
-              Found <span className="text-pink-500">{filteredProducts.length}</span> awesome glasses! 🎉
-            </p>
-          </div>
+        {/* Filters Section */}
+        <AnimatePresence>
+          {showFilters && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+                
+                {/* Categories */}
+                <div className="bg-white/15 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+                  <h3 className="text-lg font-bold text-white mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                    <Rainbow className="w-5 h-5 mr-2" />
+                    Choose Style
+                  </h3>
+                  <div className="space-y-3">
+                    {categories.map((category) => (
+                      <motion.button
+                        key={category.id}
+                        onClick={() => setSelectedCategory(category.id)}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold transition-all duration-300 ${
+                          selectedCategory === category.id
+                            ? 'bg-white text-purple-600 shadow-lg'
+                            : 'bg-white/20 text-white hover:bg-white/30'
+                        }`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{ fontFamily: "'Baloo 2', cursive" }}
+                      >
+                        <span className="text-xl">{category.icon}</span>
+                        {category.name}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
 
+                {/* Age Range */}
+                <div className="bg-white/15 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+                  <h3 className="text-lg font-bold text-white mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                    <span className="text-xl mr-2"></span>
+                    Age Group
+                  </h3>
+                  <div className="space-y-3">
+                    {ageRanges.map((age) => (
+                      <motion.button
+                        key={age.id}
+                        onClick={() => setAgeRange(age.id)}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl font-bold transition-all duration-300 ${
+                          ageRange === age.id
+                            ? 'bg-white text-purple-600 shadow-lg'
+                            : 'bg-white/20 text-white hover:bg-white/30'
+                        }`}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        style={{ fontFamily: "'Baloo 2', cursive" }}
+                      >
+                        <span className="text-xl">{age.icon}</span>
+                        {age.name}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Price Range */}
+                <div className="bg-white/15 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+                  <h3 className="text-lg font-bold text-white mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                    <span className="text-xl mr-2"></span>
+                    Price Range
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex justify-between text-white font-bold">
+                      <span>₹{priceRange[0]}</span>
+                      <span>₹{priceRange[1]}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="1500"
+                      value={priceRange[1]}
+                      onChange={(e) => setPriceRange([0, parseInt(e.target.value)])}
+                      className="w-full accent-yellow-400"
+                    />
+                  </div>
+                </div>
+
+                {/* Sort */}
+                <div className="bg-white/15 backdrop-blur-lg rounded-3xl p-6 shadow-2xl border border-white/20">
+                  <h3 className="text-lg font-bold text-white mb-4 flex items-center" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                    <span className="text-xl mr-2"></span>
+                    Sort By
+                  </h3>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full p-3 bg-white/20 backdrop-blur-sm border-2 border-white/30 rounded-2xl text-white focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 font-bold transition-all duration-300"
+                    style={{ fontFamily: "'Baloo 2', cursive" }}
+                  >
+                    <option value="featured" className="text-gray-800">Most Popular</option>
+                    <option value="price-low" className="text-gray-800">Cheapest First</option>
+                    <option value="price-high" className="text-gray-800">Most Expensive</option>
+                    <option value="rating" className="text-gray-800">Best Rated</option>
+                    <option value="newest" className="text-gray-800">Newest</option>
+                  </select>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Results Header */}
+        <div className={`mb-8 text-center transform transition-all duration-1000 delay-400 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
+          <p className="text-2xl text-white font-bold" style={{ fontFamily: "'Baloo 2', cursive" }}>
+            Found <span className="text-yellow-300 text-3xl">{filteredProducts.length}</span> magical glasses! 
+          </p>
+        </div>
+
+        {/* Products Display */}
+        <div className={`transform transition-all duration-1000 delay-600 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
           {filteredProducts.length === 0 ? (
             /* Empty State */
             <motion.div 
@@ -332,12 +423,12 @@ export default function KidsShop() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
             >
-              <div className="text-8xl mb-6">😢</div>
-              <h3 className="text-3xl font-bold text-purple-600 mb-4" style={{ fontFamily: "'Fredoka One', cursive" }}>
-                Oops! No glasses found
+              <div className="text-8xl mb-6"></div>
+              <h3 className="text-4xl font-bold text-white mb-4" style={{ fontFamily: "'Fredoka One', cursive" }}>
+                Oops! No magical glasses found
               </h3>
-              <p className="text-gray-600 font-bold mb-8" style={{ fontFamily: "'Baloo 2', cursive" }}>
-                Try changing your search or filters!
+              <p className="text-white/80 font-bold mb-8 text-xl" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                Try changing your search or magical filters!
               </p>
               <motion.button
                 onClick={() => {
@@ -346,34 +437,39 @@ export default function KidsShop() {
                   setSearchQuery('');
                   setPriceRange([0, 1500]);
                 }}
-                className="bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105"
+                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-white px-8 py-4 rounded-full font-bold transition-all duration-300 text-xl shadow-2xl"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ fontFamily: "'Baloo 2', cursive" }}
               >
-                🔄 Show All Glasses
+                Show All Magic Glasses
               </motion.button>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className={viewMode === 'grid' 
+              ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" 
+              : "space-y-6"
+            }>
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
-                  className="group relative bg-white/90 backdrop-blur-sm rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer"
+                  className={`group relative bg-white rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 cursor-pointer ${
+                    viewMode === 'list' ? 'flex gap-6 p-6' : ''
+                  }`}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileHover={{ scale: viewMode === 'grid' ? 1.03 : 1.01, y: -5 }}
                   onClick={() => handleProductClick(product.id)}
                   onMouseEnter={() => setHoveredProduct(product.id)}
                   onMouseLeave={() => setHoveredProduct(null)}
                 >
-                  {/* Fun Badge */}
-                  <div className={`absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg ${
-                    product.badge === 'Super Cool!' ? 'bg-gradient-to-r from-pink-400 to-red-500' :
+                  {/* Product Badge */}
+                  <div className={`absolute top-4 left-4 z-10 px-4 py-2 rounded-full text-sm font-bold text-white shadow-lg ${
+                    product.badge === 'Super Cool!' ? 'bg-gradient-to-r from-pink-500 to-red-500' :
                     product.badge === 'Hero Power!' ? 'bg-gradient-to-r from-blue-500 to-purple-600' :
-                    product.badge === 'Magical!' ? 'bg-gradient-to-r from-purple-400 to-pink-500' :
-                    'bg-gradient-to-r from-green-400 to-blue-500'
+                    product.badge === 'Magical!' ? 'bg-gradient-to-r from-purple-500 to-pink-500' :
+                    'bg-gradient-to-r from-green-500 to-blue-500'
                   }`}>
                     {product.badge}
                   </div>
@@ -381,7 +477,7 @@ export default function KidsShop() {
                   {/* Discount Badge */}
                   {product.discount && (
                     <motion.div 
-                      className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-bold shadow-lg"
+                      className="absolute top-4 right-4 z-10 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-2 rounded-full text-sm font-bold shadow-lg"
                       animate={{ rotate: [0, 5, -5, 0] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
@@ -390,7 +486,9 @@ export default function KidsShop() {
                   )}
 
                   {/* Product Image */}
-                  <div className="relative aspect-square overflow-hidden bg-gradient-to-br from-sky-100 to-pink-100">
+                  <div className={`relative overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 ${
+                    viewMode === 'list' ? 'w-48 h-48 flex-shrink-0 rounded-2xl' : 'aspect-square'
+                  }`}>
                     <img
                       src={hoveredProduct === product.id && product.images[1] ? product.images[1] : product.image}
                       alt={product.name}
@@ -403,7 +501,7 @@ export default function KidsShop() {
                     }`}>
                       <motion.button
                         onClick={(e) => handleWishlistToggle(e, product)}
-                        className={`w-12 h-12 rounded-full backdrop-blur-sm border-2 border-white/50 flex items-center justify-center transition-all duration-300 ${
+                        className={`w-12 h-12 rounded-full backdrop-blur-sm border-2 border-white/50 flex items-center justify-center transition-all duration-300 shadow-lg ${
                           isInWishlist(product.id) 
                             ? 'bg-red-500 text-white' 
                             : 'bg-white/20 text-white hover:bg-white/30'
@@ -416,7 +514,7 @@ export default function KidsShop() {
                       
                       <motion.button
                         onClick={(e) => handleAddToCart(e, product)}
-                        className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white hover:from-green-500 hover:to-blue-600 transition-all duration-300"
+                        className="w-12 h-12 bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white hover:from-green-500 hover:to-blue-600 transition-all duration-300 shadow-lg"
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
                       >
@@ -426,13 +524,13 @@ export default function KidsShop() {
                   </div>
 
                   {/* Product Info */}
-                  <div className="p-6 space-y-4">
+                  <div className={`space-y-4 ${viewMode === 'list' ? 'flex-1' : 'p-6'}`}>
                     <div className="flex justify-between items-start">
                       <h3 className="text-xl font-bold text-gray-800 group-hover:text-purple-600 transition-colors duration-300" style={{ fontFamily: "'Baloo 2', cursive" }}>
                         {product.name}
                       </h3>
                       <div className="text-right">
-                        <div className="text-xl font-bold text-green-600">₹{product.price}</div>
+                        <div className="text-2xl font-bold text-green-600">₹{product.price}</div>
                         {product.originalPrice && (
                           <div className="text-sm text-gray-500 line-through">₹{product.originalPrice}</div>
                         )}
@@ -440,22 +538,22 @@ export default function KidsShop() {
                     </div>
 
                     {/* Age Range */}
-                    <div className="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-full px-3 py-1 text-center">
-                      <span className="text-sm font-bold text-orange-700">
-                        Perfect for {product.ageRange} 👶
+                    <div className="bg-gradient-to-r from-yellow-200 to-orange-200 rounded-full px-4 py-2 text-center">
+                      <span className="text-sm font-bold text-orange-800">
+                        Perfect for {product.ageRange} 
                       </span>
                     </div>
 
                     {/* Reviews */}
                     <div className="flex items-center justify-center gap-2 text-sm">
-                      <div className="flex text-yellow-400">
-                        {'⭐'.repeat(Math.floor(product.rating))}
+                      <div className="flex text-yellow-500">
+                        {'★'.repeat(Math.floor(product.rating))}
                       </div>
                       <span className="text-gray-600 font-bold">({product.reviews} happy kids!)</span>
                     </div>
 
-                    {/* Fun Description */}
-                    <p className="text-gray-600 text-center font-bold" style={{ fontFamily: "'Baloo 2', cursive" }}>
+                    {/* Description */}
+                    <p className="text-gray-600 text-center font-bold leading-relaxed" style={{ fontFamily: "'Baloo 2', cursive" }}>
                       {product.description}
                     </p>
 
@@ -465,12 +563,12 @@ export default function KidsShop() {
                         e.stopPropagation();
                         handleProductClick(product.id);
                       }}
-                      className="w-full bg-gradient-to-r from-pink-400 to-purple-500 hover:from-pink-500 hover:to-purple-600 text-white py-3 px-6 rounded-full font-bold transition-all duration-300 shadow-lg"
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-4 px-6 rounded-full font-bold transition-all duration-300 shadow-lg text-lg"
                       style={{ fontFamily: "'Baloo 2', cursive" }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      👀 See More Details!
+                      See Magic Details!
                     </motion.button>
                   </div>
                 </motion.div>
