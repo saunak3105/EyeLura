@@ -3,13 +3,29 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const session = require('express-session');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
+// Import routes
 const productsRoutes = require('./routes/products');
 const ordersRoutes = require('./routes/orders');
+const authRoutes = require('./routes/auth');
+const paymentRoutes = require('./routes/payment');
+
+// Import auth strategy
+require('./auth/googleStrategy');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/eyelura', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log('📦 Connected to MongoDB'))
+.catch(err => console.error('❌ MongoDB connection error:', err));
 
 // Security middleware
 app.use(helmet());
@@ -30,6 +46,22 @@ app.use(cors({
   credentials: true
 }));
 
+// Session middleware (for Google OAuth)
+app.use(session({
+  secret: process.env.JWT_SECRET || 'your-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// Initialize Passport
+const passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
@@ -46,6 +78,8 @@ app.get('/health', (req, res) => {
 // API routes
 app.use('/api/products', productsRoutes);
 app.use('/api/orders', ordersRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
