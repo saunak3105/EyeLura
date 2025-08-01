@@ -9,15 +9,20 @@ import { Camera, RotateCcw, Download, AlertCircle, Loader2, X } from 'lucide-rea
 // Video background component that shows the camera feed
 function VideoBackground({ videoRef }) {
   const meshRef = useRef();
+  const textureRef = useRef();
   const { viewport } = useThree();
 
   useFrame(() => {
     if (meshRef.current && videoRef.current && videoRef.current.readyState >= 2) {
-      const texture = new THREE.VideoTexture(videoRef.current);
-      texture.minFilter = THREE.LinearFilter;
-      texture.magFilter = THREE.LinearFilter;
-      texture.format = THREE.RGBFormat;
-      meshRef.current.material.map = texture;
+      if (!textureRef.current) {
+        textureRef.current = new THREE.VideoTexture(videoRef.current);
+        textureRef.current.minFilter = THREE.LinearFilter;
+        textureRef.current.magFilter = THREE.LinearFilter;
+        textureRef.current.format = THREE.RGBFormat;
+        textureRef.current.flipY = false;
+        meshRef.current.material.map = textureRef.current;
+      }
+      textureRef.current.needsUpdate = true;
     }
   });
 
@@ -31,9 +36,31 @@ function VideoBackground({ videoRef }) {
 
 // Glasses component that renders in Three.js scene
 function GlassesModel({ faceData, modelPath, videoRef }) {
-  const { scene } = useGLTF(modelPath);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const gltf = useRef(null);
   const meshRef = useRef();
   const { viewport, camera } = useThree();
+
+  // Try to load the model with error handling
+  useEffect(() => {
+    const loadModel = async () => {
+      try {
+        setLoadError(false);
+        const result = await useGLTF.preload(modelPath);
+        gltf.current = result;
+        setModelLoaded(true);
+      } catch (error) {
+        console.warn(`Failed to load model: ${modelPath}`, error);
+        setLoadError(true);
+        // Create a simple fallback geometry
+        gltf.current = null;
+        setModelLoaded(true);
+      }
+    };
+    
+    loadModel();
+  }, [modelPath]);
 
   useFrame(() => {
     if (!meshRef.current || !faceData?.landmarks || !videoRef.current) return;
@@ -84,10 +111,23 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
     }
   });
 
+  // Don't render anything until we've attempted to load
+  if (!modelLoaded) return null;
+
+  // If model failed to load, render a simple fallback
+  if (loadError || !gltf.current) {
+    return (
+      <mesh ref={meshRef}>
+        <boxGeometry args={[0.15, 0.03, 0.01]} />
+        <meshStandardMaterial color="#333333" />
+      </mesh>
+    );
+  }
+
   return (
     <primitive
       ref={meshRef}
-      object={scene.clone()}
+      object={gltf.current.scene.clone()}
       scale={[1, 1, 1]}
     />
   );
@@ -98,6 +138,13 @@ const GLASSES_MODELS = [
   '/models/glasses1.glb', // TODO: Add actual model paths
   '/models/glasses2.glb',
   '/models/glasses3.glb'
+];
+
+// Simple fallback frames data for when models aren't available
+const FALLBACK_FRAMES = [
+  { name: 'Classic Frame', color: '#333333' },
+  { name: 'Modern Frame', color: '#666666' },
+  { name: 'Retro Frame', color: '#444444' }
 ];
 
 const ARTryOn = ({ isOpen, onClose }) => {
@@ -401,8 +448,14 @@ const ARTryOn = ({ isOpen, onClose }) => {
                 <h4 className="text-sm font-semibold text-gray-700 mb-3">Current Frame</h4>
                 <div className="bg-white p-4 rounded-lg border border-gray-200">
                   <div className="text-center">
-                    <div className="w-16 h-8 bg-gray-300 rounded mx-auto mb-2"></div>
-                    <p className="text-sm text-gray-600">
+                    <div 
+                      className="w-16 h-8 rounded mx-auto mb-2"
+                      style={{ backgroundColor: FALLBACK_FRAMES[currentModelIndex].color }}
+                    ></div>
+                    <p className="text-sm text-gray-600 font-medium">
+                      {FALLBACK_FRAMES[currentModelIndex].name}
+                    </p>
+                    <p className="text-xs text-gray-500">
                       Frame {currentModelIndex + 1} of {GLASSES_MODELS.length}
                     </p>
                   </div>
@@ -425,14 +478,5 @@ const ARTryOn = ({ isOpen, onClose }) => {
     </div>
   );
 };
-
-// Preload GLTF models - these will fail until you add actual model files
-GLASSES_MODELS.forEach((modelPath) => {
-  try {
-    useGLTF.preload(modelPath);
-  } catch (e) {
-    console.warn(`Failed to preload model: ${modelPath}`);
-  }
-});
 
 export default ARTryOn;
