@@ -27,7 +27,7 @@ function VideoBackground({ videoRef }) {
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 0, -5]}>
+    <mesh ref={meshRef} position={[0, 0, -5]} scale={[-1, 1, 1]}>
       <planeGeometry args={[viewport.width, viewport.height]} />
       <meshBasicMaterial side={THREE.DoubleSide} />
     </mesh>
@@ -36,37 +36,9 @@ function VideoBackground({ videoRef }) {
 
 // Glasses component that renders in Three.js scene
 function GlassesModel({ faceData, modelPath, videoRef }) {
-  const [modelLoaded, setModelLoaded] = useState(false);
-  const [loadError, setLoadError] = useState(false);
-  const gltf = useRef(null);
+  const { scene } = useGLTF(modelPath);
   const meshRef = useRef();
   const { viewport } = useThree();
-
-  // Try to load the model with error handling
-  useEffect(() => {
-    const loadModel = async () => {
-      try {
-        setLoadError(false);
-        const loader = new THREE.GLTFLoader();
-        const result = await new Promise((resolve, reject) => {
-          loader.load(
-            modelPath,
-            resolve,
-            undefined,
-            reject
-          );
-        });
-        gltf.current = result;
-        setModelLoaded(true);
-      } catch (error) {
-        console.warn(`Failed to load model: ${modelPath}`, error);
-        setLoadError(true);
-        setModelLoaded(true);
-      }
-    };
-    
-    loadModel();
-  }, [modelPath]);
 
   useFrame(() => {
     if (!meshRef.current || !faceData?.landmarks || !videoRef.current) return;
@@ -95,10 +67,10 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
         scaleX = viewport.height * videoAspect;
       }
 
-      // Convert normalized coordinates to world space (flip X for mirror effect)
-      const noseX = -(noseBridge.x - 0.5) * scaleX;
+      // Convert normalized coordinates to world space (account for mirrored video)
+      const noseX = (noseBridge.x - 0.5) * scaleX;
       const noseY = -(noseBridge.y - 0.5) * scaleY;
-      const noseZ = (noseBridge.z || 0) * 2;
+      const noseZ = (noseBridge.z || 0) * 5 + 1;
 
       // Position glasses at nose bridge
       meshRef.current.position.set(noseX, noseY, noseZ);
@@ -109,16 +81,16 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
         Math.pow((rightEye.y - leftEye.y) * scaleY, 2)
       );
       
-      // Scale the glasses based on face size
-      const scale = eyeDistance * 1.2;
-      meshRef.current.scale.setScalar(scale);
+      // Scale the glasses based on face size (adjust multiplier for better fit)
+      const scale = eyeDistance * 2.5;
+      meshRef.current.scale.set(scale, scale, scale);
 
       // Calculate rotation based on eye positions
       const eyeAngle = Math.atan2(
         (rightEye.y - leftEye.y) * scaleY,
         (rightEye.x - leftEye.x) * scaleX
       );
-      meshRef.current.rotation.z = eyeAngle;
+      meshRef.current.rotation.z = -eyeAngle; // Flip for mirrored video
 
       // Slight tilt based on eyebrows for more natural look
       if (leftEyebrow && rightEyebrow) {
@@ -126,45 +98,32 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
           (rightEyebrow.y - leftEyebrow.y) * scaleY,
           (rightEyebrow.x - leftEyebrow.x) * scaleX
         );
-        meshRef.current.rotation.x = (browAngle - eyeAngle) * 0.1;
+        meshRef.current.rotation.x = -(browAngle - eyeAngle) * 0.1;
       }
     }
   });
 
-  // Don't render anything until we've attempted to load
-  if (!modelLoaded) return null;
-
-  // If model failed to load, render a simple fallback
-  if (loadError || !gltf.current) {
-    return (
-      <mesh ref={meshRef}>
-        <boxGeometry args={[0.3, 0.05, 0.02]} />
-        <meshStandardMaterial color="#222222" />
-      </mesh>
-    );
-  }
-
   return (
     <primitive
       ref={meshRef}
-      object={gltf.current.scene.clone()}
+      object={scene.clone()}
       scale={[1, 1, 1]}
     />
   );
 }
 
-// Glasses models
+// Glasses models - using the uploaded model
 const GLASSES_MODELS = [
+  '/models/black_sunglasses.glb',
   '/models/glasses1.glb',
-  '/models/glasses2.glb',
-  '/models/glasses3.glb'
+  '/models/glasses2.glb'
 ];
 
 // Simple fallback frames data
 const FALLBACK_FRAMES = [
   { name: 'Black Sunglasses', color: '#222222' },
-  { name: 'Modern Frame', color: '#666666' },
-  { name: 'Retro Frame', color: '#444444' }
+  { name: 'Classic Frame', color: '#444444' },
+  { name: 'Modern Frame', color: '#666666' }
 ];
 
 const ARTryOn = ({ isOpen, onClose }) => {
@@ -535,8 +494,10 @@ const ARTryOn = ({ isOpen, onClose }) => {
                 camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{ background: 'transparent' }}
               >
-                <ambientLight intensity={0.8} />
-                <directionalLight position={[10, 10, 5]} intensity={0.5} />
+                <ambientLight intensity={1.2} />
+                <directionalLight position={[10, 10, 5]} intensity={0.8} />
+                <directionalLight position={[-10, -10, 5]} intensity={0.3} />
+                <pointLight position={[0, 0, 10]} intensity={0.5} />
                 
                 {/* Video background */}
                 {isInitialized && <VideoBackground videoRef={videoRef} />}
