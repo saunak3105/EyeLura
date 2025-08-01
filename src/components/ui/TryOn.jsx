@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Upload, RotateCcw, Download, Sparkles, Eye, Zap } from 'lucide-react';
+import ARTryOn from './ARTryOn';
+import { useARTryOn } from '../../hooks/useARTryOn';
 
 export default function TryOn() {
   const [selectedFrame, setSelectedFrame] = useState(null);
@@ -10,6 +12,7 @@ export default function TryOn() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
+  const { isAROpen, openAR, closeAR } = useARTryOn();
 
   const frames = [
     {
@@ -55,7 +58,7 @@ export default function TryOn() {
     } catch (error) {
       console.error('Error accessing webcam:', error);
       let errorMessage = 'Unable to access webcam. ';
-      
+
       if (error.name === 'NotAllowedError' || error.message.includes('Permission denied')) {
         errorMessage += 'Please allow camera access by clicking the camera icon in your browser\'s address bar, or check your browser\'s privacy settings to enable camera access for this site.';
       } else if (error.name === 'NotFoundError') {
@@ -65,7 +68,7 @@ export default function TryOn() {
       } else {
         errorMessage += 'Please check your camera permissions and try again.';
       }
-      
+
       setWebcamError(errorMessage);
     }
   };
@@ -97,11 +100,11 @@ export default function TryOn() {
       const canvas = canvasRef.current;
       const video = videoRef.current;
       const context = canvas.getContext('2d');
-      
+
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       context.drawImage(video, 0, 0);
-      
+
       const imageData = canvas.toDataURL('image/png');
       setUploadedImage(imageData);
       stopWebcam();
@@ -153,7 +156,7 @@ export default function TryOn() {
             <span className="text-yellow-400 font-semibold">AR Virtual Try-On</span>
             <Eye className="w-5 h-5 text-yellow-400 ml-2" />
           </div>
-          
+
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
             <span className="font-playfair">Try Before You</span>
             <br />
@@ -161,7 +164,7 @@ export default function TryOn() {
               Buy
             </span>
           </h2>
-          
+
           <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Experience our revolutionary AR technology. See how you look in any frame instantly, 
             right from your device.
@@ -183,7 +186,7 @@ export default function TryOn() {
                 <Camera className="w-6 h-6 text-yellow-400 mr-3" />
                 Get Started
               </h3>
-              
+
               <div className="space-y-4">
                 {/* Webcam Error Message */}
                 <AnimatePresence>
@@ -215,25 +218,35 @@ export default function TryOn() {
                 </AnimatePresence>
 
                 {!uploadedImage && !isWebcamActive && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <motion.button
-                      onClick={startWebcam}
-                      className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-xl font-semibold transition-all duration-300"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Camera className="w-5 h-5 mr-2" />
-                      Use Camera
-                    </motion.button>
-                    
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <motion.button
+                        onClick={openAR}
+                        className="flex items-center justify-center p-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-black rounded-xl font-semibold shadow-lg col-span-1 sm:col-span-3"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Sparkles className="w-5 h-5 mr-2" />
+                        AR Virtual Try-On
+                      </motion.button>
+
+                      <motion.button
+                        onClick={startWebcam}
+                        className="flex items-center justify-center p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl font-medium transition-colors"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        <Camera className="w-4 h-4 mr-2" />
+                        Webcam
+                      </motion.button>
+
                     <motion.button
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex items-center justify-center px-6 py-4 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white rounded-xl font-semibold transition-all duration-300"
+                      className="flex items-center justify-center p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl font-medium transition-colors"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <Upload className="w-5 h-5 mr-2" />
-                      Upload Photo
+                      <Upload className="w-4 h-4 mr-2" />
+                      Upload
                     </motion.button>
                   </div>
                 )}
@@ -321,7 +334,7 @@ export default function TryOn() {
                       <Download className="w-5 h-5 mr-2" />
                       Download
                     </motion.button>
-                    
+
                     <motion.button
                       onClick={resetTryOn}
                       className="flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-xl font-semibold transition-all duration-300"
@@ -352,7 +365,7 @@ export default function TryOn() {
                 <Zap className="w-6 h-6 text-yellow-400 mr-3" />
                 Choose Your Frame
               </h3>
-              
+
               <div className="grid grid-cols-2 gap-4">
                 {frames.map((frame) => (
                   <motion.div
@@ -437,6 +450,8 @@ export default function TryOn() {
           </motion.button>
         </motion.div>
       </div>
+      {/* AR Try-On Modal */}
+      <ARTryOn isOpen={isAROpen} onClose={closeAR} />
     </section>
   );
 }
