@@ -27,7 +27,7 @@ function VideoBackground({ videoRef }) {
   });
 
   return (
-    <mesh ref={meshRef} position={[0, 0, -1]}>
+    <mesh ref={meshRef} position={[0, 0, -5]}>
       <planeGeometry args={[viewport.width, viewport.height]} />
       <meshBasicMaterial side={THREE.DoubleSide} />
     </mesh>
@@ -40,21 +40,27 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
   const [loadError, setLoadError] = useState(false);
   const gltf = useRef(null);
   const meshRef = useRef();
-  const { viewport, camera } = useThree();
+  const { viewport } = useThree();
 
   // Try to load the model with error handling
   useEffect(() => {
     const loadModel = async () => {
       try {
         setLoadError(false);
-        const result = await useGLTF.preload(modelPath);
+        const loader = new THREE.GLTFLoader();
+        const result = await new Promise((resolve, reject) => {
+          loader.load(
+            modelPath,
+            resolve,
+            undefined,
+            reject
+          );
+        });
         gltf.current = result;
         setModelLoaded(true);
       } catch (error) {
         console.warn(`Failed to load model: ${modelPath}`, error);
         setLoadError(true);
-        // Create a simple fallback geometry
-        gltf.current = null;
         setModelLoaded(true);
       }
     };
@@ -72,10 +78,11 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
     const noseBridge = landmarks[168]; // Nose bridge center
     const leftEye = landmarks[33];     // Left eye corner
     const rightEye = landmarks[263];   // Right eye corner
+    const leftEyebrow = landmarks[70]; // Left eyebrow
+    const rightEyebrow = landmarks[300]; // Right eyebrow
 
     if (noseBridge && leftEye && rightEye) {
       // Convert MediaPipe normalized coordinates to Three.js world coordinates
-      // MediaPipe gives coordinates as (0-1), we need to map to viewport
       const videoAspect = video.videoWidth / video.videoHeight;
       const viewportAspect = viewport.width / viewport.height;
       
@@ -88,26 +95,39 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
         scaleX = viewport.height * videoAspect;
       }
 
-      // Convert normalized coordinates to world space
-      const noseX = (noseBridge.x - 0.5) * scaleX;
-      const noseY = -(noseBridge.y - 0.5) * scaleY; // Flip Y axis
-      const noseZ = (noseBridge.z || 0) * 0.1; // Scale Z depth
+      // Convert normalized coordinates to world space (flip X for mirror effect)
+      const noseX = -(noseBridge.x - 0.5) * scaleX;
+      const noseY = -(noseBridge.y - 0.5) * scaleY;
+      const noseZ = (noseBridge.z || 0) * 2;
 
       // Position glasses at nose bridge
       meshRef.current.position.set(noseX, noseY, noseZ);
 
-      // Calculate rotation based on eye positions
+      // Calculate scale based on eye distance
       const eyeDistance = Math.sqrt(
-        Math.pow(rightEye.x - leftEye.x, 2) + 
-        Math.pow(rightEye.y - leftEye.y, 2)
+        Math.pow((rightEye.x - leftEye.x) * scaleX, 2) + 
+        Math.pow((rightEye.y - leftEye.y) * scaleY, 2)
       );
       
-      const angle = Math.atan2(rightEye.y - leftEye.y, rightEye.x - leftEye.x);
-      meshRef.current.rotation.z = -angle; // Flip rotation
-
-      // Scale based on face size
-      const scale = eyeDistance * scaleX * 0.8;
+      // Scale the glasses based on face size
+      const scale = eyeDistance * 1.2;
       meshRef.current.scale.setScalar(scale);
+
+      // Calculate rotation based on eye positions
+      const eyeAngle = Math.atan2(
+        (rightEye.y - leftEye.y) * scaleY,
+        (rightEye.x - leftEye.x) * scaleX
+      );
+      meshRef.current.rotation.z = eyeAngle;
+
+      // Slight tilt based on eyebrows for more natural look
+      if (leftEyebrow && rightEyebrow) {
+        const browAngle = Math.atan2(
+          (rightEyebrow.y - leftEyebrow.y) * scaleY,
+          (rightEyebrow.x - leftEyebrow.x) * scaleX
+        );
+        meshRef.current.rotation.x = (browAngle - eyeAngle) * 0.1;
+      }
     }
   });
 
@@ -118,8 +138,8 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
   if (loadError || !gltf.current) {
     return (
       <mesh ref={meshRef}>
-        <boxGeometry args={[0.15, 0.03, 0.01]} />
-        <meshStandardMaterial color="#333333" />
+        <boxGeometry args={[0.3, 0.05, 0.02]} />
+        <meshStandardMaterial color="#222222" />
       </mesh>
     );
   }
@@ -133,16 +153,16 @@ function GlassesModel({ faceData, modelPath, videoRef }) {
   );
 }
 
-// Placeholder glasses models - TODO: Replace with actual .glb files
+// Glasses models
 const GLASSES_MODELS = [
-  '/models/glasses1.glb', // TODO: Add actual model paths
+  '/models/glasses1.glb',
   '/models/glasses2.glb',
   '/models/glasses3.glb'
 ];
 
-// Simple fallback frames data for when models aren't available
+// Simple fallback frames data
 const FALLBACK_FRAMES = [
-  { name: 'Classic Frame', color: '#333333' },
+  { name: 'Black Sunglasses', color: '#222222' },
   { name: 'Modern Frame', color: '#666666' },
   { name: 'Retro Frame', color: '#444444' }
 ];
@@ -181,7 +201,7 @@ const ARTryOn = ({ isOpen, onClose }) => {
       setIsLoading(true);
       setError(null);
 
-      // Get camera stream
+      // Get camera stream with higher resolution
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { 
           width: { ideal: 1280 },
@@ -378,11 +398,11 @@ const ARTryOn = ({ isOpen, onClose }) => {
             {/* Three.js Canvas */}
             <div ref={canvasRef} className="w-full h-full">
               <Canvas
-                camera={{ position: [0, 0, 1], fov: 75 }}
+                camera={{ position: [0, 0, 5], fov: 50 }}
                 style={{ background: 'transparent' }}
               >
-                <ambientLight intensity={0.6} />
-                <directionalLight position={[10, 10, 5]} intensity={1} />
+                <ambientLight intensity={0.8} />
+                <directionalLight position={[10, 10, 5]} intensity={0.5} />
                 
                 {/* Video background */}
                 <VideoBackground videoRef={videoRef} />
