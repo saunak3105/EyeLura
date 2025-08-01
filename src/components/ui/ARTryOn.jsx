@@ -172,6 +172,8 @@ const ARTryOn = ({ isOpen, onClose }) => {
   const canvasRef = useRef();
   const faceMeshRef = useRef();
   const animationRef = useRef();
+  const isProcessingRef = useRef(false);
+  const cleanupRef = useRef(false);
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -179,6 +181,7 @@ const ARTryOn = ({ isOpen, onClose }) => {
   const [faceData, setFaceData] = useState(null);
   const [currentModelIndex, setCurrentModelIndex] = useState(0);
   const [isCapturing, setIsCapturing] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Check browser compatibility
   useEffect(() => {
@@ -187,54 +190,158 @@ const ARTryOn = ({ isOpen, onClose }) => {
       const hasWebGL = !!document.createElement('canvas').getContext('webgl');
       const isModernBrowser = 'MediaSource' in window;
       
+      console.log('Browser Info:', {
+        browser: navigator.userAgent.includes('Chrome') ? 'Chrome' : 
+                navigator.userAgent.includes('Firefox') ? 'Firefox' : 
+                navigator.userAgent.includes('Safari') ? 'Safari' : 'Other',
+        version: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || 
+                navigator.userAgent.match(/Firefox\/(\d+)/)?.[1] || 
+                navigator.userAgent.match(/Version\/(\d+)/)?.[1] || 'Unknown',
+        userAgent: navigator.userAgent
+      });
+
+      console.log('Browser Support:', {
+        supported: hasMediaDevices && hasWebGL && isModernBrowser,
+        issues: [
+          !hasMediaDevices && 'No camera access',
+          !hasWebGL && 'No WebGL support',
+          !isModernBrowser && 'Browser too old'
+        ].filter(Boolean)
+      });
+      
       return hasMediaDevices && hasWebGL && isModernBrowser;
     };
 
     setIsSupported(checkSupport());
   }, []);
 
+  // Cleanup function
+  const cleanup = useCallback(() => {
+    console.log('Starting cleanup...');
+    cleanupRef.current = true;
+    isProcessingRef.current = false;
+
+    // Stop animation frame
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+    
+    // Stop camera stream
+    if (videoRef.current?.srcObject) {
+      const tracks = videoRef.current.srcObject.getTracks();
+      tracks.forEach(track => {
+        track.stop();
+        console.log('Stopped camera track:', track.kind);
+      });
+      videoRef.current.srcObject = null;
+    }
+    
+    // Cleanup MediaPipe FaceMesh
+    if (faceMeshRef.current) {
+      try {
+        faceMeshRef.current.close();
+        console.log('Closed FaceMesh instance');
+      } catch (error) {
+        console.warn('Error closing FaceMesh:', error);
+      }
+      faceMeshRef.current = null;
+    }
+
+    // Reset states
+    setFaceData(null);
+    setIsInitialized(false);
+    setIsLoading(false);
+    setError(null);
+    
+    console.log('Cleanup completed');
+  }, []);
+
   // Initialize camera and face mesh
   const initializeCamera = useCallback(async () => {
-    if (!isSupported) return;
+    if (!isSupported || isInitialized || isProcessingRef.current) {
+      console.log('Skipping initialization:', { isSupported, isInitialized, isProcessing: isProcessingRef.current });
+      return;
+    }
+
+    console.log('Starting camera initialization...');
+    cleanupRef.current = false;
+    isProcessingRef.current = true;
 
     try {
       setIsLoading(true);
       setError(null);
 
       // Get camera stream with higher resolution
+      console.log('Requesting camera access...');
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { 
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          facingMode: 'user'
+          width: { ideal: 1280, max: 1920 },
+          height: { ideal: 720, max: 1080 },
+          facingMode: 'user',
+          frameRate: { ideal: 30 }
         }
       });
 
+      if (cleanupRef.current) {
+        console.log('Initialization cancelled during camera setup');
+        stream.getTracks().forEach(track => track.stop());
+        return;
+      }
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
         
         // Wait for video to be ready
-        await new Promise((resolve) => {
+        await new Promise((resolve, reject) => {
+          const timeout = setTimeout(() => reject(new Error('Video timeout')), 10000);
+          
           videoRef.current.onloadedmetadata = () => {
+            clearTimeout(timeout);
+            console.log('Video metadata loaded:', {
+              width: videoRef.current.videoWidth,
+              height: videoRef.current.videoHeight
+            });
             resolve();
           };
+          
+          videoRef.current.onerror = (e) => {
+            clearTimeout(timeout);
+            reject(new Error('Video loading failed'));
+          };
         });
+
+        if (cleanupRef.current) {
+          console.log('Initialization cancelled during video setup');
+          return;
+        }
+
+        // Start video playback
+        await videoRef.current.play();
+        console.log('Video playback started');
       }
 
       // Initialize MediaPipe Face Mesh
+      console.log('Initializing MediaPipe FaceMesh...');
       const faceMesh = new FaceMesh({
         locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
       });
 
+      if (cleanupRef.current) {
+        console.log('Initialization cancelled during FaceMesh setup');
+        return;
+      }
+
       faceMesh.setOptions({
         maxNumFaces: 1,
         refineLandmarks: true,
-        minDetectionConfidence: 0.5,
+        minDetectionConfidence: 0.7,
         minTrackingConfidence: 0.5
       });
 
       faceMesh.onResults((results) => {
+        if (cleanupRef.current || !isProcessingRef.current) return;
+
         if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
           setFaceData({
             landmarks: results.multiFaceLandmarks[0],
@@ -249,52 +356,75 @@ const ARTryOn = ({ isOpen, onClose }) => {
 
       // Start processing loop
       const processFrame = async () => {
-        if (videoRef.current && faceMeshRef.current && videoRef.current.readyState >= 2) {
-          await faceMeshRef.current.send({ image: videoRef.current });
+        if (cleanupRef.current || !isProcessingRef.current) {
+          console.log('Processing loop stopped');
+          return;
         }
-        animationRef.current = requestAnimationFrame(processFrame);
+
+        if (videoRef.current && faceMeshRef.current && videoRef.current.readyState >= 2) {
+          try {
+            await faceMeshRef.current.send({ image: videoRef.current });
+          } catch (error) {
+            if (!cleanupRef.current) {
+              console.warn('Frame processing error:', error);
+            }
+          }
+        }
+        
+        if (!cleanupRef.current && isProcessingRef.current) {
+          animationRef.current = requestAnimationFrame(processFrame);
+        }
       };
 
       processFrame();
       setIsLoading(false);
+      setIsInitialized(true);
+      console.log('Camera initialization completed successfully');
 
     } catch (err) {
       console.error('Camera initialization failed:', err);
-      setError('Failed to access camera. Please check permissions and try again.');
+      isProcessingRef.current = false;
+      
+      let errorMessage = 'Failed to access camera. ';
+      if (err.name === 'NotAllowedError') {
+        errorMessage += 'Please allow camera access and try again.';
+      } else if (err.name === 'NotFoundError') {
+        errorMessage += 'No camera found on your device.';
+      } else if (err.name === 'NotReadableError') {
+        errorMessage += 'Camera is already in use by another application.';
+      } else {
+        errorMessage += 'Please check your camera and try again.';
+      }
+      
+      setError(errorMessage);
       setIsLoading(false);
     }
-  }, [isSupported]);
+  }, [isSupported, isInitialized]);
 
-  // Cleanup function
-  const cleanup = useCallback(() => {
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-    
-    if (videoRef.current?.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-    }
-    
-    if (faceMeshRef.current) {
-      faceMeshRef.current.close();
-    }
-  }, []);
-
-  // Initialize on mount
+  // Initialize when modal opens
   useEffect(() => {
-    if (isOpen && isSupported) {
-      initializeCamera();
+    if (isOpen && isSupported && !isInitialized) {
+      const timer = setTimeout(() => {
+        initializeCamera();
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen, isSupported, isInitialized, initializeCamera]);
+
+  // Cleanup when modal closes or component unmounts
+  useEffect(() => {
+    if (!isOpen) {
+      cleanup();
     }
     
     return cleanup;
-  }, [isOpen, isSupported, initializeCamera, cleanup]);
+  }, [isOpen, cleanup]);
 
   // Change glasses model
-  const changeModel = () => {
+  const changeModel = useCallback(() => {
     setCurrentModelIndex((prev) => (prev + 1) % GLASSES_MODELS.length);
-  };
+  }, []);
 
   // Capture screenshot
   const captureScreenshot = useCallback(() => {
@@ -377,7 +507,11 @@ const ARTryOn = ({ isOpen, onClose }) => {
                   <AlertCircle className="w-8 h-8 mx-auto mb-4" />
                   <p className="mb-4">{error}</p>
                   <button
-                    onClick={initializeCamera}
+                    onClick={() => {
+                      setError(null);
+                      setIsInitialized(false);
+                      setTimeout(initializeCamera, 100);
+                    }}
                     className="bg-white text-gray-900 px-6 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
                   >
                     Try Again
@@ -405,10 +539,10 @@ const ARTryOn = ({ isOpen, onClose }) => {
                 <directionalLight position={[10, 10, 5]} intensity={0.5} />
                 
                 {/* Video background */}
-                <VideoBackground videoRef={videoRef} />
+                {isInitialized && <VideoBackground videoRef={videoRef} />}
                 
                 {/* Glasses overlay */}
-                {faceData && (
+                {isInitialized && faceData && (
                   <GlassesModel
                     faceData={faceData}
                     modelPath={GLASSES_MODELS[currentModelIndex]}
@@ -419,7 +553,7 @@ const ARTryOn = ({ isOpen, onClose }) => {
             </div>
 
             {/* Face detection indicator */}
-            {!isLoading && !error && (
+            {!isLoading && !error && isInitialized && (
               <div className="absolute top-4 left-4">
                 <div className={`flex items-center px-3 py-2 rounded-lg ${
                   faceData ? 'bg-green-500' : 'bg-yellow-500'
@@ -442,7 +576,7 @@ const ARTryOn = ({ isOpen, onClose }) => {
                 <div className="space-y-3">
                   <button
                     onClick={changeModel}
-                    disabled={isLoading || !!error}
+                    disabled={isLoading || !!error || !isInitialized}
                     className="w-full flex items-center justify-center px-4 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     <RotateCcw className="w-5 h-5 mr-2" />
@@ -451,7 +585,7 @@ const ARTryOn = ({ isOpen, onClose }) => {
 
                   <button
                     onClick={captureScreenshot}
-                    disabled={isLoading || !!error || !faceData || isCapturing}
+                    disabled={isLoading || !!error || !faceData || isCapturing || !isInitialized}
                     className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {isCapturing ? (
@@ -489,8 +623,16 @@ const ARTryOn = ({ isOpen, onClose }) => {
                   <li>• Ensure good lighting</li>
                   <li>• Stay within the frame</li>
                   <li>• Move slowly for best tracking</li>
+                  <li>• Allow camera permissions</li>
                 </ul>
               </div>
+
+              {isInitialized && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <p className="text-green-700 text-sm font-medium">✓ Camera Active</p>
+                  <p className="text-green-600 text-xs">AR Try-on is ready to use</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
