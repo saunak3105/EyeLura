@@ -6,29 +6,65 @@ import { FaceMesh } from '@mediapipe/face_mesh';
 import * as THREE from 'three';
 import { Camera, RotateCcw, Download, AlertCircle, Loader2, X } from 'lucide-react';
 
-// Glasses component that renders in Three.js scene
-function GlassesModel({ faceData, modelPath }) {
-  const { scene } = useGLTF(modelPath);
+// Video background component that shows the camera feed
+function VideoBackground({ videoRef }) {
   const meshRef = useRef();
-  const { camera } = useThree();
+  const { viewport } = useThree();
 
   useFrame(() => {
-    if (!meshRef.current || !faceData?.landmarks) return;
+    if (meshRef.current && videoRef.current && videoRef.current.readyState >= 2) {
+      const texture = new THREE.VideoTexture(videoRef.current);
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      texture.format = THREE.RGBFormat;
+      meshRef.current.material.map = texture;
+    }
+  });
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, -1]}>
+      <planeGeometry args={[viewport.width, viewport.height]} />
+      <meshBasicMaterial side={THREE.DoubleSide} />
+    </mesh>
+  );
+}
+
+// Glasses component that renders in Three.js scene
+function GlassesModel({ faceData, modelPath, videoRef }) {
+  const { scene } = useGLTF(modelPath);
+  const meshRef = useRef();
+  const { viewport, camera } = useThree();
+
+  useFrame(() => {
+    if (!meshRef.current || !faceData?.landmarks || !videoRef.current) return;
 
     const landmarks = faceData.landmarks;
+    const video = videoRef.current;
     
     // Key facial landmarks for glasses positioning
     const noseBridge = landmarks[168]; // Nose bridge center
     const leftEye = landmarks[33];     // Left eye corner
     const rightEye = landmarks[263];   // Right eye corner
-    const leftTemple = landmarks[234]; // Left temple area
-    const rightTemple = landmarks[454]; // Right temple area
 
     if (noseBridge && leftEye && rightEye) {
-      // Convert MediaPipe coordinates to Three.js world coordinates
-      const noseX = (noseBridge.x - 0.5) * 2;
-      const noseY = -(noseBridge.y - 0.5) * 2;
-      const noseZ = noseBridge.z || 0;
+      // Convert MediaPipe normalized coordinates to Three.js world coordinates
+      // MediaPipe gives coordinates as (0-1), we need to map to viewport
+      const videoAspect = video.videoWidth / video.videoHeight;
+      const viewportAspect = viewport.width / viewport.height;
+      
+      let scaleX = viewport.width;
+      let scaleY = viewport.height;
+      
+      if (videoAspect > viewportAspect) {
+        scaleY = viewport.width / videoAspect;
+      } else {
+        scaleX = viewport.height * videoAspect;
+      }
+
+      // Convert normalized coordinates to world space
+      const noseX = (noseBridge.x - 0.5) * scaleX;
+      const noseY = -(noseBridge.y - 0.5) * scaleY; // Flip Y axis
+      const noseZ = (noseBridge.z || 0) * 0.1; // Scale Z depth
 
       // Position glasses at nose bridge
       meshRef.current.position.set(noseX, noseY, noseZ);
@@ -40,10 +76,10 @@ function GlassesModel({ faceData, modelPath }) {
       );
       
       const angle = Math.atan2(rightEye.y - leftEye.y, rightEye.x - leftEye.x);
-      meshRef.current.rotation.z = angle;
+      meshRef.current.rotation.z = -angle; // Flip rotation
 
       // Scale based on face size
-      const scale = eyeDistance * 3;
+      const scale = eyeDistance * scaleX * 0.8;
       meshRef.current.scale.setScalar(scale);
     }
   });
@@ -109,8 +145,13 @@ const ARTryOn = ({ isOpen, onClose }) => {
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        videoRef.current.play();
+        
+        // Wait for video to be ready
         await new Promise((resolve) => {
-          videoRef.current.onloadedmetadata = resolve;
+          videoRef.current.onloadedmetadata = () => {
+            resolve();
+          };
         });
       }
 
@@ -141,7 +182,7 @@ const ARTryOn = ({ isOpen, onClose }) => {
 
       // Start processing loop
       const processFrame = async () => {
-        if (videoRef.current && faceMeshRef.current) {
+        if (videoRef.current && faceMeshRef.current && videoRef.current.readyState >= 2) {
           await faceMeshRef.current.send({ image: videoRef.current });
         }
         animationRef.current = requestAnimationFrame(processFrame);
@@ -296,22 +337,16 @@ const ARTryOn = ({ isOpen, onClose }) => {
                 <ambientLight intensity={0.6} />
                 <directionalLight position={[10, 10, 5]} intensity={1} />
                 
+                {/* Video background */}
+                <VideoBackground videoRef={videoRef} />
+                
+                {/* Glasses overlay */}
                 {faceData && (
                   <GlassesModel
                     faceData={faceData}
                     modelPath={GLASSES_MODELS[currentModelIndex]}
+                    videoRef={videoRef}
                   />
-                )}
-                
-                {/* Camera preview plane */}
-                {faceData?.image && (
-                  <mesh position={[0, 0, -0.5]}>
-                    <planeGeometry args={[2, 1.5]} />
-                    <meshBasicMaterial
-                      map={new THREE.VideoTexture(videoRef.current)}
-                      side={THREE.DoubleSide}
-                    />
-                  </mesh>
                 )}
               </Canvas>
             </div>
@@ -391,9 +426,13 @@ const ARTryOn = ({ isOpen, onClose }) => {
   );
 };
 
-// Preload GLTF models
+// Preload GLTF models - these will fail until you add actual model files
 GLASSES_MODELS.forEach((modelPath) => {
-  useGLTF.preload(modelPath);
+  try {
+    useGLTF.preload(modelPath);
+  } catch (e) {
+    console.warn(`Failed to preload model: ${modelPath}`);
+  }
 });
 
 export default ARTryOn;
