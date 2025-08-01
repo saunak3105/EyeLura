@@ -17,6 +17,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@types/three": "^0.178.1",
     "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
     "express-session": "^1.18.2",
     "framer-motion": "^12.23.6",
     "jsonwebtoken": "^9.0.2",

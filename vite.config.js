@@ -22,7 +22,7 @@ export default defineConfig({
     },
     // ✅ Correct usage:
     allowedHosts: [
-      "737c0ade-0001-467c-b59a-8314d3d34ff1-00-188aactbzxaf2.sisko.replit.dev",
+      "c610bf54-87b8-4ccd-beeb-db3183982491-00-1sq1op8mb5rx6.pike.replit.dev",
     ],
   },
 

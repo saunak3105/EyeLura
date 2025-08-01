@@ -1,0 +1,37 @@
+Build a complete AR Try-On component using React, MediaPipe (Face Mesh), and Three.js via react-three-fiber. The component should do the following:
+
+1. **Functionality**:
+   - Access the webcam stream using `navigator.mediaDevices`.
+   - Use MediaPipe Face Mesh to track the user's face and get the landmark positions.
+   - Load 3D `.glb` spectacle models using `GLTFLoader` and Three.js.
+   - Anchor the 3D glasses model to the correct facial landmarks — around the nose bridge (landmark 168), temple areas, and ears.
+   - Smoothly follow the user's head movements and adjust the model's orientation.
+   - Include placeholder `.glb` model logic so I can swap models later.
+
+2. **Responsiveness & Fallbacks**:
+   - Detect if camera access fails or face detection isn't supported and show a fallback UI.
+   - If on unsupported browsers (e.g. iOS Safari < 15), show a "device not supported" message.
+   - Show a loading animation while initializing camera and model.
+
+3. **UI Design**:
+   - Make the UI sleek, modern, and user-friendly.
+   - Include basic controls like “Change Frame” (just switch placeholder models for now) and “Capture Screenshot” (save canvas to image).
+   - Style the AR Try-On component using Tailwind CSS or minimal CSS, matching a modern eyewear brand aesthetic (white background, clean layout, modern fonts).
+   - DO NOT affect other components or global styles in the React project.
+
+4. **Technical Notes**:
+   - Use `react-three-fiber` and `@react-three/drei` to simplify Three.js rendering.
+   - Use `@mediapipe/face_mesh` or TensorFlow.js face mesh model.
+   - Use `GLTFLoader` to load models dynamically from `/public/models`.
+
+5. **Code Quality**:
+   - Keep the AR Try-On logic encapsulated in its own component (e.g. `ARTryOn.jsx`).
+   - Use `useRef` and `useEffect` for camera stream and animation loop.
+   - Modularize the code for readability.
+
+6. **Future-Proofing**:
+   - Leave TODO comments where I should add custom `.glb` models.
+   - Make sure no hardcoded styles or logic conflict with other parts of the app.
+   - Check compatibility across major browsers and screen sizes.
+
+Output only the final working code for the `ARTryOn.jsx` component (and related utility hooks if needed), ready to plug into my React project. No explanation needed.
