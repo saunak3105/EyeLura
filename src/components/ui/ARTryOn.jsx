@@ -1,429 +1,184 @@
-
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, OrbitControls } from '@react-three/drei';
-import { FaceMesh } from '@mediapipe/face_mesh';
-import * as THREE from 'three';
-import { Camera, RotateCcw, Download, AlertCircle, Loader2, X } from 'lucide-react';
+import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 
-// Video background component that shows the camera feed
-function VideoBackground({ videoRef }) {
-  const meshRef = useRef();
-  const textureRef = useRef();
-  const { viewport } = useThree();
+// Simple glasses component using basic geometry
+function Glasses({ faceData }) {
+  const glassesRef = useRef();
+  const { viewport, camera } = useThree();
 
   useFrame(() => {
-    if (meshRef.current && videoRef.current && videoRef.current.readyState >= 2) {
-      if (!textureRef.current) {
-        textureRef.current = new THREE.VideoTexture(videoRef.current);
-        textureRef.current.minFilter = THREE.LinearFilter;
-        textureRef.current.magFilter = THREE.LinearFilter;
-        textureRef.current.format = THREE.RGBFormat;
-        textureRef.current.flipY = false;
-        meshRef.current.material.map = textureRef.current;
-      }
-      textureRef.current.needsUpdate = true;
-    }
-  });
+    if (glassesRef.current && faceData) {
+      // Position glasses based on face landmarks
+      const leftEye = faceData.leftEye;
+      const rightEye = faceData.rightEye;
 
-  return (
-    <mesh ref={meshRef} position={[0, 0, -5]} scale={[-1, 1, 1]}>
-      <planeGeometry args={[viewport.width, viewport.height]} />
-      <meshBasicMaterial side={THREE.DoubleSide} />
-    </mesh>
-  );
-}
+      if (leftEye && rightEye) {
+        // Calculate center between eyes
+        const centerX = (leftEye.x + rightEye.x) / 2;
+        const centerY = (leftEye.y + rightEye.y) / 2;
 
-// Glasses component that renders in Three.js scene
-function GlassesModel({ faceData, modelPath, videoRef }) {
-  const { scene } = useGLTF(modelPath);
-  const meshRef = useRef();
-  const { viewport } = useThree();
+        // Convert screen coordinates to 3D world coordinates
+        const x = (centerX - 0.5) * viewport.width;
+        const y = -(centerY - 0.5) * viewport.height;
 
-  useFrame(() => {
-    if (!meshRef.current || !faceData?.landmarks || !videoRef.current) return;
+        glassesRef.current.position.set(x, y + 0.2, 0);
 
-    const landmarks = faceData.landmarks;
-    const video = videoRef.current;
-    
-    // Key facial landmarks for glasses positioning
-    const noseBridge = landmarks[168]; // Nose bridge center
-    const leftEye = landmarks[33];     // Left eye corner
-    const rightEye = landmarks[263];   // Right eye corner
-    const leftEyebrow = landmarks[70]; // Left eyebrow
-    const rightEyebrow = landmarks[300]; // Right eyebrow
-
-    if (noseBridge && leftEye && rightEye) {
-      // Convert MediaPipe normalized coordinates to Three.js world coordinates
-      const videoAspect = video.videoWidth / video.videoHeight;
-      const viewportAspect = viewport.width / viewport.height;
-      
-      let scaleX = viewport.width;
-      let scaleY = viewport.height;
-      
-      if (videoAspect > viewportAspect) {
-        scaleY = viewport.width / videoAspect;
-      } else {
-        scaleX = viewport.height * videoAspect;
-      }
-
-      // Convert normalized coordinates to world space (account for mirrored video)
-      const noseX = (noseBridge.x - 0.5) * scaleX;
-      const noseY = -(noseBridge.y - 0.5) * scaleY;
-      const noseZ = (noseBridge.z || 0) * 5 + 1;
-
-      // Position glasses at nose bridge
-      meshRef.current.position.set(noseX, noseY, noseZ);
-
-      // Calculate scale based on eye distance
-      const eyeDistance = Math.sqrt(
-        Math.pow((rightEye.x - leftEye.x) * scaleX, 2) + 
-        Math.pow((rightEye.y - leftEye.y) * scaleY, 2)
-      );
-      
-      // Scale the glasses based on face size (adjust multiplier for better fit)
-      const scale = eyeDistance * 2.5;
-      meshRef.current.scale.set(scale, scale, scale);
-
-      // Calculate rotation based on eye positions
-      const eyeAngle = Math.atan2(
-        (rightEye.y - leftEye.y) * scaleY,
-        (rightEye.x - leftEye.x) * scaleX
-      );
-      meshRef.current.rotation.z = -eyeAngle; // Flip for mirrored video
-
-      // Slight tilt based on eyebrows for more natural look
-      if (leftEyebrow && rightEyebrow) {
-        const browAngle = Math.atan2(
-          (rightEyebrow.y - leftEyebrow.y) * scaleY,
-          (rightEyebrow.x - leftEyebrow.x) * scaleX
-        );
-        meshRef.current.rotation.x = -(browAngle - eyeAngle) * 0.1;
+        // Scale based on distance between eyes
+        const eyeDistance = Math.abs(rightEye.x - leftEye.x);
+        const scale = eyeDistance * 8; // Adjust multiplier as needed
+        glassesRef.current.scale.setScalar(scale);
       }
     }
   });
 
   return (
-    <primitive
-      ref={meshRef}
-      object={scene.clone()}
-      scale={[1, 1, 1]}
-    />
+    <group ref={glassesRef}>
+      {/* Left lens */}
+      <mesh position={[-0.8, 0, 0]}>
+        <ringGeometry args={[0.3, 0.5, 32]} />
+        <meshBasicMaterial color="#333333" transparent opacity={0.3} />
+      </mesh>
+
+      {/* Right lens */}
+      <mesh position={[0.8, 0, 0]}>
+        <ringGeometry args={[0.3, 0.5, 32]} />
+        <meshBasicMaterial color="#333333" transparent opacity={0.3} />
+      </mesh>
+
+      {/* Bridge */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[0.3, 0.1, 0.1]} />
+        <meshBasicMaterial color="#333333" />
+      </mesh>
+
+      {/* Left temple */}
+      <mesh position={[-1.2, 0, 0]} rotation={[0, 0, Math.PI / 6]}>
+        <boxGeometry args={[0.6, 0.08, 0.08]} />
+        <meshBasicMaterial color="#333333" />
+      </mesh>
+
+      {/* Right temple */}
+      <mesh position={[1.2, 0, 0]} rotation={[0, 0, -Math.PI / 6]}>
+        <boxGeometry args={[0.6, 0.08, 0.08]} />
+        <meshBasicMaterial color="#333333" />
+      </mesh>
+    </group>
   );
 }
 
-// Glasses models - using the uploaded model
-const GLASSES_MODELS = [
-  '/models/black_sunglasses.glb',
-  '/models/glasses1.glb',
-  '/models/glasses2.glb'
-];
-
-// Simple fallback frames data
-const FALLBACK_FRAMES = [
-  { name: 'Black Sunglasses', color: '#222222' },
-  { name: 'Classic Frame', color: '#444444' },
-  { name: 'Modern Frame', color: '#666666' }
-];
-
-const ARTryOn = ({ isOpen, onClose }) => {
-  const videoRef = useRef();
-  const canvasRef = useRef();
-  const faceMeshRef = useRef();
-  const animationRef = useRef();
-  const isProcessingRef = useRef(false);
-  const cleanupRef = useRef(false);
-  
-  const [isLoading, setIsLoading] = useState(false);
+function ARTryOn() {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isSupported, setIsSupported] = useState(true);
+  const [faceLandmarker, setFaceLandmarker] = useState(null);
   const [faceData, setFaceData] = useState(null);
-  const [currentModelIndex, setCurrentModelIndex] = useState(0);
-  const [isCapturing, setIsCapturing] = useState(false);
-  const [isInitialized, setIsInitialized] = useState(false);
+  const [selectedGlasses, setSelectedGlasses] = useState('classic');
 
-  // Check browser compatibility
   useEffect(() => {
-    const checkSupport = () => {
-      const hasMediaDevices = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
-      const hasWebGL = !!document.createElement('canvas').getContext('webgl');
-      const isModernBrowser = 'MediaSource' in window;
-      
-      console.log('Browser Info:', {
-        browser: navigator.userAgent.includes('Chrome') ? 'Chrome' : 
-                navigator.userAgent.includes('Firefox') ? 'Firefox' : 
-                navigator.userAgent.includes('Safari') ? 'Safari' : 'Other',
-        version: navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || 
-                navigator.userAgent.match(/Firefox\/(\d+)/)?.[1] || 
-                navigator.userAgent.match(/Version\/(\d+)/)?.[1] || 'Unknown',
-        userAgent: navigator.userAgent
-      });
+    let animationId;
 
-      console.log('Browser Support:', {
-        supported: hasMediaDevices && hasWebGL && isModernBrowser,
-        issues: [
-          !hasMediaDevices && 'No camera access',
-          !hasWebGL && 'No WebGL support',
-          !isModernBrowser && 'Browser too old'
-        ].filter(Boolean)
-      });
-      
-      return hasMediaDevices && hasWebGL && isModernBrowser;
+    const setupFaceDetection = async () => {
+      try {
+        setIsLoading(true);
+
+        // Initialize MediaPipe
+        const vision = await FilesetResolver.forVisionTasks(
+          "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
+        );
+
+        const landmarker = await FaceLandmarker.createFromOptions(vision, {
+          baseOptions: {
+            modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
+            delegate: "GPU"
+          },
+          outputFaceBlendshapes: true,
+          runningMode: "VIDEO",
+          numFaces: 1
+        });
+
+        setFaceLandmarker(landmarker);
+
+        // Setup camera
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { 
+            width: 640, 
+            height: 480,
+            facingMode: 'user'
+          }
+        });
+
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.onloadedmetadata = () => {
+            videoRef.current.play();
+            setIsLoading(false);
+            detectFace();
+          };
+        }
+
+      } catch (err) {
+        console.error('Setup error:', err);
+        setError(`Failed to initialize: ${err.message}`);
+        setIsLoading(false);
+      }
     };
 
-    setIsSupported(checkSupport());
-  }, []);
+    const detectFace = () => {
+      if (faceLandmarker && videoRef.current && videoRef.current.videoWidth > 0) {
+        try {
+          const startTime = performance.now();
+          const results = faceLandmarker.detectForVideo(videoRef.current, startTime);
 
-  // Cleanup function
-  const cleanup = useCallback(() => {
-    console.log('Starting cleanup...');
-    cleanupRef.current = true;
-    isProcessingRef.current = false;
+          if (results.faceLandmarks && results.faceLandmarks.length > 0) {
+            const landmarks = results.faceLandmarks[0];
 
-    // Stop animation frame
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-      animationRef.current = null;
-    }
-    
-    // Stop camera stream
-    if (videoRef.current?.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
-      tracks.forEach(track => {
-        track.stop();
-        console.log('Stopped camera track:', track.kind);
-      });
-      videoRef.current.srcObject = null;
-    }
-    
-    // Cleanup MediaPipe FaceMesh
-    if (faceMeshRef.current) {
-      try {
-        faceMeshRef.current.close();
-        console.log('Closed FaceMesh instance');
-      } catch (error) {
-        console.warn('Error closing FaceMesh:', error);
-      }
-      faceMeshRef.current = null;
-    }
+            // Get eye positions (MediaPipe landmark indices)
+            const leftEye = landmarks[33]; // Left eye center
+            const rightEye = landmarks[263]; // Right eye center
 
-    // Reset states
-    setFaceData(null);
-    setIsInitialized(false);
-    setIsLoading(false);
-    setError(null);
-    
-    console.log('Cleanup completed');
-  }, []);
-
-  // Initialize camera and face mesh
-  const initializeCamera = useCallback(async () => {
-    if (!isSupported || isInitialized || isProcessingRef.current) {
-      console.log('Skipping initialization:', { isSupported, isInitialized, isProcessing: isProcessingRef.current });
-      return;
-    }
-
-    console.log('Starting camera initialization...');
-    cleanupRef.current = false;
-    isProcessingRef.current = true;
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // Get camera stream with higher resolution
-      console.log('Requesting camera access...');
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { 
-          width: { ideal: 1280, max: 1920 },
-          height: { ideal: 720, max: 1080 },
-          facingMode: 'user',
-          frameRate: { ideal: 30 }
-        }
-      });
-
-      if (cleanupRef.current) {
-        console.log('Initialization cancelled during camera setup');
-        stream.getTracks().forEach(track => track.stop());
-        return;
-      }
-
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        
-        // Wait for video to be ready
-        await new Promise((resolve, reject) => {
-          const timeout = setTimeout(() => reject(new Error('Video timeout')), 10000);
-          
-          videoRef.current.onloadedmetadata = () => {
-            clearTimeout(timeout);
-            console.log('Video metadata loaded:', {
-              width: videoRef.current.videoWidth,
-              height: videoRef.current.videoHeight
+            setFaceData({
+              leftEye: { x: leftEye.x, y: leftEye.y },
+              rightEye: { x: rightEye.x, y: rightEye.y },
+              landmarks: landmarks
             });
-            resolve();
-          };
-          
-          videoRef.current.onerror = (e) => {
-            clearTimeout(timeout);
-            reject(new Error('Video loading failed'));
-          };
-        });
-
-        if (cleanupRef.current) {
-          console.log('Initialization cancelled during video setup');
-          return;
-        }
-
-        // Start video playback
-        await videoRef.current.play();
-        console.log('Video playback started');
-      }
-
-      // Initialize MediaPipe Face Mesh
-      console.log('Initializing MediaPipe FaceMesh...');
-      const faceMesh = new FaceMesh({
-        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
-      });
-
-      if (cleanupRef.current) {
-        console.log('Initialization cancelled during FaceMesh setup');
-        return;
-      }
-
-      faceMesh.setOptions({
-        maxNumFaces: 1,
-        refineLandmarks: true,
-        minDetectionConfidence: 0.7,
-        minTrackingConfidence: 0.5
-      });
-
-      faceMesh.onResults((results) => {
-        if (cleanupRef.current || !isProcessingRef.current) return;
-
-        if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
-          setFaceData({
-            landmarks: results.multiFaceLandmarks[0],
-            image: results.image
-          });
-        } else {
-          setFaceData(null);
-        }
-      });
-
-      faceMeshRef.current = faceMesh;
-
-      // Start processing loop
-      const processFrame = async () => {
-        if (cleanupRef.current || !isProcessingRef.current) {
-          console.log('Processing loop stopped');
-          return;
-        }
-
-        if (videoRef.current && faceMeshRef.current && videoRef.current.readyState >= 2) {
-          try {
-            await faceMeshRef.current.send({ image: videoRef.current });
-          } catch (error) {
-            if (!cleanupRef.current) {
-              console.warn('Frame processing error:', error);
-            }
           }
+        } catch (err) {
+          console.error('Detection error:', err);
         }
-        
-        if (!cleanupRef.current && isProcessingRef.current) {
-          animationRef.current = requestAnimationFrame(processFrame);
-        }
-      };
-
-      processFrame();
-      setIsLoading(false);
-      setIsInitialized(true);
-      console.log('Camera initialization completed successfully');
-
-    } catch (err) {
-      console.error('Camera initialization failed:', err);
-      isProcessingRef.current = false;
-      
-      let errorMessage = 'Failed to access camera. ';
-      if (err.name === 'NotAllowedError') {
-        errorMessage += 'Please allow camera access and try again.';
-      } else if (err.name === 'NotFoundError') {
-        errorMessage += 'No camera found on your device.';
-      } else if (err.name === 'NotReadableError') {
-        errorMessage += 'Camera is already in use by another application.';
-      } else {
-        errorMessage += 'Please check your camera and try again.';
       }
-      
-      setError(errorMessage);
-      setIsLoading(false);
-    }
-  }, [isSupported, isInitialized]);
 
-  // Initialize when modal opens
-  useEffect(() => {
-    if (isOpen && isSupported && !isInitialized) {
-      const timer = setTimeout(() => {
-        initializeCamera();
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, isSupported, isInitialized, initializeCamera]);
+      animationId = requestAnimationFrame(detectFace);
+    };
 
-  // Cleanup when modal closes or component unmounts
-  useEffect(() => {
-    if (!isOpen) {
-      cleanup();
-    }
-    
-    return cleanup;
-  }, [isOpen, cleanup]);
+    setupFaceDetection();
 
-  // Change glasses model
-  const changeModel = useCallback(() => {
-    setCurrentModelIndex((prev) => (prev + 1) % GLASSES_MODELS.length);
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+      if (faceLandmarker) {
+        faceLandmarker.close();
+      }
+    };
   }, []);
 
-  // Capture screenshot
-  const captureScreenshot = useCallback(() => {
-    if (!canvasRef.current) return;
-
-    setIsCapturing(true);
-    
-    setTimeout(() => {
-      const canvas = canvasRef.current.querySelector('canvas');
-      if (canvas) {
-        canvas.toBlob((blob) => {
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `eyewear-tryOn-${Date.now()}.png`;
-          link.click();
-          URL.revokeObjectURL(url);
-        });
-      }
-      setIsCapturing(false);
-    }, 100);
-  }, []);
-
-  if (!isOpen) return null;
-
-  if (!isSupported) {
+  if (error) {
     return (
-      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white rounded-2xl p-8 max-w-md mx-4 text-center">
-          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Browser Not Supported</h2>
-          <p className="text-gray-600 mb-6">
-            Your browser doesn't support the required features for AR try-on. 
-            Please use a modern browser like Chrome, Firefox, or Safari.
-          </p>
-          <button
-            onClick={onClose}
-            className="bg-black text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition-colors"
+      <div className="min-h-[600px] bg-gray-900 rounded-2xl flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-red-400 text-xl mb-4">⚠️</div>
+          <p className="text-red-400 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-4 py-2 bg-[#d4af37] text-black rounded-lg"
           >
-            Close
+            Try Again
           </button>
         </div>
       </div>
@@ -431,175 +186,88 @@ const ARTryOn = ({ isOpen, onClose }) => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl w-full max-w-4xl h-full max-h-[90vh] mx-4 overflow-hidden flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Virtual Try-On</h2>
-            <p className="text-gray-600">See how you look in our eyewear</p>
+    <div className="bg-gray-900/50 backdrop-blur-sm border border-gray-800 rounded-2xl p-6">
+      <h3 className="text-2xl font-light text-white mb-6 text-center" 
+          style={{ fontFamily: "'Playfair Display', serif", fontWeight: '300' }}>
+        AR Try-On Experience
+      </h3>
+
+      {/* Glasses Selection */}
+      <div className="mb-6">
+        <h4 className="text-lg text-white mb-3" 
+            style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '400' }}>
+          Choose Style:
+        </h4>
+        <div className="flex gap-3 justify-center">
+          {['classic', 'modern', 'vintage'].map((style) => (
+            <button
+              key={style}
+              onClick={() => setSelectedGlasses(style)}
+              className={`px-4 py-2 rounded-lg transition-all ${
+                selectedGlasses === style 
+                  ? 'bg-[#d4af37] text-black' 
+                  : 'bg-gray-700 text-white hover:bg-gray-600'
+              }`}
+              style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '400' }}
+            >
+              {style.charAt(0).toUpperCase() + style.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* AR Camera View */}
+      <div className="relative w-full h-[500px] bg-black rounded-xl overflow-hidden">
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-800">
+            <div className="text-white text-center">
+              <div className="animate-spin w-8 h-8 border-2 border-[#d4af37] border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+                Initializing AR Camera...
+              </p>
+            </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        )}
+
+        {/* Video Element */}
+        <video 
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ transform: 'scaleX(-1)' }} // Mirror the video
+          playsInline
+          muted
+        />
+
+        {/* 3D Glasses Overlay */}
+        <div className="absolute inset-0">
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 50 }}
+            style={{ background: 'transparent' }}
           >
-            <X className="w-6 h-6 text-gray-500" />
-          </button>
+            <ambientLight intensity={0.5} />
+            <pointLight position={[10, 10, 10]} />
+            <Glasses faceData={faceData} />
+          </Canvas>
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col lg:flex-row">
-          {/* Camera View */}
-          <div className="flex-1 relative bg-gray-900 flex items-center justify-center">
-            {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 z-10">
-                <div className="text-center">
-                  <Loader2 className="w-8 h-8 text-white animate-spin mx-auto mb-4" />
-                  <p className="text-white">Initializing camera...</p>
-                </div>
-              </div>
-            )}
-
-            {error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50 z-10">
-                <div className="text-center text-white max-w-md px-4">
-                  <AlertCircle className="w-8 h-8 mx-auto mb-4" />
-                  <p className="mb-4">{error}</p>
-                  <button
-                    onClick={() => {
-                      setError(null);
-                      setIsInitialized(false);
-                      setTimeout(initializeCamera, 100);
-                    }}
-                    className="bg-white text-gray-900 px-6 py-2 rounded-lg font-medium hover:bg-gray-100 transition-colors"
-                  >
-                    Try Again
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Hidden video element for camera feed */}
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className="hidden"
-            />
-
-            {/* Three.js Canvas */}
-            <div ref={canvasRef} className="w-full h-full">
-              <Canvas
-                camera={{ position: [0, 0, 5], fov: 50 }}
-                style={{ background: 'transparent' }}
-              >
-                <ambientLight intensity={1.2} />
-                <directionalLight position={[10, 10, 5]} intensity={0.8} />
-                <directionalLight position={[-10, -10, 5]} intensity={0.3} />
-                <pointLight position={[0, 0, 10]} intensity={0.5} />
-                
-                {/* Video background */}
-                {isInitialized && <VideoBackground videoRef={videoRef} />}
-                
-                {/* Glasses overlay */}
-                {isInitialized && faceData && (
-                  <GlassesModel
-                    faceData={faceData}
-                    modelPath={GLASSES_MODELS[currentModelIndex]}
-                    videoRef={videoRef}
-                  />
-                )}
-              </Canvas>
-            </div>
-
-            {/* Face detection indicator */}
-            {!isLoading && !error && isInitialized && (
-              <div className="absolute top-4 left-4">
-                <div className={`flex items-center px-3 py-2 rounded-lg ${
-                  faceData ? 'bg-green-500' : 'bg-yellow-500'
-                } text-white text-sm font-medium`}>
-                  <div className={`w-2 h-2 rounded-full mr-2 ${
-                    faceData ? 'bg-white' : 'bg-white animate-pulse'
-                  }`} />
-                  {faceData ? 'Face Detected' : 'Looking for face...'}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Controls Panel */}
-          <div className="w-full lg:w-80 p-6 border-t lg:border-t-0 lg:border-l border-gray-200 bg-gray-50">
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Controls</h3>
-                
-                <div className="space-y-3">
-                  <button
-                    onClick={changeModel}
-                    disabled={isLoading || !!error || !isInitialized}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    <RotateCcw className="w-5 h-5 mr-2" />
-                    Change Frame
-                  </button>
-
-                  <button
-                    onClick={captureScreenshot}
-                    disabled={isLoading || !!error || !faceData || isCapturing || !isInitialized}
-                    className="w-full flex items-center justify-center px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isCapturing ? (
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    ) : (
-                      <Download className="w-5 h-5 mr-2" />
-                    )}
-                    {isCapturing ? 'Capturing...' : 'Save Photo'}
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Current Frame</h4>
-                <div className="bg-white p-4 rounded-lg border border-gray-200">
-                  <div className="text-center">
-                    <div 
-                      className="w-16 h-8 rounded mx-auto mb-2"
-                      style={{ backgroundColor: FALLBACK_FRAMES[currentModelIndex].color }}
-                    ></div>
-                    <p className="text-sm text-gray-600 font-medium">
-                      {FALLBACK_FRAMES[currentModelIndex].name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Frame {currentModelIndex + 1} of {GLASSES_MODELS.length}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 mb-3">Tips</h4>
-                <ul className="text-sm text-gray-600 space-y-2">
-                  <li>• Face the camera directly</li>
-                  <li>• Ensure good lighting</li>
-                  <li>• Stay within the frame</li>
-                  <li>• Move slowly for best tracking</li>
-                  <li>• Allow camera permissions</li>
-                </ul>
-              </div>
-
-              {isInitialized && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                  <p className="text-green-700 text-sm font-medium">✓ Camera Active</p>
-                  <p className="text-green-600 text-xs">AR Try-on is ready to use</p>
-                </div>
-              )}
-            </div>
-          </div>
+        {/* Status Indicator */}
+        <div className="absolute top-4 right-4">
+          <div className={`w-3 h-3 rounded-full ${faceData ? 'bg-green-400' : 'bg-red-400'}`}></div>
         </div>
+      </div>
+
+      {/* Instructions */}
+      <div className="mt-4 text-center">
+        <p className="text-gray-400 text-sm" 
+           style={{ fontFamily: "'Poppins', sans-serif", fontWeight: '300' }}>
+          {faceData 
+            ? 'Face detected! Move your head to see how the glasses fit.' 
+            : 'Please look directly at the camera for face detection.'
+          }
+        </p>
       </div>
     </div>
   );
-};
+}
 
 export default ARTryOn;
