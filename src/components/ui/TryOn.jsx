@@ -409,19 +409,19 @@ export default function TryOn() {
               <ul className="text-gray-300 space-y-2 text-sm">
                 <li className="flex items-start">
                   <span className="text-yellow-400 mr-2">1.</span>
-                  Take a photo or upload an image
+                  Use Web-Cam or upload an image
                 </li>
                 <li className="flex items-start">
                   <span className="text-yellow-400 mr-2">2.</span>
-                  Select a frame style you like
+                  use Web-Cam for proper tracking
                 </li>
                 <li className="flex items-start">
                   <span className="text-yellow-400 mr-2">3.</span>
-                  See how it looks on you instantly
+                  Select from the various frame types 
                 </li>
                 <li className="flex items-start">
                   <span className="text-yellow-400 mr-2">4.</span>
-                  Download and share your look
+                  See how it looks on you almost instantly 
                 </li>
               </ul>
             </div>

@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
