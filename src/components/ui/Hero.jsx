@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Hero() {
-  const [currentText, setCurrentText] = useState('');
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+const [currentText, setCurrentText] = useState('');
+const [currentIndex, setCurrentIndex] = useState(0);
+const [isDeleting, setIsDeleting] = useState(false);
+const [isVisible, setIsVisible] = useState(false);
 
-  const texts = ['Elegance', 'Comfort', 'Excellence', 'Luxury', 'Precision', 'Dominance', 'Presence', 'Freedom'];
-  const staticText = 'Clarity Meets ';
+const texts = ['Elegance', 'Comfort', 'Excellence', 'Luxury', 'Precision', 'Dominance', 'Presence', 'Freedom'];
+const staticText = 'Clarity Meets ';
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+useEffect(() => {
+  setIsVisible(true);
+}, []);
 
-  useEffect(() => {
-    const typeSpeed = isDeleting ? 150 : 200;
-    const currentWord = texts[currentIndex];
-    
-    const timer = setTimeout(() => {
-      if (!isDeleting && currentText === currentWord) {
-        setTimeout(() => setIsDeleting(true), 2000);
-      } else if (isDeleting && currentText === '') {
-        setIsDeleting(false);
-        setCurrentIndex((prev) => (prev + 1) % texts.length);
-      } else {
-        setCurrentText(prev => 
-          isDeleting 
-            ? prev.slice(0, -1)
-            : currentWord.slice(0, prev.length + 1)
-        );
-      }
-    }, typeSpeed);
+useEffect(() => {
+  const typeSpeed = isDeleting ? 150 : 200;
+  const currentWord = texts[currentIndex];
+  
+  const timer = setTimeout(() => {
+    if (!isDeleting && currentText === currentWord) {
+      setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && currentText === '') {
+      setIsDeleting(false);
+      setCurrentIndex((prev) => (prev + 1) % texts.length);
+    } else {
+      setCurrentText(prev => 
+        isDeleting 
+          ? prev.slice(0, -1)
+          : currentWord.slice(0, prev.length + 1)
+      );
+    }
+  }, typeSpeed);
 
-    return () => clearTimeout(timer);
-  }, [currentText, currentIndex, isDeleting, texts]);
+  return () => clearTimeout(timer);
+}, [currentText, currentIndex, isDeleting, texts]);
 
   return (
     <section className="relative min-h-screen bg-black overflow-hidden flex items-center hero-section">
@@ -49,8 +49,9 @@ export default function Hero() {
           {/* Main Headline with Typewriter Effect - Left Aligned */}
           <div className={`mb-8 transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-light text-white leading-tight text-left" style={{ fontFamily: "'Playfair Display', serif" }}>
-              <span className="text-white">{staticText}</span>
-              <span className="text-[#d4af37] font-normal">
+              
+              <span className="block text-white">{staticText}</span>
+              <span className="block text-[#d4af37] font-normal mt-2">
                 {currentText}
                 <span className="inline-block w-1 h-16 md:h-20 lg:h-24 bg-[#d4af37] ml-2 animate-pulse"></span>
               </span>
