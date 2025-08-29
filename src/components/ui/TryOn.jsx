@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Upload, RotateCcw, Download, Sparkles, Eye, Zap, Play, Pause, Settings } from 'lucide-react';
+import { Camera, Upload, RotateCcw, Download, Sparkles, Eye, Zap, Play, Pause, Settings, Cpu, Layers } from 'lucide-react';
 import ARTryOn from './ARTryOn';
 import { useARTryOn } from '../../hooks/useARTryOn';
 
@@ -50,24 +50,24 @@ export default function TryOn() {
 
   const features = [
     {
-      icon: <Eye className="w-6 h-6" />,
-      title: 'Real-Time Tracking',
-      description: 'Advanced face detection with 30+ FPS performance'
+      icon: <Cpu className="w-6 h-6" />,
+      title: 'ML-Optimized Tracking',
+      description: 'Adam optimizer with enhanced learning rate for stable tracking'
     },
     {
       icon: <Zap className="w-6 h-6" />,
-      title: 'Instant Fitting',
-      description: 'See how frames look on you immediately'
+      title: 'Precision Alignment',
+      description: 'Nose bridge alignment with 468-point facial mapping'
     },
     {
-      icon: <Camera className="w-6 h-6" />,
-      title: 'HD Quality',
-      description: 'High-definition camera feed for accurate preview'
+      icon: <Layers className="w-6 h-6" />,
+      title: 'Immersive AR',
+      description: 'Modern UI with smooth transitions and real-time feedback'
     },
     {
-      icon: <Settings className="w-6 h-6" />,
-      title: 'Smart Adjustment',
-      description: 'Automatic scaling and positioning for perfect fit'
+      icon: <Eye className="w-6 h-6" />,
+      title: 'Multi-Angle Support',
+      description: 'Consistent tracking across different face angles and lighting'
     }
   ];
 
@@ -644,16 +644,16 @@ export default function TryOn() {
             {/* How It Works */}
             <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-3xl p-8 border border-blue-400/20 backdrop-blur-sm">
               <h4 className="text-2xl font-medium text-white mb-6 flex items-center">
-                <Eye className="w-6 h-6 text-blue-400 mr-3" />
-                How AR Try-On Works
+                <Cpu className="w-6 h-6 text-blue-400 mr-3" />
+                Enhanced ML Technology
               </h4>
               
               <div className="space-y-6">
                 {[
-                  { step: 1, title: 'Face Detection', desc: 'Advanced AI detects your facial features', icon: '🎯' },
-                  { step: 2, title: 'Real-Time Tracking', desc: 'Tracks 468 facial landmarks at 30+ FPS', icon: '⚡' },
-                  { step: 3, title: 'Perfect Alignment', desc: 'Glasses align precisely with your features', icon: '🎪' },
-                  { step: 4, title: 'Natural Movement', desc: 'Follows your head movements smoothly', icon: '🌊' }
+                  { step: 1, title: 'ML Face Detection', desc: 'Adam optimizer with enhanced learning rate', icon: '🧠' },
+                  { step: 2, title: 'Precision Mapping', desc: 'Tracks 468 landmarks with nose bridge focus', icon: '🎯' },
+                  { step: 3, title: 'Adaptive Alignment', desc: 'Consistent positioning across all angles', icon: '⚡' },
+                  { step: 4, title: 'Smooth Tracking', desc: 'Optimized for natural head movements', icon: '🌊' }
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -719,7 +719,7 @@ export default function TryOn() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
                 onClick={openAR}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black rounded-full font-bold text-lg transition-all duration-300 shadow-xl hover:shadow-2xl"
+                className="w-full flex items-center justify-center gap-3 p-6 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black rounded-2xl font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -736,9 +736,12 @@ export default function TryOn() {
                 Browse Collection
                 <Eye className="w-5 h-5 ml-2" />
               </motion.button>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center gap-3">
             </div>
-          </div>
+                  Launch Enhanced AR
         </motion.div>
+                </span>
       </div>
 
       {/* Enhanced AR Try-On Modal */}

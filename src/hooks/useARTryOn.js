@@ -35,10 +35,10 @@ export const useARTryOn = () => {
       }
 
       const browserSupported = (
-        (browser === 'Chrome' && version >= 90) ||
-        (browser === 'Firefox' && version >= 88) ||
-        (browser === 'Safari' && version >= 14) ||
-        (browser === 'Edge' && version >= 90)
+        (browser === 'Chrome' && version >= 88) ||
+        (browser === 'Firefox' && version >= 85) ||
+        (browser === 'Safari' && version >= 13) ||
+        (browser === 'Edge' && version >= 88)
       );
 
       const supported = hasWebGL && hasGetUserMedia && hasWebAssembly && browserSupported;
@@ -54,7 +54,7 @@ export const useARTryOn = () => {
 
   const openAR = useCallback(() => {
     if (!isARSupported) {
-      console.warn('AR not supported on this device/browser');
+      console.warn('Enhanced AR not supported on this device/browser. Consider updating your browser for the best experience.');
       return;
     }
     setIsAROpen(true);
