@@ -1,354 +1,561 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, useLoader } from '@react-three/fiber';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { FaceLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Camera, RotateCcw, Download, Sparkles, Eye, Settings, RefreshCw, Zap, AlertCircle, Volume2, VolumeX } from 'lucide-react';
+import { 
+  X, Camera, RotateCcw, Download, Settings, Eye, EyeOff, 
+  RotateCw, ZoomIn, ZoomOut, Loader2, AlertCircle, 
+  CheckCircle, Maximize2, Minimize2, RefreshCw 
+} from 'lucide-react';
 
-// Enhanced ML-optimized glasses transform with Adam-like smoothing
-class AdaptiveTracker {
+// Enhanced smoothing algorithm for stable tracking
+class EnhancedTracker {
   constructor() {
-    this.momentum = { position: [0, 0, 0], scale: 0, rotation: [0, 0, 0] };
+    this.history = [];
+    this.maxHistory = 8;
+    this.smoothingFactor = 0.7;
+    this.velocityDamping = 0.85;
+    this.previousTransform = null;
     this.velocity = { position: [0, 0, 0], scale: 0, rotation: [0, 0, 0] };
-    this.learningRate = 0.15; // Increased learning rate for faster adaptation
-    this.beta1 = 0.9; // Adam optimizer momentum parameter
-    this.beta2 = 0.999; // Adam optimizer velocity parameter
-    this.epsilon = 1e-8; // Small constant for numerical stability
-    this.t = 0; // Time step for bias correction
   }
 
-  update(currentTransform, previousTransform) {
-    if (!previousTransform) return currentTransform;
-    
-    this.t += 1;
-    
-    // Calculate gradients (differences)
-    const gradients = {
+  update(currentTransform) {
+    if (!this.previousTransform) {
+      this.previousTransform = { ...currentTransform };
+      return currentTransform;
+    }
+
+    // Calculate velocity
+    this.velocity.position = [
+      (currentTransform.position[0] - this.previousTransform.position[0]) * this.velocityDamping,
+      (currentTransform.position[1] - this.previousTransform.position[1]) * this.velocityDamping,
+      (currentTransform.position[2] - this.previousTransform.position[2]) * this.velocityDamping
+    ];
+    this.velocity.scale = (currentTransform.scale - this.previousTransform.scale) * this.velocityDamping;
+    this.velocity.rotation = [
+      (currentTransform.rotation[0] - this.previousTransform.rotation[0]) * this.velocityDamping,
+      (currentTransform.rotation[1] - this.previousTransform.rotation[1]) * this.velocityDamping,
+      (currentTransform.rotation[2] - this.previousTransform.rotation[2]) * this.velocityDamping
+    ];
+
+    // Apply smoothing with velocity prediction
+    const smoothed = {
       position: [
-        currentTransform.position[0] - previousTransform.position[0],
-        currentTransform.position[1] - previousTransform.position[1],
-        currentTransform.position[2] - previousTransform.position[2]
+        this.previousTransform.position[0] + (currentTransform.position[0] - this.previousTransform.position[0]) * this.smoothingFactor + this.velocity.position[0] * 0.1,
+        this.previousTransform.position[1] + (currentTransform.position[1] - this.previousTransform.position[1]) * this.smoothingFactor + this.velocity.position[1] * 0.1,
+        this.previousTransform.position[2] + (currentTransform.position[2] - this.previousTransform.position[2]) * this.smoothingFactor + this.velocity.position[2] * 0.1
       ],
-      scale: currentTransform.scale - previousTransform.scale,
+      scale: this.previousTransform.scale + (currentTransform.scale - this.previousTransform.scale) * this.smoothingFactor + this.velocity.scale * 0.1,
       rotation: [
-        currentTransform.rotation[0] - previousTransform.rotation[0],
-        currentTransform.rotation[1] - previousTransform.rotation[1],
-        currentTransform.rotation[2] - previousTransform.rotation[2]
+        this.previousTransform.rotation[0] + (currentTransform.rotation[0] - this.previousTransform.rotation[0]) * this.smoothingFactor + this.velocity.rotation[0] * 0.1,
+        this.previousTransform.rotation[1] + (currentTransform.rotation[1] - this.previousTransform.rotation[1]) * this.smoothingFactor + this.velocity.rotation[1] * 0.1,
+        this.previousTransform.rotation[2] + (currentTransform.rotation[2] - this.previousTransform.rotation[2]) * this.smoothingFactor + this.velocity.rotation[2] * 0.1
       ]
     };
 
-    // Adam optimizer updates
-    const updateParam = (param, gradient, momentum, velocity) => {
-      // Update biased first moment estimate
-      momentum = this.beta1 * momentum + (1 - this.beta1) * gradient;
-      
-      // Update biased second raw moment estimate
-      velocity = this.beta2 * velocity + (1 - this.beta2) * gradient * gradient;
-      
-      // Compute bias-corrected first moment estimate
-      const mHat = momentum / (1 - Math.pow(this.beta1, this.t));
-      
-      // Compute bias-corrected second raw moment estimate
-      const vHat = velocity / (1 - Math.pow(this.beta2, this.t));
-      
-      // Update parameter
-      const update = this.learningRate * mHat / (Math.sqrt(vHat) + this.epsilon);
-      
-      return { newParam: param + update, momentum, velocity };
-    };
+    this.previousTransform = smoothed;
+    return smoothed;
+  }
 
-    // Update position
-    for (let i = 0; i < 3; i++) {
-      const result = updateParam(
-        previousTransform.position[i],
-        gradients.position[i],
-        this.momentum.position[i],
-        this.velocity.position[i]
-      );
-      previousTransform.position[i] = result.newParam;
-      this.momentum.position[i] = result.momentum;
-      this.velocity.position[i] = result.velocity;
-    }
-
-    // Update scale
-    const scaleResult = updateParam(
-      previousTransform.scale,
-      gradients.scale,
-      this.momentum.scale,
-      this.velocity.scale
-    );
-    previousTransform.scale = scaleResult.newParam;
-    this.momentum.scale = scaleResult.momentum;
-    this.velocity.scale = scaleResult.velocity;
-
-    // Update rotation
-    for (let i = 0; i < 3; i++) {
-      const result = updateParam(
-        previousTransform.rotation[i],
-        gradients.rotation[i],
-        this.momentum.rotation[i],
-        this.velocity.rotation[i]
-      );
-      previousTransform.rotation[i] = result.newParam;
-      this.momentum.rotation[i] = result.momentum;
-      this.velocity.rotation[i] = result.velocity;
-    }
-
-    return previousTransform;
+  reset() {
+    this.history = [];
+    this.previousTransform = null;
+    this.velocity = { position: [0, 0, 0], scale: 0, rotation: [0, 0, 0] };
   }
 }
 
-// Enhanced glasses transform with precise nose bridge alignment
-function getOptimizedGlassesTransform(landmarks, viewport, tracker) {
+// Enhanced auto-scaling with face landmark analysis
+function getEnhancedGlassesTransform(landmarks, viewport, manualAdjustments = {}) {
   if (!landmarks || landmarks.length < 468) return null;
 
-  // Critical facial landmarks for precise nose bridge alignment
-  const noseBridge = landmarks[168];        // Primary anchor point
-  const leftEyeInner = landmarks[133];      // Left eye inner corner
-  const rightEyeInner = landmarks[362];     // Right eye inner corner
-  const leftEyeCenter = landmarks[159];     // Left eye center
-  const rightEyeCenter = landmarks[386];    // Right eye center
-  const noseTip = landmarks[1];             // Nose tip for depth
-  const leftTemple = landmarks[234];        // Left temple
-  const rightTemple = landmarks[454];       // Right temple
-  const forehead = landmarks[10];           // Forehead center
+  // Key facial landmarks for precise positioning
+  const noseBridge = landmarks[168];
+  const leftEyeInner = landmarks[133];
+  const rightEyeInner = landmarks[362];
+  const leftEyeOuter = landmarks[33];
+  const rightEyeOuter = landmarks[263];
+  const leftTemple = landmarks[234];
+  const rightTemple = landmarks[454];
+  const noseTip = landmarks[1];
+  const forehead = landmarks[10];
 
   if (!noseBridge || !leftEyeInner || !rightEyeInner) return null;
 
-  // Calculate precise nose bridge position
-  const bridgeX = noseBridge.x;
-  const bridgeY = noseBridge.y - 0.008; // Slight upward offset for natural placement
-
-  // Enhanced inter-eye distance calculation for better scaling
+  // Enhanced auto-scaling based on multiple facial measurements
   const eyeInnerDistance = Math.sqrt(
     Math.pow(rightEyeInner.x - leftEyeInner.x, 2) + 
     Math.pow(rightEyeInner.y - leftEyeInner.y, 2)
   );
 
-  // Face depth estimation using multiple reference points
-  const faceDepth = forehead && noseTip ? 
-    Math.abs(forehead.z - noseTip.z) : 0.02;
+  const eyeOuterDistance = Math.sqrt(
+    Math.pow(rightEyeOuter.x - leftEyeOuter.x, 2) + 
+    Math.pow(rightEyeOuter.y - leftEyeOuter.y, 2)
+  );
 
-  // Advanced scaling with depth compensation
-  const baseEyeDistance = 0.065; // Optimized for nose bridge alignment
-  const depthFactor = Math.max(0.85, Math.min(1.15, 1 + (faceDepth - 0.02) * 8));
-  const scaleRatio = (eyeInnerDistance / baseEyeDistance) * depthFactor;
-  const scale = Math.max(0.7, Math.min(1.6, scaleRatio * 2.8));
+  const templeDistance = leftTemple && rightTemple ? Math.sqrt(
+    Math.pow(rightTemple.x - leftTemple.x, 2) + 
+    Math.pow(rightTemple.y - leftTemple.y, 2)
+  ) : eyeOuterDistance;
 
-  // Convert to viewport coordinates
+  // Face depth estimation for distance-based scaling
+  const faceDepth = forehead && noseTip ? Math.abs(forehead.z - noseTip.z) : 0.02;
+  const depthFactor = Math.max(0.8, Math.min(1.3, 1 + (faceDepth - 0.02) * 10));
+
+  // Intelligent scaling algorithm
+  const baseEyeDistance = 0.065;
+  const scaleFromEyes = (eyeInnerDistance / baseEyeDistance) * depthFactor;
+  const scaleFromTemples = (templeDistance / 0.12) * depthFactor;
+  
+  // Weighted average for more stable scaling
+  const autoScale = (scaleFromEyes * 0.7 + scaleFromTemples * 0.3) * 2.5;
+  const finalScale = Math.max(0.6, Math.min(2.0, autoScale)) * (manualAdjustments.scale || 1);
+
+  // Precise positioning
+  const bridgeX = noseBridge.x;
+  const bridgeY = noseBridge.y - 0.01;
+
   const x = -(bridgeX - 0.5) * viewport.width;
   const y = -(bridgeY - 0.5) * viewport.height;
 
-  // Enhanced rotation calculation for stable tracking
+  // Enhanced rotation calculations
   const eyeAngle = Math.atan2(
-    rightEyeCenter.y - leftEyeCenter.y,
-    rightEyeCenter.x - leftEyeCenter.x
+    rightEyeInner.y - leftEyeInner.y,
+    rightEyeInner.x - leftEyeInner.x
   );
 
-  // Head tilt using temple points with stability enhancement
   let headTiltZ = 0;
   if (leftTemple && rightTemple) {
     headTiltZ = Math.atan2(
       rightTemple.y - leftTemple.y,
       rightTemple.x - leftTemple.x
-    ) * 0.25; // Reduced for stability
+    ) * 0.3;
   }
 
-  // Head rotation Y (left-right turn) with nose bridge reference
   let headRotationY = 0;
   if (noseTip && noseBridge) {
-    const noseVector = (noseTip.x - noseBridge.x) * 2;
-    headRotationY = Math.max(-0.5, Math.min(0.5, noseVector)); // Clamped for stability
+    const noseVector = (noseTip.x - noseBridge.x) * 1.5;
+    headRotationY = Math.max(-0.6, Math.min(0.6, noseVector));
   }
 
-  // Head rotation X (up-down tilt) with forehead reference
   let headRotationX = 0;
   if (forehead && noseBridge) {
-    const verticalTilt = (forehead.y - noseBridge.y) - 0.085;
-    headRotationX = Math.max(-0.3, Math.min(0.3, verticalTilt * 1.5)); // Clamped
+    const verticalTilt = (forehead.y - noseBridge.y) - 0.08;
+    headRotationX = Math.max(-0.4, Math.min(0.4, verticalTilt * 2));
   }
 
-  const currentTransform = {
-    position: [x, y, 0],
-    scale: scale,
-    rotation: [headRotationX, headRotationY, eyeAngle + headTiltZ]
+  return {
+    position: [
+      x + (manualAdjustments.offsetX || 0),
+      y + (manualAdjustments.offsetY || 0),
+      manualAdjustments.offsetZ || 0
+    ],
+    scale: finalScale,
+    rotation: [
+      headRotationX + (manualAdjustments.rotationX || 0),
+      headRotationY + (manualAdjustments.rotationY || 0),
+      eyeAngle + headTiltZ + (manualAdjustments.rotationZ || 0)
+    ],
+    autoScale,
+    eyeDistance: eyeInnerDistance,
+    faceDepth
   };
-
-  // Apply Adam optimizer-like smoothing
-  return tracker.update(currentTransform, tracker.previousTransform || currentTransform);
 }
 
-// Modern 3D Glasses Component with enhanced materials
-function ModernGlasses({ faceData, selectedGlasses, isVisible, tracker }) {
+// Enhanced 3D Glasses Component with GLB model loading
+function Enhanced3DGlasses({ faceData, selectedModel, isVisible, tracker, manualAdjustments, onModelLoad, onModelError }) {
   const glassesRef = useRef();
   const { viewport } = useThree();
+  const [currentModel, setCurrentModel] = useState(null);
+
+  // Load GLB model
+  const gltf = useLoader(GLTFLoader, selectedModel.path, (loader) => {
+    loader.manager.onLoad = () => {
+      onModelLoad?.(selectedModel.id);
+    };
+    loader.manager.onError = (error) => {
+      onModelError?.(selectedModel.id, error);
+    };
+  });
+
+  useEffect(() => {
+    if (gltf) {
+      setCurrentModel(gltf.scene.clone());
+    }
+  }, [gltf]);
 
   useFrame(() => {
-    if (glassesRef.current && faceData && faceData.landmarks && isVisible) {
-      const transform = getOptimizedGlassesTransform(faceData.landmarks, viewport, tracker);
+    if (glassesRef.current && faceData && faceData.landmarks && isVisible && currentModel) {
+      const transform = getEnhancedGlassesTransform(faceData.landmarks, viewport, manualAdjustments);
       
       if (transform) {
-        tracker.previousTransform = transform;
+        const smoothedTransform = tracker.update(transform);
         
-        // Apply smooth transforms
-        glassesRef.current.position.set(...transform.position);
-        glassesRef.current.scale.setScalar(transform.scale);
-        glassesRef.current.rotation.set(...transform.rotation);
+        glassesRef.current.position.set(...smoothedTransform.position);
+        glassesRef.current.scale.setScalar(smoothedTransform.scale);
+        glassesRef.current.rotation.set(...smoothedTransform.rotation);
       }
     }
   });
 
-  const getGlassesStyle = () => {
-    const styles = {
-      aviator: { 
-        frameColor: '#E8E8E8', lensColor: '#1a1a2e', lensOpacity: 0.4,
-        frameThickness: 0.04, shape: 'aviator', metallic: true
-      },
-      round: { 
-        frameColor: '#8B4513', lensColor: '#2F4F4F', lensOpacity: 0.3,
-        frameThickness: 0.06, shape: 'round', metallic: false
-      },
-      square: { 
-        frameColor: '#1a1a1a', lensColor: '#191970', lensOpacity: 0.25,
-        frameThickness: 0.08, shape: 'square', metallic: false
-      },
-      cateye: { 
-        frameColor: '#8B0000', lensColor: '#4B0082', lensOpacity: 0.35,
-        frameThickness: 0.07, shape: 'cateye', metallic: false
-      },
-      classic: { 
-        frameColor: '#2c2c2c', lensColor: '#87CEEB', lensOpacity: 0.25,
-        frameThickness: 0.06, shape: 'classic', metallic: false
-      }
-    };
-    return styles[selectedGlasses] || styles.classic;
-  };
-
-  const style = getGlassesStyle();
-
-  const renderLens = (position, rotation = [0, 0, 0]) => (
-    <group position={position} rotation={rotation}>
-      {/* Frame */}
-      <mesh>
-        <ringGeometry args={[0.32, 0.38, 32]} />
-        <meshStandardMaterial 
-          color={style.frameColor} 
-          metalness={style.metallic ? 0.8 : 0.1}
-          roughness={style.metallic ? 0.2 : 0.6}
-        />
-      </mesh>
-      {/* Lens */}
-      <mesh position={[0, 0, -0.01]}>
-        <circleGeometry args={[0.32, 32]} />
-        <meshStandardMaterial 
-          color={style.lensColor} 
-          transparent 
-          opacity={style.lensOpacity}
-          metalness={0.1}
-          roughness={0.1}
-        />
-      </mesh>
-    </group>
-  );
+  if (!currentModel) return null;
 
   return (
     <group ref={glassesRef}>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[5, 5, 5]} intensity={0.4} />
-      
-      {/* Enhanced lens rendering based on style */}
-      {style.shape === 'aviator' ? (
-        <>
-          {renderLens([-0.6, 0, 0])}
-          {renderLens([0.6, 0, 0])}
-        </>
-      ) : style.shape === 'cateye' ? (
-        <>
-          {renderLens([-0.55, 0, 0], [0, 0, 0.15])}
-          {renderLens([0.55, 0, 0], [0, 0, -0.15])}
-        </>
-      ) : (
-        <>
-          {renderLens([-0.6, 0, 0])}
-          {renderLens([0.6, 0, 0])}
-        </>
-      )}
-
-      {/* Enhanced nose bridge with better positioning */}
-      <mesh position={[0, 0.01, 0]}>
-        <boxGeometry args={[0.16, 0.04, style.frameThickness]} />
-        <meshStandardMaterial 
-          color={style.frameColor}
-          metalness={style.metallic ? 0.8 : 0.1}
-          roughness={style.metallic ? 0.2 : 0.6}
-        />
-      </mesh>
-
-      {/* Optimized nose pads */}
-      <mesh position={[-0.08, -0.06, 0.015]}>
-        <sphereGeometry args={[0.02, 8, 8]} />
-        <meshStandardMaterial color={style.frameColor} opacity={0.8} transparent />
-      </mesh>
-      <mesh position={[0.08, -0.06, 0.015]}>
-        <sphereGeometry args={[0.02, 8, 8]} />
-        <meshStandardMaterial color={style.frameColor} opacity={0.8} transparent />
-      </mesh>
-
-      {/* Enhanced temples with realistic curvature */}
-      <mesh position={[-0.9, 0.02, 0]} rotation={[0, 0, Math.PI / 20]}>
-        <boxGeometry args={[0.6, style.frameThickness, style.frameThickness]} />
-        <meshStandardMaterial 
-          color={style.frameColor}
-          metalness={style.metallic ? 0.8 : 0.1}
-          roughness={style.metallic ? 0.2 : 0.6}
-        />
-      </mesh>
-      <mesh position={[0.9, 0.02, 0]} rotation={[0, 0, -Math.PI / 20]}>
-        <boxGeometry args={[0.6, style.frameThickness, style.frameThickness]} />
-        <meshStandardMaterial 
-          color={style.frameColor}
-          metalness={style.metallic ? 0.8 : 0.1}
-          roughness={style.metallic ? 0.2 : 0.6}
-        />
-      </mesh>
-
-      {/* Premium hinges */}
-      <mesh position={[-0.78, 0.01, 0]}>
-        <cylinderGeometry args={[0.025, 0.025, style.frameThickness * 1.2, 8]} />
-        <meshStandardMaterial color={style.frameColor} metalness={0.9} roughness={0.1} />
-      </mesh>
-      <mesh position={[0.78, 0.01, 0]}>
-        <cylinderGeometry args={[0.025, 0.025, style.frameThickness * 1.2, 8]} />
-        <meshStandardMaterial color={style.frameColor} metalness={0.9} roughness={0.1} />
-      </mesh>
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[5, 5, 5]} intensity={0.6} />
+      <directionalLight position={[-5, -5, -5]} intensity={0.3} />
+      <primitive object={currentModel} />
     </group>
   );
 }
 
-// Performance monitor with ML metrics
-function PerformanceMonitor({ onMetricsUpdate }) {
-  const frameCount = useRef(0);
-  const lastTime = useRef(performance.now());
-  const detectionTimes = useRef([]);
+// Loading Skeleton Component
+function LoadingSkeleton() {
+  return (
+    <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-3xl flex items-center justify-center z-20">
+      <div className="text-center space-y-6">
+        <motion.div
+          className="relative w-20 h-20 mx-auto"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        >
+          <div className="absolute inset-0 border-4 border-blue-500/30 rounded-full"></div>
+          <div className="absolute inset-0 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        </motion.div>
+        
+        <div className="space-y-2">
+          <h3 className="text-xl font-medium text-white">Initializing AR Experience</h3>
+          <div className="flex items-center justify-center gap-2">
+            <motion.div
+              className="w-2 h-2 bg-blue-500 rounded-full"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+            />
+            <motion.div
+              className="w-2 h-2 bg-blue-500 rounded-full"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+            />
+            <motion.div
+              className="w-2 h-2 bg-blue-500 rounded-full"
+              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-  useFrame(() => {
-    frameCount.current++;
-    const currentTime = performance.now();
-    
-    if (currentTime - lastTime.current >= 1000) {
-      const fps = Math.round((frameCount.current * 1000) / (currentTime - lastTime.current));
-      const avgDetectionTime = detectionTimes.current.length > 0 
-        ? detectionTimes.current.reduce((a, b) => a + b, 0) / detectionTimes.current.length 
-        : 0;
-      
-      onMetricsUpdate({ fps, avgDetectionTime: avgDetectionTime.toFixed(2) });
-      
-      frameCount.current = 0;
-      lastTime.current = currentTime;
-      detectionTimes.current = [];
-    }
-  });
+// Error Modal Component
+function ErrorModal({ error, onRetry, onClose }) {
+  return (
+    <motion.div
+      className="absolute inset-0 bg-black/80 backdrop-blur-sm rounded-3xl flex items-center justify-center z-30"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
+      <motion.div
+        className="bg-gray-900 border border-red-500/50 rounded-2xl p-8 max-w-md mx-4 text-center"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.9, opacity: 0 }}
+      >
+        <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+        <h3 className="text-xl font-semibold text-white mb-3">AR Initialization Failed</h3>
+        <p className="text-gray-300 mb-6 text-sm leading-relaxed">{error}</p>
+        <div className="flex gap-3">
+          <button
+            onClick={onRetry}
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300"
+          >
+            <RefreshCw className="w-4 h-4 inline mr-2" />
+            Retry
+          </button>
+          <button
+            onClick={onClose}
+            className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300"
+          >
+            Close
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
-  return null;
+// Model Selection Toolbar
+function ModelSelector({ models, selectedModel, onModelChange, isLoading }) {
+  return (
+    <motion.div
+      className="absolute top-6 left-6 bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl p-4"
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.3 }}
+    >
+      <h4 className="text-white text-sm font-medium mb-3">Eyewear Models</h4>
+      <div className="flex gap-2">
+        {models.map((model) => (
+          <motion.button
+            key={model.id}
+            onClick={() => onModelChange(model)}
+            disabled={isLoading}
+            className={`relative w-12 h-12 rounded-xl border-2 transition-all duration-300 ${
+              selectedModel.id === model.id
+                ? 'border-blue-500 bg-blue-500/20'
+                : 'border-white/30 hover:border-white/50 bg-white/10'
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            whileHover={{ scale: isLoading ? 1 : 1.1 }}
+            whileTap={{ scale: isLoading ? 1 : 0.95 }}
+          >
+            <span className="text-lg">{model.icon}</span>
+            {selectedModel.id === model.id && (
+              <motion.div
+                className="absolute inset-0 border-2 border-blue-400 rounded-xl"
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              />
+            )}
+          </motion.button>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+// Manual Adjustment Controls
+function AdjustmentControls({ adjustments, onAdjustmentChange, onReset }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  return (
+    <motion.div
+      className="absolute bottom-6 left-6 bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl overflow-hidden"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.4 }}
+    >
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full flex items-center justify-between p-4 text-white hover:bg-white/10 transition-colors duration-300"
+      >
+        <div className="flex items-center gap-2">
+          <Settings className="w-5 h-5" />
+          <span className="text-sm font-medium">Adjustments</span>
+        </div>
+        <motion.div
+          animate={{ rotate: isExpanded ? 180 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <RotateCw className="w-4 h-4" />
+        </motion.div>
+      </button>
+
+      <AnimatePresence>
+        {isExpanded && (
+          <motion.div
+            className="border-t border-white/20 p-4 space-y-4"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Scale Control */}
+            <div>
+              <label className="text-white text-xs font-medium mb-2 block">Scale</label>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => onAdjustmentChange('scale', Math.max(0.5, (adjustments.scale || 1) - 0.1))}
+                  className="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white transition-colors duration-300"
+                >
+                  <ZoomOut className="w-4 h-4" />
+                </button>
+                <div className="flex-1 text-center text-white text-xs">
+                  {((adjustments.scale || 1) * 100).toFixed(0)}%
+                </div>
+                <button
+                  onClick={() => onAdjustmentChange('scale', Math.min(2, (adjustments.scale || 1) + 0.1))}
+                  className="w-8 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white transition-colors duration-300"
+                >
+                  <ZoomIn className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Position Controls */}
+            <div>
+              <label className="text-white text-xs font-medium mb-2 block">Position</label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => onAdjustmentChange('offsetY', (adjustments.offsetY || 0) - 0.1)}
+                  className="w-full h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white text-xs transition-colors duration-300"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => onAdjustmentChange('offsetY', (adjustments.offsetY || 0) + 0.1)}
+                  className="w-full h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white text-xs transition-colors duration-300"
+                >
+                  ↓
+                </button>
+                <button
+                  onClick={() => onAdjustmentChange('offsetX', (adjustments.offsetX || 0) - 0.1)}
+                  className="w-full h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white text-xs transition-colors duration-300"
+                >
+                  ←
+                </button>
+                <button
+                  onClick={() => onAdjustmentChange('offsetX', (adjustments.offsetX || 0) + 0.1)}
+                  className="w-full h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white text-xs transition-colors duration-300"
+                >
+                  →
+                </button>
+              </div>
+            </div>
+
+            {/* Rotation Controls */}
+            <div>
+              <label className="text-white text-xs font-medium mb-2 block">Rotation</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => onAdjustmentChange('rotationZ', (adjustments.rotationZ || 0) - 0.1)}
+                  className="flex-1 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white text-xs transition-colors duration-300"
+                >
+                  ↺
+                </button>
+                <button
+                  onClick={() => onAdjustmentChange('rotationZ', (adjustments.rotationZ || 0) + 0.1)}
+                  className="flex-1 h-8 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center text-white text-xs transition-colors duration-300"
+                >
+                  ↻
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={onReset}
+              className="w-full bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-400 py-2 rounded-lg text-xs font-medium transition-all duration-300"
+            >
+              Reset All
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// Main Toolbar Component
+function MainToolbar({ 
+  onCapture, 
+  onToggleAR, 
+  onSwitchCamera, 
+  onToggleFullscreen,
+  isARVisible, 
+  isFullscreen, 
+  faceDetected,
+  trackingQuality 
+}) {
+  return (
+    <motion.div
+      className="absolute bottom-6 right-6 flex gap-3"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.5 }}
+    >
+      <motion.button
+        onClick={onToggleAR}
+        className={`p-4 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${
+          isARVisible 
+            ? 'bg-blue-500/20 border-blue-400/40 text-blue-400' 
+            : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+        }`}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        {isARVisible ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+      </motion.button>
+
+      <motion.button
+        onClick={onSwitchCamera}
+        className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl text-white hover:bg-white/20 transition-all duration-300"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <RotateCcw className="w-5 h-5" />
+      </motion.button>
+
+      <motion.button
+        onClick={onToggleFullscreen}
+        className="p-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl text-white hover:bg-white/20 transition-all duration-300"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
+      </motion.button>
+
+      <motion.button
+        onClick={onCapture}
+        disabled={!faceDetected}
+        className="p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-xl border border-green-400/40 rounded-2xl text-green-400 hover:bg-green-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
+        whileHover={{ scale: faceDetected ? 1.1 : 1 }}
+        whileTap={{ scale: faceDetected ? 0.9 : 1 }}
+      >
+        <Download className="w-5 h-5" />
+      </motion.button>
+    </motion.div>
+  );
+}
+
+// Status Indicator Component
+function StatusIndicator({ faceDetected, trackingQuality, fps, cameraMode }) {
+  return (
+    <motion.div
+      className="absolute top-6 right-6 space-y-3"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.2 }}
+    >
+      {/* Face Detection Status */}
+      <motion.div 
+        className={`flex items-center gap-3 px-4 py-2 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${
+          faceDetected 
+            ? 'bg-green-500/20 border-green-400/40' 
+            : 'bg-red-500/20 border-red-400/40'
+        }`}
+        animate={{ scale: faceDetected ? [1, 1.05, 1] : 1 }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        <div className={`w-3 h-3 rounded-full ${
+          faceDetected ? 'bg-green-400 animate-pulse' : 'bg-red-400'
+        }`} />
+        <span className="text-white text-sm font-medium">
+          {faceDetected ? 'Tracking Active' : 'No Face Detected'}
+        </span>
+      </motion.div>
+
+      {/* Performance Metrics */}
+      {faceDetected && (
+        <motion.div
+          className="bg-black/40 backdrop-blur-xl border border-white/20 rounded-2xl px-4 py-2"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="flex items-center gap-4 text-xs text-gray-300">
+            <span>Quality: <span className={`font-medium ${
+              trackingQuality === 'excellent' ? 'text-green-400' :
+              trackingQuality === 'good' ? 'text-yellow-400' : 'text-orange-400'
+            }`}>{trackingQuality}</span></span>
+            <span>FPS: <span className="text-blue-400 font-medium">{fps}</span></span>
+            <span className="capitalize">{cameraMode} Cam</span>
+          </div>
+        </motion.div>
+      )}
+    </motion.div>
+  );
 }
 
 function ARTryOn({ isOpen, onClose }) {
@@ -357,75 +564,64 @@ function ARTryOn({ isOpen, onClose }) {
   const faceLandmarkerRef = useRef(null);
   const animationFrameRef = useRef(null);
   const streamRef = useRef(null);
-  const trackerRef = useRef(new AdaptiveTracker());
+  const trackerRef = useRef(new EnhancedTracker());
 
   // Enhanced state management
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [faceData, setFaceData] = useState(null);
-  const [selectedGlasses, setSelectedGlasses] = useState('classic');
+  const [selectedModel, setSelectedModel] = useState(null);
   const [cameraMode, setCameraMode] = useState('user');
-  const [isGlassesVisible, setIsGlassesVisible] = useState(true);
-  const [metrics, setMetrics] = useState({ fps: 0, avgDetectionTime: 0 });
+  const [isARVisible, setIsARVisible] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [faceDetected, setFaceDetected] = useState(false);
-  const [initializationStep, setInitializationStep] = useState('');
-  const [showSettings, setShowSettings] = useState(false);
-  const [trackingQuality, setTrackingQuality] = useState('excellent');
-  const [soundEnabled, setSoundEnabled] = useState(false);
+  const [trackingQuality, setTrackingQuality] = useState('good');
+  const [fps, setFps] = useState(0);
+  const [manualAdjustments, setManualAdjustments] = useState({});
+  const [modelLoadingStates, setModelLoadingStates] = useState({});
 
-  // Modern glasses collection with enhanced styling
-  const glassesStyles = [
+  // Enhanced glasses models with GLB paths
+  const glassesModels = [
     { 
       id: 'classic', 
-      name: 'Classic', 
+      name: 'Classic Frame', 
       icon: '👓', 
-      color: '#2c2c2c',
+      path: '/models/glasses1.glb',
       description: 'Timeless elegance'
     },
     { 
       id: 'aviator', 
-      name: 'Aviator', 
+      name: 'Aviator Style', 
       icon: '🕶️', 
-      color: '#E8E8E8',
-      description: 'Bold & confident'
+      path: '/models/glasses2.glb',
+      description: 'Bold confidence'
     },
     { 
-      id: 'round', 
-      name: 'Round', 
-      icon: '⭕', 
-      color: '#8B4513',
-      description: 'Vintage charm'
-    },
-    { 
-      id: 'square', 
-      name: 'Square', 
-      icon: '⬛', 
-      color: '#1a1a1a',
-      description: 'Modern edge'
-    },
-    { 
-      id: 'cateye', 
-      name: 'Cat Eye', 
-      icon: '😸', 
-      color: '#8B0000',
-      description: 'Sophisticated flair'
+      id: 'modern', 
+      name: 'Modern Frame', 
+      icon: '🤓', 
+      path: '/models/glasses3.glb',
+      description: 'Contemporary edge'
     }
   ];
 
-  // Enhanced initialization with optimized ML settings
+  useEffect(() => {
+    if (glassesModels.length > 0) {
+      setSelectedModel(glassesModels[0]);
+    }
+  }, []);
+
+  // Enhanced initialization
   const initializeAR = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
-      setInitializationStep('Initializing ML models...');
 
+      // Initialize MediaPipe
       const vision = await FilesetResolver.forVisionTasks(
         "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm"
       );
 
-      setInitializationStep('Optimizing face detection...');
-      
-      // Enhanced ML configuration with optimized parameters
       const landmarker = await FaceLandmarker.createFromOptions(vision, {
         baseOptions: {
           modelAssetPath: `https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task`,
@@ -434,22 +630,20 @@ function ARTryOn({ isOpen, onClose }) {
         outputFaceBlendshapes: false,
         runningMode: "VIDEO",
         numFaces: 1,
-        minFaceDetectionConfidence: 0.7, // Increased for better quality
-        minFacePresenceConfidence: 0.8,  // Increased for stability
-        minTrackingConfidence: 0.8       // Increased for consistent tracking
+        minFaceDetectionConfidence: 0.8,
+        minFacePresenceConfidence: 0.8,
+        minTrackingConfidence: 0.8
       });
 
       faceLandmarkerRef.current = landmarker;
-      setInitializationStep('Accessing camera...');
 
-      // Enhanced camera constraints for better ML performance
+      // Enhanced camera setup
       const constraints = {
         video: { 
           width: { ideal: 1280, max: 1920 },
           height: { ideal: 720, max: 1080 },
           facingMode: cameraMode,
-          frameRate: { ideal: 30, max: 60 },
-          aspectRatio: { ideal: 16/9 }
+          frameRate: { ideal: 30, max: 60 }
         }
       };
 
@@ -460,26 +654,25 @@ function ARTryOn({ isOpen, onClose }) {
         videoRef.current.srcObject = stream;
         videoRef.current.onloadedmetadata = () => {
           videoRef.current.play();
-          setInitializationStep('Calibrating tracking...');
           setTimeout(() => {
             setIsLoading(false);
-            startOptimizedFaceDetection();
-          }, 800);
+            startFaceDetection();
+          }, 1000);
         };
       }
 
     } catch (err) {
       console.error('AR initialization error:', err);
-      let errorMessage = 'Failed to initialize AR: ';
+      let errorMessage = 'Failed to initialize AR experience. ';
       
       if (err.name === 'NotAllowedError') {
-        errorMessage += 'Camera access denied. Please allow camera permissions.';
+        errorMessage += 'Please allow camera access to use virtual try-on.';
       } else if (err.name === 'NotFoundError') {
         errorMessage += 'No camera found on your device.';
       } else if (err.name === 'NotReadableError') {
         errorMessage += 'Camera is being used by another application.';
       } else {
-        errorMessage += err.message || 'Unknown error occurred.';
+        errorMessage += 'Please check your browser compatibility and try again.';
       }
       
       setError(errorMessage);
@@ -487,78 +680,61 @@ function ARTryOn({ isOpen, onClose }) {
     }
   }, [cameraMode]);
 
-  // Optimized face detection with enhanced performance
-  const startOptimizedFaceDetection = useCallback(() => {
-    let lastDetectionTime = 0;
-    const targetFPS = 30;
-    const detectionInterval = 1000 / targetFPS;
+  // Enhanced face detection with FPS monitoring
+  const startFaceDetection = useCallback(() => {
+    let lastTime = performance.now();
+    let frameCount = 0;
     let consecutiveDetections = 0;
     let consecutiveMisses = 0;
 
     const detectFace = () => {
       const currentTime = performance.now();
-      
-      if (currentTime - lastDetectionTime < detectionInterval) {
-        if (isOpen) {
-          animationFrameRef.current = requestAnimationFrame(detectFace);
-        }
-        return;
+      frameCount++;
+
+      // Calculate FPS every second
+      if (currentTime - lastTime >= 1000) {
+        setFps(Math.round((frameCount * 1000) / (currentTime - lastTime)));
+        frameCount = 0;
+        lastTime = currentTime;
       }
 
       if (faceLandmarkerRef.current && videoRef.current && 
           videoRef.current.videoWidth > 0 && videoRef.current.readyState === 4) {
         try {
-          const detectionStart = performance.now();
           const results = faceLandmarkerRef.current.detectForVideo(
             videoRef.current, 
             currentTime
           );
-          const detectionTime = performance.now() - detectionStart;
 
           if (results.faceLandmarks && results.faceLandmarks.length > 0) {
             const landmarks = results.faceLandmarks[0];
             
-            // Quality assessment based on landmark stability
             consecutiveDetections++;
             consecutiveMisses = 0;
             
-            const quality = consecutiveDetections > 10 ? 'excellent' : 
-                          consecutiveDetections > 5 ? 'good' : 'fair';
+            // Enhanced quality assessment
+            const quality = consecutiveDetections > 15 ? 'excellent' : 
+                          consecutiveDetections > 8 ? 'good' : 'fair';
             
             setTrackingQuality(quality);
             
             setFaceData({
               landmarks: landmarks,
-              confidence: Math.min(1.0, consecutiveDetections / 15),
-              timestamp: currentTime,
-              detectionTime
+              confidence: Math.min(1.0, consecutiveDetections / 20),
+              timestamp: currentTime
             });
             
             if (!faceDetected) {
               setFaceDetected(true);
-              if (soundEnabled) {
-                // Play subtle detection sound
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.1);
-              }
             }
           } else {
             consecutiveMisses++;
-            consecutiveDetections = Math.max(0, consecutiveDetections - 1);
+            consecutiveDetections = Math.max(0, consecutiveDetections - 2);
             
-            if (consecutiveMisses > 10 && faceDetected) {
+            if (consecutiveMisses > 15 && faceDetected) {
               setFaceDetected(false);
             }
           }
-          
-          lastDetectionTime = currentTime;
         } catch (err) {
           console.error('Face detection error:', err);
         }
@@ -570,7 +746,7 @@ function ARTryOn({ isOpen, onClose }) {
     };
 
     detectFace();
-  }, [isOpen, faceDetected, soundEnabled]);
+  }, [isOpen, faceDetected]);
 
   // Enhanced camera switching
   const switchCamera = useCallback(async () => {
@@ -581,23 +757,20 @@ function ARTryOn({ isOpen, onClose }) {
       streamRef.current.getTracks().forEach(track => track.stop());
     }
     
-    // Reset tracker for new camera
-    trackerRef.current = new AdaptiveTracker();
+    trackerRef.current.reset();
     await initializeAR();
   }, [cameraMode, initializeAR]);
 
-  // Enhanced screenshot with better quality
+  // Enhanced screenshot capture
   const captureScreenshot = useCallback(() => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
       const video = videoRef.current;
       const context = canvas.getContext('2d');
 
-      // High quality capture
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       
-      // Apply filters for better quality
       context.filter = 'contrast(1.1) brightness(1.05) saturate(1.1)';
       
       if (cameraMode === 'user') {
@@ -607,18 +780,49 @@ function ARTryOn({ isOpen, onClose }) {
       
       context.drawImage(video, 0, 0);
 
-      // Add subtle watermark
+      // Add watermark
       context.filter = 'none';
-      context.fillStyle = 'rgba(212, 175, 55, 0.8)';
-      context.font = '16px Inter';
-      context.fillText('EyeLura AR Try-On', 20, canvas.height - 20);
+      context.fillStyle = 'rgba(212, 175, 55, 0.9)';
+      context.font = 'bold 24px Inter';
+      context.fillText('EyeLura AR Try-On', 30, canvas.height - 30);
 
       const link = document.createElement('a');
-      link.download = `eyelura-ar-tryout-${Date.now()}.png`;
+      link.download = `eyelura-ar-${selectedModel?.id || 'glasses'}-${Date.now()}.png`;
       link.href = canvas.toDataURL('image/png', 0.95);
       link.click();
     }
-  }, [cameraMode]);
+  }, [cameraMode, selectedModel]);
+
+  // Model change handler
+  const handleModelChange = useCallback((model) => {
+    setSelectedModel(model);
+    setModelLoadingStates(prev => ({ ...prev, [model.id]: 'loading' }));
+  }, []);
+
+  // Model load handlers
+  const handleModelLoad = useCallback((modelId) => {
+    setModelLoadingStates(prev => ({ ...prev, [modelId]: 'loaded' }));
+  }, []);
+
+  const handleModelError = useCallback((modelId, error) => {
+    console.error(`Failed to load model ${modelId}:`, error);
+    setModelLoadingStates(prev => ({ ...prev, [modelId]: 'error' }));
+  }, []);
+
+  // Manual adjustment handlers
+  const handleAdjustmentChange = useCallback((key, value) => {
+    setManualAdjustments(prev => ({ ...prev, [key]: value }));
+  }, []);
+
+  const resetAdjustments = useCallback(() => {
+    setManualAdjustments({});
+    trackerRef.current.reset();
+  }, []);
+
+  // Fullscreen toggle
+  const toggleFullscreen = useCallback(() => {
+    setIsFullscreen(!isFullscreen);
+  }, [isFullscreen]);
 
   // Cleanup function
   const cleanup = useCallback(() => {
@@ -631,8 +835,7 @@ function ARTryOn({ isOpen, onClose }) {
     if (faceLandmarkerRef.current) {
       faceLandmarkerRef.current.close();
     }
-    // Reset tracker
-    trackerRef.current = new AdaptiveTracker();
+    trackerRef.current.reset();
   }, []);
 
   useEffect(() => {
@@ -649,20 +852,22 @@ function ARTryOn({ isOpen, onClose }) {
   return (
     <AnimatePresence>
       <motion.div 
-        className="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center"
+        className="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
         <motion.div 
-          className="relative w-full h-full max-w-7xl mx-auto flex flex-col bg-gradient-to-br from-gray-900/40 to-black/60 backdrop-blur-xl"
-          initial={{ scale: 0.95, opacity: 0 }}
+          className={`relative bg-gray-900/40 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl transition-all duration-500 ${
+            isFullscreen ? 'w-full h-full' : 'w-full max-w-6xl h-[80vh]'
+          }`}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.95, opacity: 0 }}
+          exit={{ scale: 0.9, opacity: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
-          {/* Immersive Header */}
+          {/* Header */}
           <div className="flex items-center justify-between p-6 bg-black/20 backdrop-blur-sm border-b border-white/10">
             <motion.div 
               className="flex items-center gap-4"
@@ -671,432 +876,181 @@ function ARTryOn({ isOpen, onClose }) {
               transition={{ delay: 0.2 }}
             >
               <div className="relative">
-                <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-2xl flex items-center justify-center shadow-lg">
-                  <Sparkles className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                  <Camera className="w-6 h-6 text-white" />
                 </div>
                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-black animate-pulse" />
               </div>
               <div>
-                <h2 className="text-2xl font-light text-white" style={{ fontFamily: "'Inter', sans-serif", fontWeight: '300' }}>
-                  AR Virtual Try-On
-                </h2>
-                <p className="text-sm text-gray-400">Powered by advanced ML tracking</p>
+                <h2 className="text-2xl font-light text-white">AR Virtual Try-On</h2>
+                <p className="text-sm text-gray-400">Enhanced with auto-scaling</p>
               </div>
             </motion.div>
             
-            <motion.div 
-              className="flex items-center gap-3"
-              initial={{ x: 20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
+            <motion.button 
+              onClick={onClose}
+              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors duration-200 text-gray-400 hover:text-white"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             >
-              {/* Enhanced Status Indicators */}
-              <div className="flex items-center gap-3">
-                {metrics.fps > 0 && (
-                  <div className="px-3 py-1 bg-black/40 backdrop-blur-sm rounded-full border border-white/20">
-                    <span className="text-xs text-green-400 font-medium">{metrics.fps} FPS</span>
-                  </div>
-                )}
-                
-                <div className={`px-3 py-1 rounded-full border backdrop-blur-sm ${
-                  faceDetected 
-                    ? 'bg-green-500/20 border-green-400/40 text-green-400' 
-                    : 'bg-red-500/20 border-red-400/40 text-red-400'
-                }`}>
-                  <span className="text-xs font-medium">
-                    {faceDetected ? 'Tracking Active' : 'No Face'}
-                  </span>
-                </div>
-              </div>
-              
-              <button
-                onClick={() => setShowSettings(!showSettings)}
-                className="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 text-gray-400 hover:text-white"
-              >
-                <Settings className="w-5 h-5" />
-              </button>
-              
-              <button 
-                onClick={onClose}
-                className="p-3 hover:bg-white/10 rounded-xl transition-all duration-200 text-gray-400 hover:text-white"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </motion.div>
+              <X className="w-6 h-6" />
+            </motion.button>
           </div>
 
-          <div className="flex-1 flex">
-            {/* Main AR Viewport */}
-            <div className="flex-1 p-6">
-              {error ? (
-                <motion.div 
-                  className="h-full flex items-center justify-center"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                >
-                  <div className="text-center max-w-md bg-black/40 backdrop-blur-xl rounded-3xl p-8 border border-red-400/30">
-                    <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-                    <h3 className="text-xl font-medium text-white mb-3">Camera Access Required</h3>
-                    <p className="text-red-400 mb-6 text-sm leading-relaxed">{error}</p>
-                    <motion.button 
-                      onClick={initializeAR}
-                      className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black rounded-2xl font-medium transition-all duration-300"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <RefreshCw className="w-4 h-4 inline mr-2" />
-                      Retry Connection
-                    </motion.button>
-                  </div>
-                </motion.div>
-              ) : (
-                <div className="relative h-full">
-                  {/* Loading Overlay */}
-                  <AnimatePresence>
-                    {isLoading && (
-                      <motion.div
-                        className="absolute inset-0 bg-black/60 backdrop-blur-sm rounded-3xl flex items-center justify-center z-20"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                      >
-                        <div className="text-center">
-                          <div className="relative mb-6">
-                            <div className="w-20 h-20 border-4 border-yellow-400/30 rounded-full"></div>
-                            <div className="absolute inset-0 w-20 h-20 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-                          </div>
-                          <h3 className="text-xl font-medium text-white mb-2">Initializing AR</h3>
-                          <p className="text-sm text-gray-400">{initializationStep}</p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+          {/* Main AR Viewport */}
+          <div className="relative flex-1 h-full">
+            {/* Video Container */}
+            <div className="relative w-full h-full bg-black rounded-b-3xl overflow-hidden">
+              <video 
+                ref={videoRef}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{ transform: cameraMode === 'user' ? 'scaleX(-1)' : 'none' }}
+                playsInline
+                muted
+              />
 
-                  {/* Enhanced Video Container */}
-                  <div className="relative w-full h-full bg-black rounded-3xl overflow-hidden shadow-2xl">
-                    <video 
-                      ref={videoRef}
-                      className="absolute inset-0 w-full h-full object-cover"
-                      style={{ transform: cameraMode === 'user' ? 'scaleX(-1)' : 'none' }}
-                      playsInline
-                      muted
+              {/* 3D Overlay */}
+              {selectedModel && (
+                <div className="absolute inset-0">
+                  <Canvas
+                    camera={{ position: [0, 0, 5], fov: 50 }}
+                    style={{ background: 'transparent' }}
+                    gl={{ 
+                      antialias: true, 
+                      alpha: true,
+                      powerPreference: "high-performance",
+                      preserveDrawingBuffer: true
+                    }}
+                  >
+                    <Enhanced3DGlasses 
+                      faceData={faceData} 
+                      selectedModel={selectedModel}
+                      isVisible={isARVisible}
+                      tracker={trackerRef.current}
+                      manualAdjustments={manualAdjustments}
+                      onModelLoad={handleModelLoad}
+                      onModelError={handleModelError}
                     />
-
-                    {/* Enhanced 3D Overlay */}
-                    <div className="absolute inset-0">
-                      <Canvas
-                        camera={{ position: [0, 0, 5], fov: 50 }}
-                        style={{ background: 'transparent' }}
-                        gl={{ 
-                          antialias: true, 
-                          alpha: true,
-                          powerPreference: "high-performance",
-                          preserveDrawingBuffer: true
-                        }}
-                      >
-                        <ModernGlasses 
-                          faceData={faceData} 
-                          selectedGlasses={selectedGlasses}
-                          isVisible={isGlassesVisible}
-                          tracker={trackerRef.current}
-                        />
-                        <PerformanceMonitor onMetricsUpdate={setMetrics} />
-                      </Canvas>
-                    </div>
-
-                    {/* Modern Status HUD */}
-                    <div className="absolute top-6 left-6 space-y-3">
-                      <motion.div 
-                        className={`flex items-center gap-3 px-4 py-2 rounded-2xl backdrop-blur-md border transition-all duration-300 ${
-                          faceDetected 
-                            ? 'bg-green-500/20 border-green-400/40' 
-                            : 'bg-red-500/20 border-red-400/40'
-                        }`}
-                        animate={{ scale: faceDetected ? [1, 1.05, 1] : 1 }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                      >
-                        <div className={`w-3 h-3 rounded-full ${
-                          faceDetected ? 'bg-green-400' : 'bg-red-400'
-                        } ${faceDetected ? 'animate-pulse' : ''}`}></div>
-                        <span className="text-white text-sm font-medium">
-                          {faceDetected ? 'Face Locked' : 'Searching...'}
-                        </span>
-                      </motion.div>
-
-                      <div className="flex items-center gap-2 px-4 py-2 bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl">
-                        <Camera className="w-4 h-4 text-gray-300" />
-                        <span className="text-white text-sm">
-                          {cameraMode === 'user' ? 'Front' : 'Back'} Camera
-                        </span>
-                      </div>
-
-                      {faceDetected && (
-                        <motion.div
-                          className="px-4 py-2 bg-blue-500/20 backdrop-blur-md border border-blue-400/40 rounded-2xl"
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                        >
-                          <span className="text-blue-400 text-sm font-medium">
-                            Quality: {trackingQuality}
-                          </span>
-                        </motion.div>
-                      )}
-                    </div>
-
-                    {/* Floating Controls */}
-                    <div className="absolute bottom-6 right-6 flex gap-3">
-                      <motion.button
-                        onClick={() => setIsGlassesVisible(!isGlassesVisible)}
-                        className={`p-4 rounded-2xl backdrop-blur-md border transition-all duration-300 ${
-                          isGlassesVisible 
-                            ? 'bg-yellow-500/20 border-yellow-400/40 text-yellow-400' 
-                            : 'bg-white/10 border-white/20 text-white'
-                        }`}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <Eye className="w-5 h-5" />
-                      </motion.button>
-
-                      <motion.button
-                        onClick={switchCamera}
-                        className="p-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl text-white hover:bg-white/20 transition-all duration-300"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
-                      >
-                        <RotateCcw className="w-5 h-5" />
-                      </motion.button>
-
-                      <motion.button
-                        onClick={captureScreenshot}
-                        disabled={!faceDetected}
-                        className="p-4 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 backdrop-blur-md border border-yellow-400/40 rounded-2xl text-yellow-400 hover:bg-yellow-400/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
-                        whileHover={{ scale: faceDetected ? 1.1 : 1 }}
-                        whileTap={{ scale: faceDetected ? 0.9 : 1 }}
-                      >
-                        <Download className="w-5 h-5" />
-                      </motion.button>
-                    </div>
-
-                    {/* Immersive Instructions */}
-                    <AnimatePresence>
-                      {!faceDetected && !isLoading && (
-                        <motion.div
-                          className="absolute bottom-6 left-1/2 transform -translate-x-1/2"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 20 }}
-                        >
-                          <div className="bg-black/60 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-4">
-                            <p className="text-white text-sm text-center flex items-center gap-2">
-                              <Eye className="w-4 h-4 text-yellow-400" />
-                              Position your face in the center for optimal tracking
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+                  </Canvas>
                 </div>
               )}
-            </div>
 
-            {/* Modern Sidebar */}
-            <motion.div 
-              className="w-80 bg-black/40 backdrop-blur-xl border-l border-white/10"
-              initial={{ x: 300, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-            >
-              <div className="p-6 space-y-6 h-full overflow-y-auto">
-                
-                {/* Glasses Selection */}
-                <div>
-                  <h3 className="text-lg font-medium text-white mb-4 flex items-center">
-                    <Zap className="w-5 h-5 text-yellow-400 mr-2" />
-                    Choose Your Style
-                  </h3>
-                  
-                  <div className="space-y-3">
-                    {glassesStyles.map((style) => (
-                      <motion.button
-                        key={style.id}
-                        onClick={() => setSelectedGlasses(style.id)}
-                        className={`w-full p-4 rounded-2xl border-2 transition-all duration-300 text-left ${
-                          selectedGlasses === style.id
-                            ? 'border-yellow-400 bg-yellow-400/10 shadow-lg shadow-yellow-400/25'
-                            : 'border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10'
-                        }`}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <div className="flex items-center gap-4">
-                          <div className="text-3xl">{style.icon}</div>
-                          <div className="flex-1">
-                            <div className={`font-medium ${
-                              selectedGlasses === style.id ? 'text-yellow-400' : 'text-white'
-                            }`}>
-                              {style.name}
-                            </div>
-                            <div className="text-gray-400 text-sm">{style.description}</div>
-                          </div>
-                          {selectedGlasses === style.id && (
-                            <div className="w-3 h-3 bg-yellow-400 rounded-full" />
-                          )}
-                        </div>
-                      </motion.button>
-                    ))}
-                  </div>
-                </div>
+              {/* Loading Overlay */}
+              <AnimatePresence>
+                {isLoading && <LoadingSkeleton />}
+              </AnimatePresence>
 
-                {/* Advanced Settings */}
-                <AnimatePresence>
-                  {showSettings && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-4 border border-white/10">
-                        <h4 className="text-white font-medium mb-4">Advanced Settings</h4>
-                        
-                        <div className="space-y-4">
-                          {/* Sound Toggle */}
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              {soundEnabled ? <Volume2 className="w-4 h-4 text-gray-400" /> : <VolumeX className="w-4 h-4 text-gray-400" />}
-                              <span className="text-gray-300 text-sm">Audio Feedback</span>
-                            </div>
-                            <button
-                              onClick={() => setSoundEnabled(!soundEnabled)}
-                              className={`w-12 h-6 rounded-full transition-all duration-300 ${
-                                soundEnabled ? 'bg-yellow-400' : 'bg-gray-600'
-                              }`}
-                            >
-                              <div className={`w-5 h-5 bg-white rounded-full transition-transform duration-300 ${
-                                soundEnabled ? 'translate-x-6' : 'translate-x-0.5'
-                              }`} />
-                            </button>
-                          </div>
+              {/* Error Modal */}
+              <AnimatePresence>
+                {error && (
+                  <ErrorModal 
+                    error={error} 
+                    onRetry={initializeAR}
+                    onClose={onClose}
+                  />
+                )}
+              </AnimatePresence>
 
-                          {/* Tracking Sensitivity */}
-                          <div>
-                            <label className="text-gray-300 text-sm mb-2 block">Tracking Sensitivity</label>
-                            <input
-                              type="range"
-                              min="0.1"
-                              max="0.3"
-                              step="0.05"
-                              value={trackerRef.current.learningRate}
-                              onChange={(e) => {
-                                trackerRef.current.learningRate = parseFloat(e.target.value);
-                              }}
-                              className="w-full accent-yellow-400"
-                            />
-                            <div className="flex justify-between text-xs text-gray-500 mt-1">
-                              <span>Stable</span>
-                              <span>Responsive</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              {/* Model Selector */}
+              {!isLoading && !error && (
+                <ModelSelector
+                  models={glassesModels}
+                  selectedModel={selectedModel}
+                  onModelChange={handleModelChange}
+                  isLoading={modelLoadingStates[selectedModel?.id] === 'loading'}
+                />
+              )}
 
-                {/* Performance Metrics */}
-                {faceDetected && (
+              {/* Status Indicator */}
+              {!isLoading && !error && (
+                <StatusIndicator
+                  faceDetected={faceDetected}
+                  trackingQuality={trackingQuality}
+                  fps={fps}
+                  cameraMode={cameraMode}
+                />
+              )}
+
+              {/* Adjustment Controls */}
+              {!isLoading && !error && faceDetected && (
+                <AdjustmentControls
+                  adjustments={manualAdjustments}
+                  onAdjustmentChange={handleAdjustmentChange}
+                  onReset={resetAdjustments}
+                />
+              )}
+
+              {/* Main Toolbar */}
+              {!isLoading && !error && (
+                <MainToolbar
+                  onCapture={captureScreenshot}
+                  onToggleAR={() => setIsARVisible(!isARVisible)}
+                  onSwitchCamera={switchCamera}
+                  onToggleFullscreen={toggleFullscreen}
+                  isARVisible={isARVisible}
+                  isFullscreen={isFullscreen}
+                  faceDetected={faceDetected}
+                  trackingQuality={trackingQuality}
+                />
+              )}
+
+              {/* Instructions Overlay */}
+              <AnimatePresence>
+                {!faceDetected && !isLoading && !error && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
+                    className="absolute bottom-20 left-1/2 transform -translate-x-1/2"
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-gradient-to-r from-green-500/10 to-blue-500/10 rounded-2xl p-4 border border-green-400/20"
+                    exit={{ opacity: 0, y: 20 }}
                   >
-                    <h4 className="text-green-400 font-medium mb-3 flex items-center">
-                      <Zap className="w-4 h-4 mr-2" />
-                      ML Performance
-                    </h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between text-gray-300">
-                        <span>Frame Rate:</span>
-                        <span className="text-green-400 font-medium">{metrics.fps} FPS</span>
+                    <div className="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <Eye className="w-5 h-5 text-blue-400" />
+                        <span className="text-white font-medium">Position Your Face</span>
                       </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>Detection Time:</span>
-                        <span className="text-blue-400 font-medium">{metrics.avgDetectionTime}ms</span>
-                      </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>Tracking Quality:</span>
-                        <span className={`font-medium ${
-                          trackingQuality === 'excellent' ? 'text-green-400' :
-                          trackingQuality === 'good' ? 'text-yellow-400' : 'text-orange-400'
-                        }`}>
-                          {trackingQuality}
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>ML Optimizer:</span>
-                        <span className="text-purple-400 font-medium">Adam</span>
-                      </div>
+                      <p className="text-gray-300 text-sm">
+                        Center your face in the frame for optimal tracking
+                      </p>
                     </div>
                   </motion.div>
                 )}
+              </AnimatePresence>
 
-                {/* Enhanced Instructions */}
-                <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl p-4 border border-blue-400/20">
-                  <h4 className="text-blue-400 font-medium mb-3 flex items-center">
-                    <Eye className="w-4 h-4 mr-2" />
-                    Pro Tips
-                  </h4>
-                  <ul className="text-gray-300 space-y-2 text-sm">
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold text-xs mt-0.5">•</span>
-                      <span>Keep your face centered and well-lit</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold text-xs mt-0.5">•</span>
-                      <span>Move slowly for best tracking accuracy</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold text-xs mt-0.5">•</span>
-                      <span>Try different angles to test the fit</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 font-bold text-xs mt-0.5">•</span>
-                      <span>Capture screenshots to compare styles</span>
-                    </li>
-                  </ul>
-                </div>
+              {/* Model Loading Indicator */}
+              {selectedModel && modelLoadingStates[selectedModel.id] === 'loading' && (
+                <motion.div
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                >
+                  <div className="bg-black/60 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 flex items-center gap-3">
+                    <Loader2 className="w-5 h-5 text-blue-400 animate-spin" />
+                    <span className="text-white text-sm">Loading {selectedModel.name}...</span>
+                  </div>
+                </motion.div>
+              )}
 
-                {/* Action Buttons */}
-                <div className="space-y-3">
-                  <motion.button
-                    onClick={() => {
-                      trackerRef.current = new AdaptiveTracker();
-                      setFaceData(null);
-                      setFaceDetected(false);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-medium transition-all duration-300 border border-white/20"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                    Reset Tracking
-                  </motion.button>
-                  
-                  <motion.button
-                    onClick={captureScreenshot}
-                    disabled={!faceDetected}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-black disabled:text-gray-400 rounded-2xl font-medium transition-all duration-300"
-                    whileHover={{ scale: faceDetected ? 1.02 : 1 }}
-                    whileTap={{ scale: faceDetected ? 0.98 : 1 }}
-                  >
-                    <Download className="w-4 h-4" />
-                    Capture Look
-                  </motion.button>
-                </div>
-              </div>
-            </motion.div>
+              {/* Success Notification */}
+              {selectedModel && modelLoadingStates[selectedModel.id] === 'loaded' && (
+                <motion.div
+                  className="absolute top-20 left-1/2 transform -translate-x-1/2"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  onAnimationComplete={() => {
+                    setTimeout(() => {
+                      setModelLoadingStates(prev => ({ ...prev, [selectedModel.id]: 'ready' }));
+                    }, 2000);
+                  }}
+                >
+                  <div className="bg-green-500/20 backdrop-blur-xl border border-green-400/40 rounded-2xl px-4 py-2 flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-green-400" />
+                    <span className="text-green-400 text-sm font-medium">{selectedModel.name} Ready</span>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           </div>
 
           {/* Hidden canvas for screenshots */}

@@ -1,1 +1,18 @@
+# Placeholder GLB Model File - Modern Style
 
+This is a placeholder for the glasses3.glb model file (Modern style).
+In a real implementation, this would be a binary GLB file containing the 3D modern glasses model.
+
+For development purposes, the AR component will fall back to procedural geometry when GLB files are not available.
+
+To add real GLB models:
+1. Create or download 3D modern glasses models in GLB format
+2. Replace this file with the actual binary GLB data
+3. Ensure models are optimized for web (< 1MB recommended)
+4. Test positioning and scaling with the AR component
+
+Model Specifications for Modern Style:
+- Contemporary rectangular or square frames
+- Sleek, minimalist design
+- Modern materials and finishes
+- Suitable for professional/casual wear
